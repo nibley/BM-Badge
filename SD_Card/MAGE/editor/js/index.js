@@ -82,13 +82,24 @@ window.vueApp = Vue.createApp({
 				} else {
 					getFileJson(scenarioFile)
 						.then(handleScenarioData(fileNameMap))
-						.then(function (scenarioData) {
+						.then(function (newScenarioData) {
 							vm.fileNameMap = fileNameMap;
-							vm.scenarioData = scenarioData;
+							
+							// vm.scenarioData = scenarioData;
+							scenarioData = newScenarioData;
+
 							/*
 							TODO store	
 							vm.$store.commit('INIT_CURRENT_DATA');
 							*/
+							currentData = {
+								dialogs: jsonClone(newScenarioData.dialogs),
+								dialogsFileItemMap: jsonClone(newScenarioData.dialogsFileItemMap),
+								scripts: jsonClone(newScenarioData.scripts),
+								scriptsFileItemMap: jsonClone(newScenarioData.scriptsFileItemMap),
+							};
+							initState = jsonClone(currentData);
+
 							return scenarioData;
 						})
 						.then(generateIndexAndComposite)
