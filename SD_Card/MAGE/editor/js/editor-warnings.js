@@ -104,17 +104,23 @@ vueApp.component('editor-warning', {
 					console.log(`XXX reserving script ${newParameter}`);
 
 					this.scriptNameTaken = false;
+					/*
+					TODO store
 					this.$store.commit('RESERVE_WARNING_SCRIPT_NAME', {
 						scriptName: newParameter,
 					});
+					*/
 				}
 
 				if (oldParameter) {
 					console.log(`XXX freeing script ${oldParameter}`);
 
+					/*
+					TODO store
 					this.$store.commit('FREE_WARNING_SCRIPT_NAME', {
 						scriptName: oldParameter,
 					});
+					*/
 				} else {
 					console.log('XXX old scriptName was null');
 				}

@@ -39,27 +39,36 @@ vueApp.component('editor-dialog', {
 	},
 	methods: {
 		moveDialog: function (direction) {
+			/*
+			TODO store
 			this.$store.commit('MOVE_DIALOG', {
 				fileName: this.fileName,
 				index: this.index,
 				direction: direction
 			});
+			*/
 		},
 		collapse: function () {
 			this.collapsed = !this.collapsed;
 		},
 		updateDialogPhase: function (phaseIndex, phase) {
+			/*
+			TODO store
 			this.$store.commit('UPDATE_DIALOG_PHASE', {
 				dialogName: this.dialogName,
 				phaseIndex: phaseIndex,
 				phase: phase,
 			})
+			*/
 		},
 		deleteDialogPhase: function (phaseIndex) {
+			/*
+			TODO store
 			this.$store.commit('DELETE_DIALOG_PHASE', {
 				dialogName: this.dialogName,
 				phaseIndex: phaseIndex,
 			});
+			*/
 		},
 	},
 	template: /*html*/`
@@ -107,7 +116,8 @@ vueApp.component('editor-dialog', {
 			<button
 				class="btn btn-primary"
 				type="submit"
-				@click="$store.commit('ADD_DIALOG_PHASE', dialogName)"
+				<!-- TODO store
+				@click="$store.commit('ADD_DIALOG_PHASE', dialogName)"-->
 			>Add Phase</button>
 		</div>
 	</div>

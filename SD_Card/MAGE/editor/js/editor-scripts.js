@@ -72,10 +72,13 @@ vueApp.component(
 		},
 		methods: {
 			updateScript: function (scriptName,changes) {
+				/*
+				TODO store
 				this.$store.commit('UPDATE_SCRIPT_BY_NAME', {
 					scriptName: scriptName,
 					script: changes
 				})
+				*/
 			},
 			updateScriptName: function (oldName, newName, index) {
 				// updates global script map

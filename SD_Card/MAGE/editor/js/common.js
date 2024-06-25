@@ -152,13 +152,18 @@ var jsonClone = function (input) {
 var makeComputedStoreGetterSetter = function (propertyName) {
 	return {
 		get: function () {
+			/*
+			TODO store
 			return this.$store.state[propertyName]
+			*/
 		},
 		set: function (value) {
+			/* TODO store
 			return this.$store.commit('GENERIC_MUTATOR', {
 				propertyName: propertyName,
 				value: value,
 			});
+			*/
 		}
 	}
 };

@@ -1,4 +1,19 @@
 window.vueApp = Vue.createApp({
+	setup: function() {
+		const fileNameMap = Vue.reactive({});
+		const scenarioData = Vue.reactive({});
+		const currentData = Vue.reactive({});
+		const initState = Vue.reactive({});
+		const warningsGeneratedScriptNames = Vue.reactive({});
+
+		return {
+			fileNameMap,
+			scenarioData,
+			currentData,
+			initState,
+			warningsGeneratedScriptNames
+		};
+	},
 	/*
 	TODO mixins
 	mixins: [
@@ -70,7 +85,10 @@ window.vueApp = Vue.createApp({
 						.then(function (scenarioData) {
 							vm.fileNameMap = fileNameMap;
 							vm.scenarioData = scenarioData;
+							/*
+							TODO store	
 							vm.$store.commit('INIT_CURRENT_DATA');
+							*/
 							return scenarioData;
 						})
 						.then(generateIndexAndComposite)
