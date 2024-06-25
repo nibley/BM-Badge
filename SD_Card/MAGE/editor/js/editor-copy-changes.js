@@ -1,4 +1,4 @@
-window.Vue.component('copy-button', {
+vueApp.component('copy-button', {
 	name: 'copy-button',
 	props: {
 		text: {
@@ -37,7 +37,7 @@ window.Vue.component('copy-button', {
 </span>
 `});
 
-window.Vue.component('copy-changes', {
+vueApp.component('copy-changes', {
 	name: 'copy-changes',
 	props: {
 		changes: {

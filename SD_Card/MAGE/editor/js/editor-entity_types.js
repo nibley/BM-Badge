@@ -14,7 +14,7 @@ var possibleNameList = [
 	'carry_on',
 ];
 
-Vue.component(
+vueApp.component(
 	'entity-type-editor',
 	{
 		name: 'entity-type-editor',
@@ -196,7 +196,7 @@ Vue.component(
 	}
 );
 
-Vue.component(
+vueApp.component(
 	'tiled-tile',
 	{
 		name: 'tiled-tile',

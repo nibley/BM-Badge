@@ -1,4 +1,4 @@
-Vue.component('editor-accordion', {
+vueApp.component('editor-accordion', {
 	name: 'editor-accordion',
 	props: {
 		title: {

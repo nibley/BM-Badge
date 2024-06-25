@@ -47,7 +47,7 @@ var getTileIdFromXY = function (
 	return tileId;
 };
 
-Vue.component('editor-dialog-box', {
+vueApp.component('editor-dialog-box', {
 	name: 'editor-dialog-box',
 	props: {
 		rect: {

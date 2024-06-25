@@ -1,14 +1,16 @@
-Vue.component(
+vueApp.component(
 	'editor-script',
 	{
 		name: 'editor-script',
+		/*
+		TODO mixins
 		mixins: [
 			{
 				computed: window.Vuex.mapGetters([
 					'scriptsOptions',
 				]),
 			}
-		],
+		],*/
 		props: {
 			scriptName: {
 				type: String,

@@ -73,9 +73,10 @@ var actionInputMixin = {
 	},
 }
 
-Vue.component('field-text', {
+vueApp.component('field-text', {
 	name: 'field-text',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	props: {
 		type: {
 			type: String,
@@ -95,9 +96,10 @@ Vue.component('field-text', {
 />
 `});
 
-Vue.component('field-number', {
+vueApp.component('field-number', {
 	name: 'field-number',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	template: /*html*/`
 <field-text
 	type="number"
@@ -106,7 +108,7 @@ Vue.component('field-number', {
 ></field-text>
 `});
 
-Vue.component('field-select', {
+vueApp.component('field-select', {
 	name: 'field-select',
 	props: {
 		options: {
@@ -132,9 +134,10 @@ Vue.component('field-select', {
 </select>
 `});
 
-Vue.component('field-bool', {
+vueApp.component('field-bool', {
 	name: 'field-bool',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	operations: operations,
 	template: /*html*/`
 <field-select
@@ -144,9 +147,10 @@ Vue.component('field-bool', {
 ></field-select>
 `});
 
-Vue.component('action-input-operations', {
+vueApp.component('action-input-operations', {
 	name: 'action-input-operations',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	operations: operations,
 	template: /*html*/`
 <field-select
@@ -156,9 +160,10 @@ Vue.component('action-input-operations', {
 ></field-select>
 `});
 
-Vue.component('action-input-comparisons', {
+vueApp.component('action-input-comparisons', {
 	name: 'action-input-comparisons',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	comparisons: comparisons,
 	template: /*html*/`
 <field-select
@@ -168,9 +173,10 @@ Vue.component('action-input-comparisons', {
 ></field-select>
 `});
 
-Vue.component('action-input-buttons', {
+vueApp.component('action-input-buttons', {
 	name: 'action-input-buttons',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	buttons: buttons,
 	template: /*html*/`
 <field-select
@@ -180,9 +186,10 @@ Vue.component('action-input-buttons', {
 ></field-select>
 `});
 
-Vue.component('action-input-directions', {
+vueApp.component('action-input-directions', {
 	name: 'action-input-directions',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	directions: directions,
 	template: /*html*/`
 <field-select
@@ -192,9 +199,10 @@ Vue.component('action-input-directions', {
 ></field-select>
 `});
 
-Vue.component('action-input-slots', {
+vueApp.component('action-input-slots', {
 	name: 'action-input-slots',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	slots: slots,
 	template: /*html*/`
 <field-select
@@ -204,12 +212,13 @@ Vue.component('action-input-slots', {
 ></field-select>
 `});
 
-Vue.component('action-input-scripts', {
+vueApp.component('action-input-scripts', {
 	name: 'action-input-scripts',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'scriptsOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="scriptsOptions"
@@ -218,12 +227,13 @@ Vue.component('action-input-scripts', {
 ></field-select>
 `});
 
-Vue.component('action-input-dialogs', {
+vueApp.component('action-input-dialogs', {
 	name: 'action-input-dialogs',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'dialogOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="dialogOptions"
@@ -232,12 +242,13 @@ Vue.component('action-input-dialogs', {
 ></field-select>
 `});
 
-Vue.component('action-input-entity_types', {
+vueApp.component('action-input-entity_types', {
 	name: 'action-input-entity_types',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'entityTypesOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="entityTypesOptions"
@@ -246,12 +257,13 @@ Vue.component('action-input-entity_types', {
 ></field-select>
 `});
 
-Vue.component('action-input-entities', {
+vueApp.component('action-input-entities', {
 	name: 'action-input-entities',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'entityNamesOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="entityNamesOptions"
@@ -260,12 +272,13 @@ Vue.component('action-input-entities', {
 ></field-select>
 `});
 
-Vue.component('action-input-geometry', {
+vueApp.component('action-input-geometry', {
 	name: 'action-input-geometry',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'geometryOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="geometryOptions"
@@ -274,12 +287,13 @@ Vue.component('action-input-geometry', {
 ></field-select>
 `});
 
-Vue.component('action-input-maps', {
+vueApp.component('action-input-maps', {
 	name: 'action-input-maps',
+/*	TODO mixins
 	mixins: [actionInputMixin],
 	computed: window.Vuex.mapGetters([
 		'mapsOptions'
-	]),
+	]),*/
 	template: /*html*/`
 <field-select
 	:options="mapsOptions"
@@ -288,9 +302,10 @@ Vue.component('action-input-maps', {
 ></field-select>
 `});
 
-Vue.component('action-input-action-type', {
+vueApp.component('action-input-action-type', {
 	name: 'action-input-action-type',
-	mixins: [actionInputMixin],
+/*	TODO mixins
+	mixins: [actionInputMixin],*/
 	computed: {
 		actions: function () {
 			return Object.keys(actionFieldsMap);
@@ -341,10 +356,12 @@ var propertyEditorComponentMap = {
 	button_id: 'action-input-buttons',
 };
 
-Vue.component(
+vueApp.component(
 	'editor-action',
 	{
 		name: 'editor-action',
+		/*
+		TODO mixins
 		mixins: [
 			{
 				computed: window.Vuex.mapGetters([
@@ -356,7 +373,7 @@ Vue.component(
 					'scriptsOptions',
 				])
 			}
-		],
+		],*/
 		propertyEditorComponentMap,
 		props: {
 			script: {

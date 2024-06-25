@@ -20,10 +20,12 @@ var extractNames = function (arrayOfObjects) {
 	return result;
 };
 
-Vue.component(
+vueApp.component(
 	'editor-scripts',
 	{
 		name: 'editor-scripts',
+		/*
+		TODO mixins
 		mixins: [
 			makeComputedStoreGetterSettersMixin([
 				'scenarioData',
@@ -37,7 +39,7 @@ Vue.component(
 				]),
 			},
 			makeFileChangeTrackerMixinByResourceType('scripts'),
-		],
+		],*/
 		data: function () {
 			return {
 				currentScriptFileName: '',

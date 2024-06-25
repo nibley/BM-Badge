@@ -1,4 +1,4 @@
-Vue.component('editor-dialog', {
+vueApp.component('editor-dialog', {
 	name: 'editor-dialog',
 	props: {
 		dialogName: {

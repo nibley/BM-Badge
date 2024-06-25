@@ -1,4 +1,4 @@
-Vue.component('editor-dialogs', {
+vueApp.component('editor-dialogs', {
 	name: 'editor-dialogs',
 	mixins: [
 		makeComputedStoreGetterSettersMixin([

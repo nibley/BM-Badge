@@ -21,7 +21,7 @@ var dialogAlignmentCoords = {
 	}
 };
 
-Vue.component('editor-dialog-phase-preview', {
+vueApp.component('editor-dialog-phase-preview', {
 	name: 'editor-dialog-phase-preview',
 	props: {
 		phase: {

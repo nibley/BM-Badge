@@ -1,21 +1,15 @@
-window.Vue.component(
-	'inputty',
-	{
-		name: 'inputty',
-		template: '#inputty'
-	}
-);
-
-window.vueApp = new window.Vue({
+window.vueApp = Vue.createApp({
 	el: '#app',
 	store: window.store,
+	/*
+	TODO mixins
 	mixins: [
 		makeComputedStoreGetterSettersMixin([
 			'scenarioData',
 			'fileNameMap',
 			'currentData',
 		]),
-	],
+	],*/
 	data: {
 		uniqueEncodeAttempt: Math.random(),
 		isLoading: false,
@@ -98,3 +92,11 @@ window.vueApp = new window.Vue({
 		}
 	}
 });
+
+vueApp.component(
+	'inputty',
+	{
+		name: 'inputty',
+		template: '#inputty'
+	}
+);
