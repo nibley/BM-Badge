@@ -1,6 +1,4 @@
 window.vueApp = Vue.createApp({
-	el: '#app',
-	store: window.store,
 	/*
 	TODO mixins
 	mixins: [
@@ -10,11 +8,13 @@ window.vueApp = Vue.createApp({
 			'currentData',
 		]),
 	],*/
-	data: {
-		uniqueEncodeAttempt: Math.random(),
-		isLoading: false,
-		error: null,
-		downloadData: null,
+	data: function() {
+		return 	{
+			uniqueEncodeAttempt: Math.random(),
+			isLoading: false,
+			error: null,
+			downloadData: null,
+		};
 	},
 	methods: {
 		closeError: function () {
@@ -92,6 +92,8 @@ window.vueApp = Vue.createApp({
 		}
 	}
 });
+
+vueApp.mount('#app')
 
 vueApp.component(
 	'inputty',
