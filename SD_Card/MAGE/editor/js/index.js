@@ -1,72 +1,61 @@
+window.vueComponents = {};
+
 window.vueApp = Vue.createApp({
 	setup: function() {
-		const fileNameMap = Vue.reactive({});
-		const scenarioData = Vue.reactive({});
-		const currentData = Vue.reactive({});
-		const initState = Vue.reactive({});
-		const warningsGeneratedScriptNames = Vue.reactive({});
+		uniqueEncodeAttempt = Vue.ref(Math.random());
+		isLoading = Vue.ref(false);
+		error = Vue.ref(null);
+		downloadData = Vue.ref(null);
 
-		return {
-			fileNameMap,
-			scenarioData,
-			currentData,
-			initState,
-			warningsGeneratedScriptNames
+		var fileNameMap = Vue.ref(undefined);
+		var scenarioData = Vue.ref(undefined);
+		var currentData = Vue.ref(undefined);
+		var initState = Vue.ref(undefined);
+		var warningsGeneratedScriptNames = Vue.ref(undefined);
+
+		Vue.provide('fileNameMap', fileNameMap);
+		Vue.provide('scenarioData', scenarioData);
+		Vue.provide('currentData', currentData);
+		Vue.provide('initState', initState);
+		Vue.provide('warningsGeneratedScriptNames', warningsGeneratedScriptNames);
+
+		var closeError = function () {
+			uniqueEncodeAttempt = Math.random();
+			error = false;
 		};
-	},
-	/*
-	TODO mixins
-	mixins: [
-		makeComputedStoreGetterSettersMixin([
-			'scenarioData',
-			'fileNameMap',
-			'currentData',
-		]),
-	],*/
-	data: function() {
-		return 	{
-			uniqueEncodeAttempt: Math.random(),
-			isLoading: false,
-			error: null,
-			downloadData: null,
+
+		var closeSuccess = function () {
+			uniqueEncodeAttempt = Math.random();
+			downloadData = null;
 		};
-	},
-	methods: {
-		closeError: function () {
-			this.uniqueEncodeAttempt = Math.random();
-			this.error = false;
-		},
-		closeSuccess: function () {
-			this.uniqueEncodeAttempt = Math.random();
-			this.downloadData = null;
-		},
-		prepareDownload: function (data, name) {
+
+		var prepareDownload = function (data, name) {
 			var blob = new Blob(data, { type: 'octet/stream' });
 			var url = window.URL.createObjectURL(blob);
-			if (this.downloadData) {
-				window.URL.revokeObjectURL(this.downloadData.url);
+			if (downloadData) {
+				window.URL.revokeObjectURL(downloadData.url);
 			}
-			this.downloadData = {
+			downloadData = {
 				href: url,
 				target: '_blank',
 				download: name
 			}
-		},
-		handleChange: function (event) {
-			var vm = this;
-			var fileNameMap = {};
-			vm.closeError();
+		};
 
-			var handleError = function(error) {
-				vm.closeSuccess();
-				console.error(error);
-				vm.error = error.message;
-				vm.isLoading = false;
+		var handleChange = function (event) {
+			var fileNameMap = {};
+			closeError();
+
+			var handleError = function(newError) {
+				closeSuccess();
+				console.error(newError);
+				error = newError.message;
+				isLoading = false;
 			};
 
 			try {
 				var filesArray = Array.prototype.slice.call(event.target.files);
-				vm.isLoading = true;
+				isLoading = true;
 
 				filesArray.forEach(function (file) {
 					if (fileNameMap[file.name] === undefined) {
@@ -83,46 +72,74 @@ window.vueApp = Vue.createApp({
 					getFileJson(scenarioFile)
 						.then(handleScenarioData(fileNameMap))
 						.then(function (newScenarioData) {
-							vm.fileNameMap = fileNameMap;
+							fileNameMap = fileNameMap;
 							
 							// vm.scenarioData = scenarioData;
-							scenarioData = newScenarioData;
+							console.log('early scenDat', scenarioData);
+							scenarioData.value = newScenarioData;
 
 							/*
 							TODO store	
 							vm.$store.commit('INIT_CURRENT_DATA');
 							*/
-							currentData = {
+							currentData.value = {
 								dialogs: jsonClone(newScenarioData.dialogs),
 								dialogsFileItemMap: jsonClone(newScenarioData.dialogsFileItemMap),
 								scripts: jsonClone(newScenarioData.scripts),
 								scriptsFileItemMap: jsonClone(newScenarioData.scriptsFileItemMap),
 							};
-							initState = jsonClone(currentData);
+							initState.value = jsonClone(currentData);
 
-							return scenarioData;
+							// return scenarioData;
+							return scenarioData.value;
 						})
 						.then(generateIndexAndComposite)
 						.then(function (compositeArray) {
-							vm.prepareDownload([compositeArray], 'game.dat');
+							prepareDownload([compositeArray], 'game.dat');
 						})
 						.catch(function (error) {
 							handleError(error);
 							throw error;
 						})
 						.then(function () {
-							vm.isLoading = false;
-							vm.uniqueEncodeAttempt = Math.random();
+							isLoading = false;
+							uniqueEncodeAttempt = Math.random();
 						});
 				}
 			} catch (error) {
 				handleError(error);
 			}
-		}
-	}
-});
+		};
 
-vueApp.mount('#app')
+		return {
+			// component state:
+			uniqueEncodeAttempt,
+			isLoading,
+			error,
+			downloadData,
+			// provided state:
+			fileNameMap,
+			scenarioData,
+			currentData,
+			initState,
+			warningsGeneratedScriptNames,
+			// methods:
+			closeError,
+			closeSuccess,
+			prepareDownload,
+			handleChange,
+		};
+	},
+	/*
+	TODO mixins
+	mixins: [
+		makeComputedStoreGetterSettersMixin([
+			'scenarioData',
+			'fileNameMap',
+			'currentData',
+		]),
+	],*/
+});
 
 vueApp.component(
 	'inputty',
