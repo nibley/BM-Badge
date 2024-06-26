@@ -539,7 +539,7 @@ var getObjectByNameOnMap = function(name, map, action) {
 		object = { specialIndex: specialIndex };
 	} else {
 		map.layers.find(function (layer) {
-			const isObjectsLayer = layer.type === 'objectgroup';
+			var isObjectsLayer = layer.type === 'objectgroup';
 			if (isObjectsLayer) {
 				object = layer.objects.find(function (object) {
 					return object.name === name;
