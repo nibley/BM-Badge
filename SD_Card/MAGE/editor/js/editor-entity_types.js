@@ -65,7 +65,9 @@ vueComponents['entity-type-editor'] = {
 		});
 
 		return {
+			// injected state:
 			scenarioData,
+			// computeds:
 			entityTypes,
 			jsonOutput,
 			needsSave,
