@@ -7,39 +7,52 @@ vueApp.component('editor-options', {
 			required: true
 		},
 	},
-	computed: {
-		scriptPresenceMap: function () {
-			return (this.$store.state.currentData || {}).scripts || {}
-		}
-	},
-	methods: {
-		updateOption: function (index, propertyName, value) {
-			var options = jsonClone(this.value);
+	emits: ['input'].
+	setup = function(props, context) {
+		var currentData = Vue.inject('currentData');
+
+		var scriptPresenceMap = Vue.computed(function () {
+			return (currentData.value || {}).scripts || {}
+		});
+
+		var updateOption = function (index, propertyName, value) {
+			var options = jsonClone(props.value);
 			options[index][propertyName] = value;
-			this.$emit(
+			context.emit(
 				'input',
 				options
 			);
-		},
-		addOption: function () {
-			var options = this.value.slice()
+		};
+		var addOption = function () {
+			var options = props.value.slice()
 			options.push({
 				"label": "Another Option",
 				"script": null
 			});
-			this.$emit(
+			context.emit(
 				'input',
 				options
 			);
-		},
-		removeOption: function (index) {
-			var options = this.value.slice()
+		};
+		var removeOption = function (index) {
+			var options = props.value.slice()
 			options.splice(index, 1)
-			this.$emit(
+			context.emit(
 				'input',
 				options
 			);
-		},
+		};
+
+		return {
+			// injected state:
+			currentData,
+			// computeds:
+			scriptPresenceMap,
+			// methods:
+			updateOption,
+			addOption,
+			removeOption,
+		};
 	},
 	template: /*html*/`
 <div
