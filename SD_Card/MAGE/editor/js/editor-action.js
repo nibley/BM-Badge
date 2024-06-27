@@ -59,6 +59,8 @@ var propertySanitizerMap = {
 	ble_flag: sanitizeAsString,
 };
 
+/*
+TODO mixins
 var actionInputMixin = {
 	props: {
 		property: {
@@ -72,6 +74,7 @@ var actionInputMixin = {
 		},
 	},
 }
+*/
 
 vueComponents['field-text'] = {
 	name: 'field-text',
@@ -80,11 +83,12 @@ vueComponents['field-text'] = {
 	props: {
 		type: {
 			type: String,
-			default: function () {
+			default: function() {
 				return 'text'
 			}
 		},
 	},
+	emits: ['input'],
 	template: /*html*/`
 <input
 	type="text"
@@ -100,6 +104,7 @@ vueComponents['field-number'] = {
 	name: 'field-number',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	template: /*html*/`
 <field-text
 	type="number"
@@ -119,6 +124,7 @@ vueComponents['field-select'] = {
 			required: true,
 		},
 	},
+	emits: ['input'],
 	template: /*html*/`
 <select
 	class="form-select"
@@ -138,6 +144,7 @@ vueComponents['field-bool'] = {
 	name: 'field-bool',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	operations: operations,
 	template: /*html*/`
 <field-select
@@ -151,6 +158,7 @@ vueComponents['action-input-operations'] = {
 	name: 'action-input-operations',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	operations: operations,
 	template: /*html*/`
 <field-select
@@ -164,6 +172,7 @@ vueComponents['action-input-comparisons'] = {
 	name: 'action-input-comparisons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	comparisons: comparisons,
 	template: /*html*/`
 <field-select
@@ -177,6 +186,7 @@ vueComponents['action-input-buttons'] = {
 	name: 'action-input-buttons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	buttons: buttons,
 	template: /*html*/`
 <field-select
@@ -190,6 +200,7 @@ vueComponents['action-input-directions'] = {
 	name: 'action-input-directions',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	directions: directions,
 	template: /*html*/`
 <field-select
@@ -203,6 +214,7 @@ vueComponents['action-input-slots'] = {
 	name: 'action-input-slots',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	emits: ['input'],
 	slots: slots,
 	template: /*html*/`
 <field-select
@@ -219,6 +231,7 @@ vueComponents['action-input-scripts'] = {
 	computed: window.Vuex.mapGetters([
 		'scriptsOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="scriptsOptions"
@@ -234,6 +247,7 @@ vueComponents['action-input-dialogs'] = {
 	computed: window.Vuex.mapGetters([
 		'dialogOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="dialogOptions"
@@ -249,6 +263,7 @@ vueComponents['action-input-entity_types'] = {
 	computed: window.Vuex.mapGetters([
 		'entityTypesOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="entityTypesOptions"
@@ -264,6 +279,7 @@ vueComponents['action-input-entities'] = {
 	computed: window.Vuex.mapGetters([
 		'entityNamesOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="entityNamesOptions"
@@ -279,6 +295,7 @@ vueComponents['action-input-geometry'] = {
 	computed: window.Vuex.mapGetters([
 		'geometryOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="geometryOptions"
@@ -294,6 +311,7 @@ vueComponents['action-input-maps'] = {
 	computed: window.Vuex.mapGetters([
 		'mapsOptions'
 	]),*/
+	emits: ['input'],
 	template: /*html*/`
 <field-select
 	:options="mapsOptions"
@@ -306,10 +324,16 @@ vueComponents['action-input-action-type'] = {
 	name: 'action-input-action-type',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
-	computed: {
-		actions: function () {
+	emits: ['input'],
+	setup: function() {
+		var actions = Vue.computed(function() {
 			return Object.keys(actionFieldsMap);
-		}
+		});
+
+		return {
+			// computeds:
+			actions,
+		};
 	},
 	template: /*html*/`
 <field-select
@@ -391,37 +415,34 @@ vueComponents['editor-action'] = {
 			required: true,
 		},
 	},
-	data: function () {
-		return {
-			collapsed: false,
-		}
-	},
-	computed: {
-		actionName: function () {
-			return this.action.action
-		},
-		requiredProperties: function () {
-			return actionFieldsMap[this.actionName];
-		},
-		requiredPropertyNames: function () {
-			return this.requiredProperties
+	emits: ['input', 'deleteAction', 'moveAction'],
+	setup: function(props, context) {
+		var collapsed = Vue.ref(false);
+
+		var actionName = Vue.computed(function () {
+			return props.action.action;
+		});
+		var requiredProperties = Vue.computed(function () {
+			return actionFieldsMap[actionName.value];
+		});
+		var requiredPropertyNames = Vue.computed(function () {
+			return requiredProperties.value
 				.map(function (property) {
 					return property.propertyName;
 				});
-		},
-		foundPropertyNames: function () {
-			var foundProperties = Object.keys(this.action)
+		});
+		var foundPropertyNames = Vue.computed(function () {
+			var foundProperties = Object.keys(props.action)
 				.filter(function (key) {
 					return key !== 'action';
 				});
 			return foundProperties;
-		},
-	},
-	methods: {
-		collapseAction: function () {
-			this.collapsed = !this.collapsed;
-		},
-		validInput: function (property, value) {
+		});
+
+		var collapseAction = function () {
+			collapsed.value = !(collapsed.value);
+		};
+		var validInput = function (property, value) {
 			var result = true;
 			var actionCategory = propertyEditorComponentMap[property];
 			var actionOptionsMap = {
@@ -446,8 +467,8 @@ vueComponents['editor-action'] = {
 				result = options.includes(value);
 			}
 			return result;
-		},
-		handleInput: function (property, value) {
+		};
+		var handleInput = function (property, value) {
 			var sanitizer = (
 				propertySanitizerMap[property]
 				|| sanitizeAsString // so you can edit extra field like 'doc'
@@ -455,13 +476,27 @@ vueComponents['editor-action'] = {
 			var sanitisedValue = sanitizer(value);
 			var newAction = Object.assign(
 				{},
-				this.action,
+				action.value,
 				{
 					[property]: sanitisedValue
 				}
 			)
-			this.$emit('input', newAction);
-		},
+			context.emit('input', newAction);
+		};
+
+		return {
+			// component state:
+			collapsed,
+			// computeds:
+			actionName,
+			requiredProperties,
+			requiredPropertyNames,
+			foundPropertyNames,
+			// methods:
+			collapseAction,
+			validInput,
+			handleInput,
+		};
 	},
 	template: /*html*/`
 <div
