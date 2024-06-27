@@ -42,71 +42,42 @@ vueComponents['entity-type-editor'] = {
 			return initJsonState.value !== jsonOutput.value;
 		});
 		var entityTypeList = Vue.computed(function () {
-			return Object.values(entityTypes);
+			return Object.values(entityTypes.value);
 		});
 		var currentEntityType = Vue.computed(function () {
-			return entityTypes[currentEntityTypeId];
+			return entityTypes.value[currentEntityTypeId.value];
 		});
 		var tileset = Vue.computed(function () {
-			var tilesetFile = fileNameMap[currentEntityType.tileset];
+			var tilesetFile = fileNameMap.value[currentEntityType.value.tileset];
 			return tilesetFile
 				? tilesetFile.parsed
 				: undefined;
 		});
 		var allTilesets = Vue.computed(function () {
-			return scenarioData.parsed.tilesets.slice().sort()
+			return scenarioData.value.parsed.tilesets.slice().sort();
 		});
 		var currentDirection = Vue.computed(function () {
-			var currentAnimation = currentEntityType.animations[currentAnimationName];
+			var currentAnimation = currentEntityType.value.animations[currentAnimationName.value];
 			return (
 				currentAnimation
-				&& (currentAnimationDirection !== -1)
+				&& (currentAnimationDirection.value !== -1)
 			)
-				? currentAnimation[currentAnimationDirection]
+				? currentAnimation[currentAnimationDirection.value]
 				: undefined;
 		});
 		var currentTileId = Vue.computed(function () {
-			return currentDirection
-				? currentDirection.tileid
+			return currentDirection.value
+				? currentDirection.value.tileid
 				: undefined;
 		});
 
-		return {
-			// component state:
-			currentEntityTypeId,
-			newEntityTypeId,
-			currentAnimationName,
-			currentAnimationDirection,
-			initJsonState,
-			// injected state:
-			scenarioData,
-			fileNameMap,
-			// computeds:
-			entityTypes,
-			jsonOutput,
-			needsSave,
-			entityTypeList,
-			currentEntityType,
-			tileset,
-			allTilesets,
-			currentDirection,
-			currentTileId,
-		};
-	},
-	directions: [
-		'↑',
-		'→',
-		'↓',
-		'←',
-	],
-	methods: {
-		addEntityType: function () {
-			var name = newEntityTypeId
+		var addEntityType = function() {
+			var name = newEntityTypeId.value
 				.trim()
 				.toLocaleLowerCase()
 				.replace(/[^a-z0-9]/gm, '_');
 			Vue.set(
-				scenarioData.entityTypes,
+				scenarioData.value.entityTypes,
 				name,
 				{
 					type: name,
@@ -137,34 +108,34 @@ vueComponents['entity-type-editor'] = {
 					}
 				},
 			);
-			currentEntityTypeId = name;
-		},
-		clickDirection: function (animationName, directionIndex) {
-			currentAnimationName = animationName;
-			currentAnimationDirection = directionIndex;
-		},
-		clickTile: function (tileid) {
-			if(currentDirection) {
-				currentDirection.tileid = tileid;
+			currentEntityTypeId.value = name;
+		};
+		var clickDirection = function(animationName, directionIndex) {
+			currentAnimationName.value = animationName;
+			currentAnimationDirection.value = directionIndex;
+		};
+		var clickTile = function(tileid) {
+			if(currentDirection.value) {
+				currentDirection.value.tileid = tileid;
 			}
-		},
-		flip: function (animationName, directionIndex, propertyName) {
-			currentAnimationName = animationName;
-			currentAnimationDirection = directionIndex;
-			if(currentDirection) {
+		};
+		var flip = function(animationName, directionIndex, propertyName) {
+			currentAnimationName.value = animationName;
+			currentAnimationDirection.value = directionIndex;
+			if(currentDirection.value) {
 				Vue.set(
-					currentDirection,
+					currentDirection.value,
 					propertyName,
-					!currentDirection[propertyName]
+					!currentDirection.value[propertyName]
 				);
 			}
-		},
-		addAnimation() {
-			var propertyName = possibleNameList[
-				Object.keys(currentEntityType.animations).length
+		};
+		var addAnimation = function() {
+			var propertyName = possibleNameList.value[
+				Object.keys(currentEntityType.value.animations).length
 			];
 			Vue.set(
-				currentEntityType.animations,
+				currentEntityType.value.animations,
 				propertyName,
 				[
 					{
@@ -185,22 +156,59 @@ vueComponents['entity-type-editor'] = {
 					}
 				]
 			)
-		},
-		deleteAnimation: function (animationName) {
-			var animations = currentEntityType.animations;
+		};
+		var deleteAnimation = function(animationName) {
+			var animations = currentEntityType.value.animations;
 			var newValues = {};
 			var currentCount = 0;
-			Object.entries(animations).forEach(function (pair) {
+			Object.entries(animations).forEach(function(pair) {
 				var name = pair[0];
 				var animation = pair[1];
 				if (name !== animationName) {
-					newValues[possibleNameList[currentCount]] = animation;
+					newValues[possibleNameList.value[currentCount]] = animation;
 					currentCount += 1;
 				}
 			});
-			currentEntityType.animations = newValues;
-		},
-	}
+			currentEntityType.value.animations = newValues;
+		};
+
+		return {
+			// component state:
+			currentEntityTypeId,
+			newEntityTypeId,
+			currentAnimationName,
+			currentAnimationDirection,
+			initJsonState,
+			// injected state:
+			scenarioData,
+			fileNameMap,
+			// computeds:
+			entityTypes,
+			jsonOutput,
+			needsSave,
+			entityTypeList,
+			currentEntityType,
+			tileset,
+			allTilesets,
+			currentDirection,
+			currentTileId,
+			// methods:
+			addEntityType,
+			clickDirection,
+			clickTile,
+			flip,
+			addAnimation,
+			deleteAnimation,
+		};
+	},
+	/*
+	directions: [
+		'↑',
+		'→',
+		'↓',
+		'←',
+	],
+	*/
 };
 
 vueComponents['tiled-tile'] = {
@@ -219,54 +227,42 @@ vueComponents['tiled-tile'] = {
 			type: Boolean,
 		}
 	},
-	data: function () {
-		return {
-			currentFrame: 0,
-		};
-	},
-	created: function() {
-		if(this.animation) {
-			this.animate();
-		}
-	},
-	beforeDestroy: function () {
-		clearTimeout(this.animationTimeout);
-	},
-	computed: {
-		image: function () {
-			return this.tileset.imageFile.blobUrl;
-		},
-		animation: function () {
-			var tileid = this.tileid;
-			var currentTile = (this.tileset.tiles || []).find(function (tile) {
+	setup: function(props) {
+		var currentFrame = Vue.ref(0);
+		var animationTimeout = Vue.ref(null);
+
+		var image = Vue.computed(function() {
+			return props.tileset.imageFile.blobUrl;
+		});
+		var animation = Vue.computed(function() {
+			var tileid = props.tileid;
+			var currentTile = (props.tileset.tiles || []).find(function(tile) {
 				return tile.id === tileid;
 			});
-			return currentTile && currentTile.animation;
-		},
-		currentTileId: function () {
-			var animation = this.animation;
-			var currentFrame = this.currentFrame;
-			var tileid = this.tileid;
-			return animation
-				? animation[currentFrame].tileid
+			return currentTile.value && currentTile.value.animation;
+		});
+		var currentTileId = Vue.computed(function() {
+			var currentAnimation = animation.value;
+			var tileid = props.tileid;
+			return currentAnimation
+				? currentAnimation[currentFrame.value].tileid
 				: tileid;
-		},
-		outerStyle: function () {
-			var tileset = this.tileset;
-			var animation = this.animation;
-			var border = this.hideBorder
+		});
+		var outerStyle = Vue.computed(function() {
+			var tileset = props.tileset;
+			var border = props.hideBorder
 				? undefined
-				: `1px solid ${animation ? '#f44' : '#333'}`
+				: `1px solid ${animation.value ? '#f44' : '#333'}`
 			return {
 				display: 'inline-block',
 				width: tileset.tilewidth + 2 + 'px',
 				height: tileset.tileheight + 2 + 'px',
 				border: border,
 			};
-		},
-		innerStyle: function () {
-			var tileset = this.tileset;
-			var tileid = this.currentTileId;
+		});
+		var innerStyle = Vue.computed(function() {
+			var tileset = props.tileset;
+			var tileid = currentTileId.value;
 			var x = tileid % tileset.columns;
 			var y = Math.floor(tileid / tileset.columns);
 			return {
@@ -280,20 +276,40 @@ vueComponents['tiled-tile'] = {
 					-y * tileset.tileheight
 				}px`,
 			};
-		}
-	},
-	methods: {
-		animate: function () {
-			var vm = this;
-			var frame = this.animation[vm.currentFrame];
-			this.animationTimeout = setTimeout(
+		});
+
+		var animate = function() {
+			var frame = animation.value[currentFrame.value];
+			animationTimeout.value = setTimeout(
 				function () {
-					vm.currentFrame += 1;
-					vm.currentFrame %= vm.animation.length;
-					vm.animate();
+					currentFrame.value += 1;
+					currentFrame.value %= animation.value.length;
+					animate();
 				},
 				frame.duration
 			);
-		},
+		};
+
+		if (animation.value) {
+			animate();
+		}
+
+		Vue.onBeforeUnmount(function() {
+			clearTimeout(animationTimeout.value);
+		});
+
+		return {
+			// component state:
+			currentFrame,
+			animationTimeout,
+			// computeds:
+			image,
+			animation,
+			currentTileId,
+			outerStyle,
+			innerStyle,
+			// methods:
+			animate,
+		};
 	},
 };
