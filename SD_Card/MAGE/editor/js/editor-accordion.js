@@ -18,15 +18,19 @@ vueComponents['editor-accordion'] = {
 			default: false,
 		},
 	},
-	data: function () {
-		return {
-			collapsed: this.collapsedInitial,
+	setup: function(props) {
+		var collapsed = Vue.ref(props.collapsedInitial);
+
+		var collapse = function() {
+			collapsed.value = !(collapsed.value);
 		};
-	},
-	methods: {
-		collapse: function () {
-			this.collapsed = !this.collapsed;
-		},
+
+		return {
+			// component state:
+			collapsed,
+			// methods:
+			collapse,
+		};
 	},
 	template: /*html*/`
 <div class="editor-accordion card border-secondary text-white mb-2">
