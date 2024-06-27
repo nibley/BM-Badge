@@ -1,15 +1,20 @@
-vueApp.component('copy-button', {
+vueComponents['copy-button'] = {
 	name: 'copy-button',
+	setup: function () {
+		var copyState = function () {
+			this.$refs.copyStateTextArea.select();
+			document.execCommand("copy");
+		}
+
+		return {
+			// methods:
+			copyState,
+		};
+	},
 	props: {
 		text: {
 			required: true,
 			type: String,
-		},
-	},
-	methods: {
-		copyState: function () {
-			this.$refs.copyStateTextArea.select();
-			document.execCommand("copy");
 		},
 	},
 	template: /*html*/`
@@ -35,9 +40,9 @@ vueApp.component('copy-button', {
 		name="iminvisible"
 	></textarea>
 </span>
-`});
+`};
 
-vueApp.component('copy-changes', {
+vueComponents['copy-changes'] = {
 	name: 'copy-changes',
 	props: {
 		changes: {
@@ -68,4 +73,4 @@ vueApp.component('copy-changes', {
 	<span>You can click the "Copy" button to the right to put the current {{ resourceName }} your clipboard, then paste it into your "<strong>{{ fileName }}</strong>" file to save.</span>
 	<copy-button :text="changes"></copy-button>
 </div>
-`});
+`};
