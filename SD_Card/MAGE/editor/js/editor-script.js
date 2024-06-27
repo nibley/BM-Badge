@@ -9,6 +9,101 @@ vueComponents['editor-script'] = {
 			]),
 		}
 	],*/
+	setup: function(props, context) {
+		var fileNameMap = Vue.inject('fileNameMap');
+		var scenarioData = Vue.inject('scenarioData');
+		var currentData = Vue.inject('currentData');
+		var scriptsOptions = Vue.inject('scriptsOptions');
+
+		var collapsed = Vue.ref(true);
+		var editingName = Vue.ref(props.scriptName);
+		var newActionName = Vue.ref(null);
+		var editing = Vue.ref(false);
+
+		var script = Vue.computed(function() {
+			return currentData.value.scripts[props.scriptName];
+		});
+		var isNewScriptNameUnique = Vue.computed(function() {
+			var existingNames = scriptsOptions.value;
+			return !existingNames.includes(editingName.value);
+		});
+
+		var moveScript = function(direction) {
+			var fileName = props/fileName;
+			var scripts = currentData.value.scriptsFileItemMap[fileName].slice();
+			var index = props.index;
+			var targetIndex = index + direction;
+			var splice = scripts.splice(index, 1);
+			scripts.splice(targetIndex, 0, splice[0]);
+			context.emit('updateScriptsFileItemMap', scripts);
+		};
+		var submitNewScriptName = function() {
+			var newName = editingName.value;
+			editing.value = false;
+			context.emit('updateScriptName', newName);
+		};
+		var moveAction = function(index, direction) {
+			var newScript = script.value.slice();
+			var targetIndex = index + direction;
+			var splice = newScript.splice(index, 1);
+			newScript.splice(targetIndex, 0, splice[0]);
+			context.emit('input', newScript);
+		};
+		var deleteAction = function(index) {
+			var newScript = script.value.slice();
+			newScript.splice(index, 1);
+			context.emit('input', newScript);
+		};
+		var collapse = function() {
+			collapsed.value = !(collapsed.value);
+		};
+		var updateAction = function(index, action) {
+			var newScript = script.value.slice();
+			newScript[index] = action;
+			context.emit('input', newScript);
+		};
+		var addAction = function() {
+			var actionName = newActionName.value;
+			var fieldsForAction = actionFieldsMap[actionName];
+			// don't try to add an action if it's not valid
+			if (fieldsForAction) {
+				var newScript = script.value.slice();
+				var action = {
+					action: actionName,
+				};
+				fieldsForAction.forEach(function(field) {
+					action[field.propertyName] = null;
+				});
+				newScript.push(action);
+				context.emit('input', newScript);
+			}
+			newActionName.value = null;
+		};
+
+		return {
+			// component state:
+			collapsed,
+			editingName,
+			newActionName,
+			editing,
+			// injected state:
+			fileNameMap,
+			scenarioData,
+			currentData,
+			scriptsOptions,
+			// computeds:
+			script,
+			isNewScriptNameUnique,
+			// methods:
+			moveScript,
+			submitNewScriptName,
+			moveAction,
+			deleteAction,
+			collapse,
+			updateAction,
+			addAction,
+		};
+	},
 	props: {
 		scriptName: {
 			type: String,
@@ -22,81 +117,13 @@ vueComponents['editor-script'] = {
 			type: Number,
 			required: true
 		},
-		currentData: {
-			type: Object,
-			required: true
-		},
 	},
-	data: function () {
-		return {
-			collapsed: true,
-			editingName: this.scriptName,
-			newActionName: null,
-			editing: false,
-		}
-	},
-	computed: {
-		script: function () {
-			return this.currentData.scripts[this.scriptName];
-		},
-		isNewScriptNameUnique: function () {
-			var existingNames = this.scriptsOptions;
-			return !existingNames.includes(this.editingName);
-		},
-	},
-	methods: {
-		moveScript: function (direction) {
-			var fileName = this.fileName;
-			var scripts = this.currentData.scriptsFileItemMap[fileName].slice();
-			var index = this.index;
-			var targetIndex = index + direction;
-			var splice = scripts.splice(index, 1);
-			scripts.splice(targetIndex, 0, splice[0]);
-			this.$emit('updateScriptsFileItemMap', scripts);
-		},
-		submitNewScriptName: function () {
-			var newName = this.editingName;
-			this.editing = false;
-			this.$emit('updateScriptName', newName);
-		},
-		moveAction: function (index, direction) {
-			var newScript = this.script.slice();
-			var targetIndex = index + direction;
-			var splice = newScript.splice(index, 1);
-			newScript.splice(targetIndex, 0, splice[0]);
-			this.$emit('input', newScript);
-		},
-		deleteAction: function (index) {
-			var newScript = this.script.slice();
-			newScript.splice(index, 1);
-			this.$emit('input', newScript);
-		},
-		collapse: function () {
-			this.collapsed = !this.collapsed;
-		},
-		updateAction: function (index, action) {
-			var newScript = this.script.slice();
-			newScript[index] = action;
-			this.$emit('input', newScript);
-		},
-		addAction: function () {
-			var actionName = this.newActionName;
-			var fieldsForAction = actionFieldsMap[actionName];
-			// don't try to add an action if it's not valid
-			if (fieldsForAction) {
-				var newScript = this.script.slice();
-				var action = {
-					action: actionName
-				};
-				fieldsForAction.forEach(function (field) {
-					action[field.propertyName] = null;
-				});
-				newScript.push(action);
-				this.$emit('input', newScript);
-			}
-			this.newActionName = null;
-		}
-	},
+	emits: [
+		'updateScriptsFileItemMap',
+		'updateScriptName',
+		'input',
+		'deleteScript',
+	],
 	template: /*html*/`
 <div
 	class="editor-script card border-primary mb-4"

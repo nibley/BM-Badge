@@ -7,7 +7,7 @@ var sortCaseInsensitive = function (a, b) {
 }
 
 var extractNames = function (arrayOfObjects) {
-	console.log(arrayOfObjects);
+	// console.log(arrayOfObjects);
 	var result = arrayOfObjects
 		.map(function (item) {
 			return item.name;
@@ -38,23 +38,25 @@ vueComponents['editor-scripts'] = {
 		},
 		makeFileChangeTrackerMixinByResourceType('scripts'),
 	],*/
-	data: function () {
-		return {
-			currentScriptFileName: '',
-			newScriptFileName: null,
-			newScriptName: null
-		}
-	},
-	computed: {
-		isNewScriptNameUnique: function () {
-			var existingNames = this.scriptsOptions;
-			return !existingNames.includes(this.newScriptName);
-		},
-		/*
-		natLangScript: function () {
-			var currFile = this.currentScriptFileName;
-			var scriptNames = this.currentData.scriptsFileItemMap[currFile];
-			var scripts = this.currentData.scripts;
+	setup: function() {
+		var scenarioData = Vue.inject('scenarioData');
+		var fileNameMap = Vue.inject('fileNameMap');
+		var currentData = Vue.inject('currentData');
+		var initState = Vue.inject('initState');
+		var scriptsOptions = Vue.inject('scriptsOptions');
+
+		var currentScriptFileName = Vue.ref('');
+		var newScriptFileName = Vue.ref(null);
+		var newScriptName = Vue.ref(null);
+
+		var isNewScriptNameUnique = Vue.computed(function () {
+			var existingNames = scriptsOptions.value;
+			return !existingNames.includes(newScriptName.value);
+		});
+		/*var natLangScript = Vue.computed(function () {
+			var currFile = currentScriptFileName.value;
+			var scriptNames = currentData.value.scriptsFileItemMap[currFile];
+			var scripts = currentData.value.scripts;
 			var result = {};
 			if (currFile) {
 				scriptNames.forEach(function (scriptName) {
@@ -65,11 +67,9 @@ vueComponents['editor-scripts'] = {
 			} else {
 				return '';
 			}
-		},
-		*/
-	},
-	methods: {
-		updateScript: function (scriptName,changes) {
+		});*/
+
+		var updateScript = function(scriptName,changes) {
 			/*
 			TODO store
 			this.$store.commit('UPDATE_SCRIPT_BY_NAME', {
@@ -77,81 +77,106 @@ vueComponents['editor-scripts'] = {
 				script: changes
 			})
 			*/
-		},
-		updateScriptName: function (oldName, newName, index) {
+		};
+		var updateScriptName = function(oldName, newName, index) {
 			// updates global script map
-			var scriptValue = this.currentData.scripts[oldName];
+			var scriptValue = currentData.value.scripts[oldName];
 			var newScriptsMap = Object.assign(
 				{
 					[newName]: scriptValue,
 				},
-				this.currentData.scripts,
+				currentData.value.scripts,
 			);
 			delete newScriptsMap[oldName];
 
 			// updates script name in file script list
-			var fileName = this.currentScriptFileName;
-			var newScriptList = this.currentData.scriptsFileItemMap[fileName].slice();
+			var fileName = currentScriptFileName.value;
+			var newScriptList = currentData.value.scriptsFileItemMap[fileName].slice();
 			newScriptList[index] = newName;
 
-			this.currentData.scripts = newScriptsMap;
-			this.updateScriptsFileItemMap(newScriptList);
-		},
-		deleteScript: function (scriptName) {
-			var fileName = this.currentScriptFileName;
-			var newScriptList = this.currentData.scriptsFileItemMap[fileName]
+			currentData.value.scripts = newScriptsMap;
+			updateScriptsFileItemMap(newScriptList);
+		};
+		var deleteScript = function(scriptName) {
+			var fileName = currentScriptFileName.value;
+			var newScriptList = currentData.value.scriptsFileItemMap[fileName]
 				.filter(function (name) {
-					return name !== scriptName
+					return name !== scriptName;
 				});
 
 			var newScriptsMap = Object.assign(
 				{},
-				this.currentData.scripts,
+				currentData.value.scripts,
 			);
 			delete newScriptsMap[scriptName];
 
-			this.currentData.scripts = newScriptsMap;
-			this.updateScriptsFileItemMap(newScriptList);
-		},
-		updateScriptsFileItemMap: function (scripts) {
-			var fileName = this.currentScriptFileName;
-			var newScriptsFileItemMap = {}
+			currentData.value.scripts = newScriptsMap;
+			updateScriptsFileItemMap(newScriptList);
+		};
+		var updateScriptsFileItemMap = function(scripts) {
+			var fileName = currentScriptFileName.value;
+			var newScriptsFileItemMap = {};
 			Object.assign(
 				newScriptsFileItemMap,
-				this.currentData.scriptsFileItemMap
+				currentData.value.scriptsFileItemMap
 			);
 			newScriptsFileItemMap[fileName] = scripts;
-			this.currentData.scriptsFileItemMap = newScriptsFileItemMap
-		},
-		addNewScriptFile () {
-			var fileName = this.newScriptFileName;
-			var allFiles = this.currentData.scriptsFileItemMap;
-			this.currentData.scriptsFileItemMap = Object.assign(
+			currentData.value.scriptsFileItemMap = newScriptsFileItemMap;
+		};
+		var addNewScriptFile = function() {
+			var fileName = newScriptFileName.value;
+			var allFiles = currentData.value.scriptsFileItemMap;
+			currentData.value.scriptsFileItemMap = Object.assign(
 				{},
 				allFiles,
 				{
 					[fileName]: []
 				}
 			);
-			this.currentScriptFileName = fileName;
-			this.newScriptFileName = null;
-		},
-		addNewScript () {
-			var scriptName = this.newScriptName;
-			var fileName = this.currentScriptFileName;
-			var allScripts = this.currentData.scripts;
-			this.currentData.scripts = Object.assign(
+			currentScriptFileName.value = fileName;
+			newScriptFileName.value = null;
+		};
+		var addNewScript = function() {
+			var scriptName = newScriptName.value;
+			var fileName = currentScriptFileName.value;
+			var allScripts = currentData.value.scripts;
+			currentData.value.scripts = Object.assign(
 				{},
 				allScripts,
 				{
 					[scriptName]: []
 				}
 			);
-			this.currentData.scriptsFileItemMap[fileName].push(
+			currentData.value.scriptsFileItemMap[fileName].push(
 				scriptName
 			);
-			this.newScriptName = null;
-		},
+			newScriptName.value = null;
+		};
+
+		// TODO scriptsNeedSave was never implemented
+
+		return {
+			// component state:
+			currentScriptFileName,
+			newScriptFileName,
+			newScriptName,
+			// injected state:
+			scenarioData,
+			fileNameMap,
+			currentData,
+			initState,
+			scriptsOptions,
+			// computeds:
+			isNewScriptNameUnique,
+			// natLangScript,
+			// methods:
+			updateScript,
+			updateScriptName,
+			deleteScript,
+			updateScriptsFileItemMap,
+			addNewScriptFile,
+			addNewScript,
+		};
 	},
 	template: /*html*/`
 <div

@@ -12,11 +12,17 @@ window.vueApp = Vue.createApp({
 		var currentData = Vue.ref(undefined);
 		var initState = Vue.ref(undefined);
 		var warningsGeneratedScriptNames = Vue.ref(undefined);
+		var scriptsOptions = Vue.computed(function() {
+			return Object.keys(
+				(currentData || {}).scripts || {}
+			);
+		});
 		Vue.provide('fileNameMap', fileNameMap);
 		Vue.provide('scenarioData', scenarioData);
 		Vue.provide('currentData', currentData);
 		Vue.provide('initState', initState);
 		Vue.provide('warningsGeneratedScriptNames', warningsGeneratedScriptNames);
+		Vue.provide('scriptsOptions', scriptsOptions);
 
 		var closeError = function () {
 			uniqueEncodeAttempt.value = Math.random();
@@ -118,6 +124,7 @@ window.vueApp = Vue.createApp({
 			currentData,
 			initState,
 			warningsGeneratedScriptNames,
+			scriptsOptions,
 			// methods:
 			closeError,
 			closeSuccess,
