@@ -11,19 +11,19 @@ vueComponents['editor-dialog-phase'] = {
 			required: true
 		},
 	},
-	computed: {
-		messageIndexOptions: function () {
-			return Object.keys(this.phase.messages)
-		},
-		showOptions: function () {
-			return this.phase.response_type === 'SELECT_FROM_SHORT_LIST'
-		}
-	},
-	methods: {
-		updateValueWithChanges: function (changes) {
+	emits: ['input'],
+	setup: function(props, context) {
+		var messageIndexOptions = Vue.computed(function() {
+			return Object.keys(props.phase.messages);
+		});
+		var showOptions = Vue.computed(function() {
+			return props.phase.response_type === 'SELECT_FROM_SHORT_LIST';
+		});
+
+		var updateValueWithChanges = function(changes) {
 			var result = Object.assign(
 				{},
-				this.phase,
+				props.phase,
 				changes
 			)
 			Object.keys(changes).forEach(function (propertyName) {
@@ -32,40 +32,41 @@ vueComponents['editor-dialog-phase'] = {
 					delete result[propertyName]
 				}
 			})
-			this.$emit('input', result);
-		},
-		updateProperty: function (propertyName, value) {
-			this.updateValueWithChanges({
+			context.emit('input', result);
+		};
+		var updateProperty = function(propertyName, value) {
+			updateValueWithChanges({
 				[propertyName]: value
 			})
-		},
-		updateMessage: function (index, message) {
-			var messages = (this.phase.messages || []).slice();
+		};
+		var updateMessage = function(index, message) {
+			var messages = (props.phase.messages || []).slice();
 			messages[index] = message;
-			this.updateProperty(
+			updateProperty(
 				'messages',
 				messages
 			);
-		},
-		addMessage: function () {
-			var messages = (this.phase.messages || []).slice();
+		};
+		var addMessage = function() {
+			var messages = (props.phase.messages || []).slice();
 			messages.push(this.newMessage);
-			this.updateProperty(
+			// TODO newMessage was never implemented
+			updateProperty(
 				'messages',
 				messages
 			);
-		},
-		deleteMessage: function (index) {
-			var messages = (this.phase.messages || []).slice();
+		};
+		var deleteMessage = function(index) {
+			var messages = (props.phase.messages || []).slice();
 			messages.splice(index, 1);
-			this.updateProperty(
+			updateProperty(
 				'messages',
 				messages
 			);
-		},
-		changeOptionsPresence: function (on) {
+		};
+		var changeOptionsPresence = function(on) {
 			var changes = {}
-			if (on && !this.phase.options) {
+			if (on && !props.phase.options) {
 				changes.options = [
 					{
 						"label": "Choice One",
@@ -80,8 +81,21 @@ vueComponents['editor-dialog-phase'] = {
 			changes.response_type = on
 				? 'SELECT_FROM_SHORT_LIST'
 				: null
-			this.updateValueWithChanges(changes)
-		}
+			updateValueWithChanges(changes);
+		};
+
+		return {
+			// computeds:
+			messageIndexOptions,
+			showOptions,
+			// methods:
+			updateValueWithChanges,
+			updateProperty,
+			updateMessage,
+			addMessage,
+			deleteMessage,
+			changeOptionsPresence,
+		};
 	},
 	template: /*html*/`
 <div
