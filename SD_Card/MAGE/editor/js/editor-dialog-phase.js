@@ -1,4 +1,4 @@
-vueApp.component('editor-dialog-phase', {
+vueComponents['editor-dialog-phase'] = {
 	name: 'editor-dialog-phase',
 	alignmentOptions: Object.keys(dialogAlignmentEnum),
 	props: {
@@ -232,4 +232,4 @@ vueApp.component('editor-dialog-phase', {
 		></editor-options>
 	</div>
 </div>
-`});
+`};

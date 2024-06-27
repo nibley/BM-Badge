@@ -138,10 +138,7 @@ window.vueApp = Vue.createApp({
 	],*/
 });
 
-vueApp.component(
-	'inputty',
-	{
-		name: 'inputty',
-		template: '#inputty'
-	}
-);
+vueComponents['inputty'] = {
+	name: 'inputty',
+	template: '#inputty'
+};

@@ -1,4 +1,4 @@
-vueApp.component('editor-dialog', {
+vueComponents['editor-dialog'] = {
 	name: 'editor-dialog',
 	props: {
 		dialogName: {
@@ -122,4 +122,4 @@ vueApp.component('editor-dialog', {
 		</div>
 	</div>
 </div>
-`});
+`};

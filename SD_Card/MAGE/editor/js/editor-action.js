@@ -73,7 +73,7 @@ var actionInputMixin = {
 	},
 }
 
-vueApp.component('field-text', {
+vueComponents['field-text'] = {
 	name: 'field-text',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -94,9 +94,9 @@ vueApp.component('field-text', {
 	:aria-label="property"
 	@input="$emit('input', $event.target.value)"
 />
-`});
+`};
 
-vueApp.component('field-number', {
+vueComponents['field-number'] = {
 	name: 'field-number',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -106,9 +106,9 @@ vueApp.component('field-number', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-text>
-`});
+`};
 
-vueApp.component('field-select', {
+vueComponents['field-select'] = {
 	name: 'field-select',
 	props: {
 		options: {
@@ -132,9 +132,9 @@ vueApp.component('field-select', {
 		v-for="option in options"
 	>{{option}}</option>
 </select>
-`});
+`};
 
-vueApp.component('field-bool', {
+vueComponents['field-bool'] = {
 	name: 'field-bool',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -145,9 +145,9 @@ vueApp.component('field-bool', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-operations', {
+vueComponents['action-input-operations'] = {
 	name: 'action-input-operations',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -158,9 +158,9 @@ vueApp.component('action-input-operations', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-comparisons', {
+vueComponents['action-input-comparisons'] = {
 	name: 'action-input-comparisons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -171,9 +171,9 @@ vueApp.component('action-input-comparisons', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-buttons', {
+vueComponents['action-input-buttons'] = {
 	name: 'action-input-buttons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -184,9 +184,9 @@ vueApp.component('action-input-buttons', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-directions', {
+vueComponents['action-input-directions'] = {
 	name: 'action-input-directions',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -197,9 +197,9 @@ vueApp.component('action-input-directions', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-slots', {
+vueComponents['action-input-slots'] = {
 	name: 'action-input-slots',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -210,9 +210,9 @@ vueApp.component('action-input-slots', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-scripts', {
+vueComponents['action-input-scripts'] = {
 	name: 'action-input-scripts',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -225,9 +225,9 @@ vueApp.component('action-input-scripts', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-dialogs', {
+vueComponents['action-input-dialogs'] = {
 	name: 'action-input-dialogs',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -240,9 +240,9 @@ vueApp.component('action-input-dialogs', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-entity_types', {
+vueComponents['action-input-entity_types'] = {
 	name: 'action-input-entity_types',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -255,9 +255,9 @@ vueApp.component('action-input-entity_types', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-entities', {
+vueComponents['action-input-entities'] = {
 	name: 'action-input-entities',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -270,9 +270,9 @@ vueApp.component('action-input-entities', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-geometry', {
+vueComponents['action-input-geometry'] = {
 	name: 'action-input-geometry',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -285,9 +285,9 @@ vueApp.component('action-input-geometry', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-maps', {
+vueComponents['action-input-maps'] = {
 	name: 'action-input-maps',
 /*	TODO mixins
 	mixins: [actionInputMixin],
@@ -300,9 +300,9 @@ vueApp.component('action-input-maps', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
-vueApp.component('action-input-action-type', {
+vueComponents['action-input-action-type'] = {
 	name: 'action-input-action-type',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
@@ -317,7 +317,7 @@ vueApp.component('action-input-action-type', {
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-select>
-`});
+`};
 
 var propertyEditorComponentMap = {
 	duration: 'field-number',
@@ -356,116 +356,114 @@ var propertyEditorComponentMap = {
 	button_id: 'action-input-buttons',
 };
 
-vueApp.component(
-	'editor-action',
-	{
-		name: 'editor-action',
-		/*
-		TODO mixins
-		mixins: [
-			{
-				computed: window.Vuex.mapGetters([
-					'dialogOptions',
-					'entityTypesOptions',
-					'entityNamesOptions',
-					'geometryOptions',
-					'mapsOptions',
-					'scriptsOptions',
-				])
+vueComponents['editor-action'] = {
+	name: 'editor-action',
+	/*
+	TODO mixins
+	mixins: [
+		{
+			computed: window.Vuex.mapGetters([
+				'dialogOptions',
+				'entityTypesOptions',
+				'entityNamesOptions',
+				'geometryOptions',
+				'mapsOptions',
+				'scriptsOptions',
+			])
+		}
+	],*/
+	propertyEditorComponentMap,
+	props: {
+		script: {
+			type: Array,
+			required: true
+		},
+		action: {
+			type: Object,
+			required: true
+		},
+		index: {
+			type: Number,
+			required: true
+		},
+		currentData: {
+			type: Object,
+			required: true,
+		},
+	},
+	data: function () {
+		return {
+			collapsed: false,
+		}
+	},
+	computed: {
+		actionName: function () {
+			return this.action.action
+		},
+		requiredProperties: function () {
+			return actionFieldsMap[this.actionName];
+		},
+		requiredPropertyNames: function () {
+			return this.requiredProperties
+				.map(function (property) {
+					return property.propertyName;
+				});
+		},
+		foundPropertyNames: function () {
+			var foundProperties = Object.keys(this.action)
+				.filter(function (key) {
+					return key !== 'action';
+				});
+			return foundProperties;
+		},
+	},
+	methods: {
+		collapseAction: function () {
+			this.collapsed = !this.collapsed;
+		},
+		validInput: function (property, value) {
+			var result = true;
+			var actionCategory = propertyEditorComponentMap[property];
+			var actionOptionsMap = {
+				'action-input-comparisons': comparisons,
+				'action-input-operations': operations,
+				'action-input-buttons': buttons,
+				'action-input-directions': directions,
+				'action-input-slots': slots,
+				'field-bool': [true, false],
+				'action-input-scripts': this.scriptsOptions,
+				'action-input-dialogs': this.dialogOptions,
+				'action-input-entity_types': this.entityTypesOptions,
+				'action-input-entities': this.entityNamesOptions,
+				'action-input-geometry': this.geometryOptions,
+				'action-input-maps': this.mapsOptions,
 			}
-		],*/
-		propertyEditorComponentMap,
-		props: {
-			script: {
-				type: Array,
-				required: true
-			},
-			action: {
-				type: Object,
-				required: true
-			},
-			index: {
-				type: Number,
-				required: true
-			},
-			currentData: {
-				type: Object,
-				required: true,
-			},
-		},
-		data: function () {
-			return {
-				collapsed: false,
+			if (Object.keys(actionOptionsMap).includes(actionCategory)) {
+				var options = actionOptionsMap[actionCategory];
+				if (!options || !options.includes) {
+					throw new Error('Missing ' + actionCategory)
+				}
+				result = options.includes(value);
 			}
+			return result;
 		},
-		computed: {
-			actionName: function () {
-				return this.action.action
-			},
-			requiredProperties: function () {
-				return actionFieldsMap[this.actionName];
-			},
-			requiredPropertyNames: function () {
-				return this.requiredProperties
-					.map(function (property) {
-						return property.propertyName;
-					});
-			},
-			foundPropertyNames: function () {
-				var foundProperties = Object.keys(this.action)
-					.filter(function (key) {
-						return key !== 'action';
-					});
-				return foundProperties;
-			},
-		},
-		methods: {
-			collapseAction: function () {
-				this.collapsed = !this.collapsed;
-			},
-			validInput: function (property, value) {
-				var result = true;
-				var actionCategory = propertyEditorComponentMap[property];
-				var actionOptionsMap = {
-					'action-input-comparisons': comparisons,
-					'action-input-operations': operations,
-					'action-input-buttons': buttons,
-					'action-input-directions': directions,
-					'action-input-slots': slots,
-					'field-bool': [true, false],
-					'action-input-scripts': this.scriptsOptions,
-					'action-input-dialogs': this.dialogOptions,
-					'action-input-entity_types': this.entityTypesOptions,
-					'action-input-entities': this.entityNamesOptions,
-					'action-input-geometry': this.geometryOptions,
-					'action-input-maps': this.mapsOptions,
+		handleInput: function (property, value) {
+			var sanitizer = (
+				propertySanitizerMap[property]
+				|| sanitizeAsString // so you can edit extra field like 'doc'
+			);
+			var sanitisedValue = sanitizer(value);
+			var newAction = Object.assign(
+				{},
+				this.action,
+				{
+					[property]: sanitisedValue
 				}
-				if (Object.keys(actionOptionsMap).includes(actionCategory)) {
-					var options = actionOptionsMap[actionCategory];
-					if (!options || !options.includes) {
-						throw new Error('Missing ' + actionCategory)
-					}
-					result = options.includes(value);
-				}
-				return result;
-			},
-			handleInput: function (property, value) {
-				var sanitizer = (
-					propertySanitizerMap[property]
-					|| sanitizeAsString // so you can edit extra field like 'doc'
-				);
-				var sanitisedValue = sanitizer(value);
-				var newAction = Object.assign(
-					{},
-					this.action,
-					{
-						[property]: sanitisedValue
-					}
-				)
-				this.$emit('input', newAction);
-			},
+			)
+			this.$emit('input', newAction);
 		},
-		template: /*html*/`
+	},
+	template: /*html*/`
 <div
 	class="editor-action mb-3 mt-1 card border-secondary"
 >
@@ -533,4 +531,4 @@ vueApp.component(
 		</div>
 	</div>
 </div>
-`});
+`};

@@ -20,142 +20,140 @@ var extractNames = function (arrayOfObjects) {
 	return result;
 };
 
-vueApp.component(
-	'editor-scripts',
-	{
-		name: 'editor-scripts',
-		/*
-		TODO mixins
-		mixins: [
-			makeComputedStoreGetterSettersMixin([
-				'scenarioData',
-				'fileNameMap',
-				'currentData',
-				'initState',
+vueComponents['editor-scripts'] = {
+	name: 'editor-scripts',
+	/*
+	TODO mixins
+	mixins: [
+		makeComputedStoreGetterSettersMixin([
+			'scenarioData',
+			'fileNameMap',
+			'currentData',
+			'initState',
+		]),
+		{
+			computed: window.Vuex.mapGetters([
+				'scriptsOptions',
 			]),
-			{
-				computed: window.Vuex.mapGetters([
-					'scriptsOptions',
-				]),
-			},
-			makeFileChangeTrackerMixinByResourceType('scripts'),
-		],*/
-		data: function () {
-			return {
-				currentScriptFileName: '',
-				newScriptFileName: null,
-				newScriptName: null
+		},
+		makeFileChangeTrackerMixinByResourceType('scripts'),
+	],*/
+	data: function () {
+		return {
+			currentScriptFileName: '',
+			newScriptFileName: null,
+			newScriptName: null
+		}
+	},
+	computed: {
+		isNewScriptNameUnique: function () {
+			var existingNames = this.scriptsOptions;
+			return !existingNames.includes(this.newScriptName);
+		},
+		/*
+		natLangScript: function () {
+			var currFile = this.currentScriptFileName;
+			var scriptNames = this.currentData.scriptsFileItemMap[currFile];
+			var scripts = this.currentData.scripts;
+			var result = {};
+			if (currFile) {
+				scriptNames.forEach(function (scriptName) {
+					result[scriptName] = scripts[scriptName];
+				})
+				var restored = makeNatLangScripts(result);
+				return restored;
+			} else {
+				return '';
 			}
 		},
-		computed: {
-			isNewScriptNameUnique: function () {
-				var existingNames = this.scriptsOptions;
-				return !existingNames.includes(this.newScriptName);
-			},
+		*/
+	},
+	methods: {
+		updateScript: function (scriptName,changes) {
 			/*
-			natLangScript: function () {
-				var currFile = this.currentScriptFileName;
-				var scriptNames = this.currentData.scriptsFileItemMap[currFile];
-				var scripts = this.currentData.scripts;
-				var result = {};
-				if (currFile) {
-					scriptNames.forEach(function (scriptName) {
-						result[scriptName] = scripts[scriptName];
-					})
-					var restored = makeNatLangScripts(result);
-					return restored;
-				} else {
-					return '';
-				}
-			},
+			TODO store
+			this.$store.commit('UPDATE_SCRIPT_BY_NAME', {
+				scriptName: scriptName,
+				script: changes
+			})
 			*/
 		},
-		methods: {
-			updateScript: function (scriptName,changes) {
-				/*
-				TODO store
-				this.$store.commit('UPDATE_SCRIPT_BY_NAME', {
-					scriptName: scriptName,
-					script: changes
-				})
-				*/
-			},
-			updateScriptName: function (oldName, newName, index) {
-				// updates global script map
-				var scriptValue = this.currentData.scripts[oldName];
-				var newScriptsMap = Object.assign(
-					{
-						[newName]: scriptValue,
-					},
-					this.currentData.scripts,
-				);
-				delete newScriptsMap[oldName];
+		updateScriptName: function (oldName, newName, index) {
+			// updates global script map
+			var scriptValue = this.currentData.scripts[oldName];
+			var newScriptsMap = Object.assign(
+				{
+					[newName]: scriptValue,
+				},
+				this.currentData.scripts,
+			);
+			delete newScriptsMap[oldName];
 
-				// updates script name in file script list
-				var fileName = this.currentScriptFileName;
-				var newScriptList = this.currentData.scriptsFileItemMap[fileName].slice();
-				newScriptList[index] = newName;
+			// updates script name in file script list
+			var fileName = this.currentScriptFileName;
+			var newScriptList = this.currentData.scriptsFileItemMap[fileName].slice();
+			newScriptList[index] = newName;
 
-				this.currentData.scripts = newScriptsMap;
-				this.updateScriptsFileItemMap(newScriptList);
-			},
-			deleteScript: function (scriptName) {
-				var fileName = this.currentScriptFileName;
-				var newScriptList = this.currentData.scriptsFileItemMap[fileName]
-					.filter(function (name) {
-						return name !== scriptName
-					});
-
-				var newScriptsMap = Object.assign(
-					{},
-					this.currentData.scripts,
-				);
-				delete newScriptsMap[scriptName];
-
-				this.currentData.scripts = newScriptsMap;
-				this.updateScriptsFileItemMap(newScriptList);
-			},
-			updateScriptsFileItemMap: function (scripts) {
-				var fileName = this.currentScriptFileName;
-				var newScriptsFileItemMap = {}
-				Object.assign(
-					newScriptsFileItemMap,
-					this.currentData.scriptsFileItemMap
-				);
-				newScriptsFileItemMap[fileName] = scripts;
-				this.currentData.scriptsFileItemMap = newScriptsFileItemMap
-			},
-			addNewScriptFile () {
-				var fileName = this.newScriptFileName;
-				var allFiles = this.currentData.scriptsFileItemMap;
-				this.currentData.scriptsFileItemMap = Object.assign(
-					{},
-					allFiles,
-					{
-						[fileName]: []
-					}
-				);
-				this.currentScriptFileName = fileName;
-				this.newScriptFileName = null;
-			},
-			addNewScript () {
-				var scriptName = this.newScriptName;
-				var fileName = this.currentScriptFileName;
-				var allScripts = this.currentData.scripts;
-				this.currentData.scripts = Object.assign(
-					{},
-					allScripts,
-					{
-						[scriptName]: []
-					}
-				);
-				this.currentData.scriptsFileItemMap[fileName].push(
-					scriptName
-				);
-				this.newScriptName = null;
-			},
+			this.currentData.scripts = newScriptsMap;
+			this.updateScriptsFileItemMap(newScriptList);
 		},
-		template: /*html*/`
+		deleteScript: function (scriptName) {
+			var fileName = this.currentScriptFileName;
+			var newScriptList = this.currentData.scriptsFileItemMap[fileName]
+				.filter(function (name) {
+					return name !== scriptName
+				});
+
+			var newScriptsMap = Object.assign(
+				{},
+				this.currentData.scripts,
+			);
+			delete newScriptsMap[scriptName];
+
+			this.currentData.scripts = newScriptsMap;
+			this.updateScriptsFileItemMap(newScriptList);
+		},
+		updateScriptsFileItemMap: function (scripts) {
+			var fileName = this.currentScriptFileName;
+			var newScriptsFileItemMap = {}
+			Object.assign(
+				newScriptsFileItemMap,
+				this.currentData.scriptsFileItemMap
+			);
+			newScriptsFileItemMap[fileName] = scripts;
+			this.currentData.scriptsFileItemMap = newScriptsFileItemMap
+		},
+		addNewScriptFile () {
+			var fileName = this.newScriptFileName;
+			var allFiles = this.currentData.scriptsFileItemMap;
+			this.currentData.scriptsFileItemMap = Object.assign(
+				{},
+				allFiles,
+				{
+					[fileName]: []
+				}
+			);
+			this.currentScriptFileName = fileName;
+			this.newScriptFileName = null;
+		},
+		addNewScript () {
+			var scriptName = this.newScriptName;
+			var fileName = this.currentScriptFileName;
+			var allScripts = this.currentData.scripts;
+			this.currentData.scripts = Object.assign(
+				{},
+				allScripts,
+				{
+					[scriptName]: []
+				}
+			);
+			this.currentData.scriptsFileItemMap[fileName].push(
+				scriptName
+			);
+			this.newScriptName = null;
+		},
+	},
+	template: /*html*/`
 <div
 	class="
 		editor-scripts
@@ -309,4 +307,4 @@ vueApp.component(
 		</div>
 	</div>
 </div>
-`});
+`};

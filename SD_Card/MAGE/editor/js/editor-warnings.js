@@ -44,7 +44,7 @@ how will look work for multiple entities of the same or similar names (eg bread,
 - detect many2one?
 */
 
-vueApp.component('editor-warning', {
+vueComponents['editor-warning'] = {
 	name: 'editor-warning',
 	props: {
 		entity: {
@@ -181,10 +181,9 @@ vueApp.component('editor-warning', {
 
 	</div>
 </div>
-`});
+`};
 
-
-vueApp.component('editor-warnings', {
+vueComponents['editor-warnings'] = {
 	name: 'editor-warnings',
 	props: {
 		scenarioData: {
@@ -254,4 +253,4 @@ vueApp.component('editor-warnings', {
 		</div>
 	</div>
 </div>
-`});
+`};

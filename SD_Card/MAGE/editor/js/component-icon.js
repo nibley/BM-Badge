@@ -128,37 +128,35 @@ var iconData = {
 	video:'<path d="M.5 0c-.28 0-.5.23-.5.5v4c0 .28.23.5.5.5h5c.28 0 .5-.22.5-.5v-1.5l1 1h1v-3h-1l-1 1v-1.5c0-.28-.22-.5-.5-.5h-5z" transform="translate(0 1)"/>',
 }
 
-vueApp.component(
-	'component-icon',
-	{
-		name: 'component-icon',
-		props: {
-			color: {
-				type: String,
-				required: false
-			},
-			size: {
-				type: Number,
-				required: true
-			},
-			subject: {
-				type: String,
-				required: true
-			}
+vueComponents['component-icon'] = {
+	name: 'component-icon',
+	props: {
+		color: {
+			type: String,
+			required: false
 		},
-		computed: {
-			colorHex: function () {
-				// TODO: for real
-				return '#ffffff'; // white
-			},
-			whichIcon: function () {
-				return iconMap[this.subject] || 'brush';
-			},
-			iconData: function () {
-				return iconData[this.whichIcon];
-			}
+		size: {
+			type: Number,
+			required: true
 		},
-		template: /*html*/`
+		subject: {
+			type: String,
+			required: true
+		}
+	},
+	computed: {
+		colorHex: function () {
+			// TODO: for real
+			return '#ffffff'; // white
+		},
+		whichIcon: function () {
+			return iconMap[this.subject] || 'brush';
+		},
+		iconData: function () {
+			return iconData[this.whichIcon];
+		}
+	},
+	template: /*html*/`
 <span
 	class="p-2"
 >
@@ -172,5 +170,4 @@ vueApp.component(
 		></g>
 	</svg>
 </span>
-`}
-);
+`};

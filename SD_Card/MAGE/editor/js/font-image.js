@@ -7,7 +7,8 @@ var getCharBGCoords = function (charCode) {
 	var y = Math.floor(index / imageCharsPerRow) * imageCharHeight;
 	return -x + 'px ' + -y + 'px';
 };
-vueApp.component('font-image', {
+
+vueComponents['font-image'] = {
 	name: 'font-image',
 	props: {
 		x: {
@@ -70,5 +71,4 @@ vueApp.component('font-image', {
 		></div>
 	</div>
 </div>
-	`
-})
+`};
