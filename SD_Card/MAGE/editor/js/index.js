@@ -19,60 +19,59 @@ window.vueApp = Vue.createApp({
 		Vue.provide('warningsGeneratedScriptNames', warningsGeneratedScriptNames);
 
 		var closeError = function () {
-			uniqueEncodeAttempt = Math.random();
-			error = false;
+			uniqueEncodeAttempt.value = Math.random();
+			error.value = false;
 		};
 
 		var closeSuccess = function () {
-			uniqueEncodeAttempt = Math.random();
-			downloadData = null;
+			uniqueEncodeAttempt.value = Math.random();
+			downloadData.value = null;
 		};
 
 		var prepareDownload = function (data, name) {
 			var blob = new Blob(data, { type: 'octet/stream' });
 			var url = window.URL.createObjectURL(blob);
-			if (downloadData) {
-				window.URL.revokeObjectURL(downloadData.url);
+			if (downloadData.value) {
+				window.URL.revokeObjectURL(downloadData.value.url);
 			}
-			downloadData = {
+			downloadData.value = {
 				href: url,
 				target: '_blank',
 				download: name
-			}
+			};
 		};
 
 		var handleChange = function (event) {
-			var fileNameMap = {};
+			var newFileNameMap = {};
 			closeError();
 
 			var handleError = function(newError) {
 				closeSuccess();
 				console.error(newError);
-				error = newError.message;
-				isLoading = false;
+				error.value = newError.message;
+				isLoading.value = false;
 			};
 
 			try {
 				var filesArray = Array.prototype.slice.call(event.target.files);
-				isLoading = true;
+				isLoading.value = true;
 
 				filesArray.forEach(function (file) {
-					if (fileNameMap[file.name] === undefined) {
-						fileNameMap[file.name] = file;
+					if (newFileNameMap[file.name] === undefined) {
+						newFileNameMap[file.name] = file;
 					} else {
 						throw new Error(`Multiple files with name '${file.name}' present in scenario source!`);
 					}
 				});
 
-				var scenarioFile = fileNameMap['scenario.json'];
+				var scenarioFile = newFileNameMap['scenario.json'];
 				if (!scenarioFile) {
 					throw new Error('No `scenario.json` file detected in folder, nowhere to start!');
 				} else {
 					getFileJson(scenarioFile)
-						.then(handleScenarioData(fileNameMap))
+						.then(handleScenarioData(newFileNameMap))
 						.then(function (newScenarioData) {
-							fileNameMap = fileNameMap;
-							
+							fileNameMap.value = newFileNameMap;
 							scenarioData.value = newScenarioData;
 
 							/*
@@ -87,7 +86,6 @@ window.vueApp = Vue.createApp({
 							};
 							initState.value = jsonClone(currentData);
 
-							// return scenarioData;
 							return scenarioData.value;
 						})
 						.then(generateIndexAndComposite)
@@ -99,8 +97,8 @@ window.vueApp = Vue.createApp({
 							throw error;
 						})
 						.then(function () {
-							isLoading = false;
-							uniqueEncodeAttempt = Math.random();
+							isLoading.value = false;
+							uniqueEncodeAttempt.value = Math.random();
 						});
 				}
 			} catch (error) {
