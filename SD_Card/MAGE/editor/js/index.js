@@ -2,17 +2,16 @@ window.vueComponents = {};
 
 window.vueApp = Vue.createApp({
 	setup: function() {
-		uniqueEncodeAttempt = Vue.ref(Math.random());
-		isLoading = Vue.ref(false);
-		error = Vue.ref(null);
-		downloadData = Vue.ref(null);
+		var uniqueEncodeAttempt = Vue.ref(Math.random());
+		var isLoading = Vue.ref(false);
+		var error = Vue.ref(null);
+		var downloadData = Vue.ref(null);
 
 		var fileNameMap = Vue.ref(undefined);
 		var scenarioData = Vue.ref(undefined);
 		var currentData = Vue.ref(undefined);
 		var initState = Vue.ref(undefined);
 		var warningsGeneratedScriptNames = Vue.ref(undefined);
-
 		Vue.provide('fileNameMap', fileNameMap);
 		Vue.provide('scenarioData', scenarioData);
 		Vue.provide('currentData', currentData);
@@ -74,8 +73,6 @@ window.vueApp = Vue.createApp({
 						.then(function (newScenarioData) {
 							fileNameMap = fileNameMap;
 							
-							// vm.scenarioData = scenarioData;
-							console.log('early scenDat', scenarioData);
 							scenarioData.value = newScenarioData;
 
 							/*
