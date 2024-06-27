@@ -149,21 +149,20 @@ var jsonClone = function (input) {
 	return JSON.parse(JSON.stringify(input));
 };
 
+/*
+TODO mixins
 var makeComputedStoreGetterSetter = function (propertyName) {
 	return {
 		get: function () {
-			/*
-			TODO store
-			return this.$store.state[propertyName]
-			*/
+			// TODO store
+			// return this.$store.state[propertyName]
 		},
 		set: function (value) {
-			/* TODO store
-			return this.$store.commit('GENERIC_MUTATOR', {
-				propertyName: propertyName,
-				value: value,
-			});
-			*/
+			// TODO store
+			// return this.$store.commit('GENERIC_MUTATOR', {
+				//	propertyName: propertyName,
+				//	value: value,
+			// });
 		}
 	}
 };
@@ -239,3 +238,4 @@ var makeFileChangeTrackerMixinByResourceType = function (resourceName) {
 		}
 	}
 }
+*/
