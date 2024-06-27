@@ -1,5 +1,7 @@
 vueComponents['editor-dialogs'] = {
 	name: 'editor-dialogs',
+	/*
+	TODO mixins
 	mixins: [
 		makeComputedStoreGetterSettersMixin([
 			'scenarioData',
@@ -9,24 +11,45 @@ vueComponents['editor-dialogs'] = {
 		]),
 		makeFileChangeTrackerMixinByResourceType('dialogs'),
 	],
-	data: function () {
-		return {
-			currentDialogFileName: '',
-			currentDialog: '',
-		}
-	},
-	computed: {
-		currentFileDialogs: function () {
-			return this.currentData.dialogsFileItemMap[this.currentDialogFileName]
-		},
-	},
-	methods: {
-		handleInput: function (dialogName, value) {
+	*/
+	setup: function () {
+		var scenarioData = Vue.inject('scenarioData');
+		var fileNameMap = Vue.inject('fileNameMap');
+		var currentData = Vue.inject('currentData');
+		var initState = Vue.inject('initState');
+
+		var currentDialogFileName = Vue.ref('');
+		var currentDialog = Vue.ref('');
+
+		var currentFileDialogs = Vue.computed(function() {
+			return currentData.value.dialogsFileItemMap[currentDialogFileName.value];
+		});
+
+		var handleInput = function(dialogName, value) {
 			// TODO: implement
-		},
-		updateDialogsFileItemMap: function (map) {
-			this.currentData.dialogsFileItemMap = map;
-		},
+		};
+		var updateDialogsFileItemMap = function(map) {
+			currentData.value.dialogsFileItemMap = map;
+		};
+
+		// TODO dialogsNeedSave was never implemented
+		// TODO dialogs was from makeFileChangeTrackerMixinByResourceType
+
+		return {
+			// component state:
+			currentDialogFileName,
+			currentDialog,
+			// injected state:
+			scenarioData,
+			fileNameMap,
+			currentData,
+			initState,
+			// computeds:
+			currentFileDialogs,
+			// methods:
+			handleInput,
+			updateDialogsFileItemMap,
+		};
 	},
 	template: /*html*/`
 <div
@@ -72,9 +95,6 @@ vueComponents['editor-dialogs'] = {
 			:dialog-name="dialogName"
 			:index="index"
 			:file-name="currentDialogFileName"
-			:file-name-map="fileNameMap"
-			:scenario-data="scenarioData"
-			:current-data="currentData"
 			@input="handleInput(dialogName, $event)"
 			@updateDialogsFileItemMap="updateDialogsFileItemMap"
 		></editor-dialog>

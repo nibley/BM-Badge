@@ -1,74 +1,79 @@
 vueComponents['editor-dialog'] = {
 	name: 'editor-dialog',
-	props: {
-		dialogName: {
-			type: String,
-			required: true
-		},
-		fileName: {
-			type: String,
-			required: true
-		},
-		index: {
-			type: Number,
-			required: true
-		},
-		currentData: {
-			type: Object,
-			required: true
-		},
-		fileNameMap: {
-			type: Object,
-			required: true
-		},
-		scenarioData: {
-			type: Object,
-			required: true
-		},
-	},
-	data: function () {
-		return {
-			collapsed: true,
-			newActionName: null,
-		}
-	},
-	computed: {
-		dialogPhases: function () {
-			return this.currentData.dialogs[this.dialogName]
-		},
-	},
-	methods: {
-		moveDialog: function (direction) {
+	setup: function(props) {
+		var currentData = Vue.inject('currentData');
+		var fileNameMap = Vue.inject('fileNameMap');
+		var scenarioData = Vue.inject('scenarioData');
+
+		var collapsed = Vue.ref(true);
+		var newActionName = Vue.ref(null);
+
+		var dialogPhases = Vue.computed(function() {
+			return currentData.value.dialogs[props.dialogName];
+		});
+
+		var moveDialog = function (direction) {
 			/*
 			TODO store
 			this.$store.commit('MOVE_DIALOG', {
-				fileName: this.fileName,
-				index: this.index,
+				fileName: props.fileName,
+				index: props.index,
 				direction: direction
 			});
 			*/
-		},
-		collapse: function () {
-			this.collapsed = !this.collapsed;
-		},
-		updateDialogPhase: function (phaseIndex, phase) {
+		};
+		var collapse = function() {
+			collapsed.value = !(collapsed.value);
+		};
+		var updateDialogPhase = function(phaseIndex, phase) {
 			/*
 			TODO store
 			this.$store.commit('UPDATE_DIALOG_PHASE', {
-				dialogName: this.dialogName,
+				dialogName: props.dialogName,
 				phaseIndex: phaseIndex,
 				phase: phase,
-			})
+			});
 			*/
-		},
-		deleteDialogPhase: function (phaseIndex) {
+		};
+		var deleteDialogPhase = function(phaseIndex) {
 			/*
 			TODO store
 			this.$store.commit('DELETE_DIALOG_PHASE', {
-				dialogName: this.dialogName,
+				dialogName: props.dialogName,
 				phaseIndex: phaseIndex,
 			});
 			*/
+		};
+
+		return {
+			// component state:
+			collapsed,
+			newActionName,
+			// injected state:
+			currentData,
+			fileNameMap,
+			scenarioData,
+			// computeds:
+			dialogPhases,
+			// methods:
+			moveDialog,
+			collapse,
+			updateDialogPhase,
+			deleteDialogPhase,
+		};
+	},
+	props: {
+		dialogName: {
+			type: String,
+			required: true,
+		},
+		fileName: {
+			type: String,
+			required: true,
+		},
+		index: {
+			type: Number,
+			required: true,
 		},
 	},
 	template: /*html*/`
@@ -76,7 +81,7 @@ vueComponents['editor-dialog'] = {
 	class="editor-dialog card bg-secondary border-primary mb-4"
 >
 	<div class="card-header bg-primary">
-		<strong class="me-auto">{{dialogName}}</strong>
+		<strong class="me-auto">{{ dialogName }}</strong>
 		<span
 			class="position-absolute"
 			style="top:6px; right:6px;"
