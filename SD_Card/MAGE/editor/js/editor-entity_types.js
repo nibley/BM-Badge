@@ -21,52 +21,66 @@ vueComponents['entity-type-editor'] = {
 		var scenarioData = Vue.inject('scenarioData');
 		var fileNameMap = Vue.inject('fileNameMap');
 
-		entityTypes = Vue.computed(function () {
-			return scenarioData.value.entityTypes;
-		});
-		jsonOutput = Vue.computed(function () {
+		var jsonOutput = Vue.computed(function () {
 			return JSON.stringify(
-				scenarioData.entityTypes,
+				scenarioData.value.entityTypes,
 				null,
 				'\t'
 			) + '\n';
 		});
-		needsSave = Vue.computed(function () {
-			return this.initJsonState !== this.jsonOutput;
+		var initJsonState = Vue.ref(jsonOutput.value);
+
+		var currentEntityTypeId = Vue.ref('');
+		var newEntityTypeId = Vue.ref('');
+		var currentAnimationName = Vue.ref('');
+		var currentAnimationDirection = Vue.ref(-1);
+
+		var entityTypes = Vue.computed(function () {
+			return scenarioData.value.entityTypes;
 		});
-		entityTypeList = Vue.computed(function () {
+		var needsSave = Vue.computed(function () {
+			return initJsonState.value !== jsonOutput.value;
+		});
+		var entityTypeList = Vue.computed(function () {
 			return Object.values(entityTypes);
 		});
-		currentEntityType = Vue.computed(function () {
-			return entityTypes[this.currentEntityTypeId];
+		var currentEntityType = Vue.computed(function () {
+			return entityTypes[currentEntityTypeId];
 		});
-		tileset = Vue.computed(function () {
-			var tilesetFile = fileNameMap[this.currentEntityType.tileset];
+		var tileset = Vue.computed(function () {
+			var tilesetFile = fileNameMap[currentEntityType.tileset];
 			return tilesetFile
 				? tilesetFile.parsed
 				: undefined;
 		});
-		allTilesets = Vue.computed(function () {
-			return this.scenarioData.parsed.tilesets.slice().sort()
+		var allTilesets = Vue.computed(function () {
+			return scenarioData.parsed.tilesets.slice().sort()
 		});
-		currentDirection = Vue.computed(function () {
-			var currentAnimation = this.currentEntityType.animations[this.currentAnimationName];
+		var currentDirection = Vue.computed(function () {
+			var currentAnimation = currentEntityType.animations[currentAnimationName];
 			return (
 				currentAnimation
-				&& (this.currentAnimationDirection !== -1)
+				&& (currentAnimationDirection !== -1)
 			)
-				? currentAnimation[this.currentAnimationDirection]
+				? currentAnimation[currentAnimationDirection]
 				: undefined;
 		});
-		currentTileId = Vue.computed(function () {
-			return this.currentDirection
-				? this.currentDirection.tileid
+		var currentTileId = Vue.computed(function () {
+			return currentDirection
+				? currentDirection.tileid
 				: undefined;
 		});
 
 		return {
+			// component state:
+			currentEntityTypeId,
+			newEntityTypeId,
+			currentAnimationName,
+			currentAnimationDirection,
+			initJsonState,
 			// injected state:
 			scenarioData,
+			fileNameMap,
 			// computeds:
 			entityTypes,
 			jsonOutput,
@@ -85,26 +99,14 @@ vueComponents['entity-type-editor'] = {
 		'↓',
 		'←',
 	],
-	data: function () {
-		return {
-			currentEntityTypeId: '',
-			newEntityTypeId: '',
-			currentAnimationName: '',
-			currentAnimationDirection: -1,
-			initJsonState: '',
-		}
-	},
-	created: function () {
-		this.initJsonState = this.jsonOutput;
-	},
 	methods: {
 		addEntityType: function () {
-			var name = this.newEntityTypeId
+			var name = newEntityTypeId
 				.trim()
 				.toLocaleLowerCase()
 				.replace(/[^a-z0-9]/gm, '_');
 			Vue.set(
-				this.scenarioData.entityTypes,
+				scenarioData.entityTypes,
 				name,
 				{
 					type: name,
@@ -135,34 +137,34 @@ vueComponents['entity-type-editor'] = {
 					}
 				},
 			);
-			this.currentEntityTypeId = name;
+			currentEntityTypeId = name;
 		},
 		clickDirection: function (animationName, directionIndex) {
-			this.currentAnimationName = animationName;
-			this.currentAnimationDirection = directionIndex;
+			currentAnimationName = animationName;
+			currentAnimationDirection = directionIndex;
 		},
 		clickTile: function (tileid) {
-			if(this.currentDirection) {
-				this.currentDirection.tileid = tileid;
+			if(currentDirection) {
+				currentDirection.tileid = tileid;
 			}
 		},
 		flip: function (animationName, directionIndex, propertyName) {
-			this.currentAnimationName = animationName;
-			this.currentAnimationDirection = directionIndex;
-			if(this.currentDirection) {
+			currentAnimationName = animationName;
+			currentAnimationDirection = directionIndex;
+			if(currentDirection) {
 				Vue.set(
-					this.currentDirection,
+					currentDirection,
 					propertyName,
-					!this.currentDirection[propertyName]
+					!currentDirection[propertyName]
 				);
 			}
 		},
 		addAnimation() {
 			var propertyName = possibleNameList[
-				Object.keys(this.currentEntityType.animations).length
+				Object.keys(currentEntityType.animations).length
 			];
 			Vue.set(
-				this.currentEntityType.animations,
+				currentEntityType.animations,
 				propertyName,
 				[
 					{
@@ -185,7 +187,7 @@ vueComponents['entity-type-editor'] = {
 			)
 		},
 		deleteAnimation: function (animationName) {
-			var animations = this.currentEntityType.animations;
+			var animations = currentEntityType.animations;
 			var newValues = {};
 			var currentCount = 0;
 			Object.entries(animations).forEach(function (pair) {
@@ -196,7 +198,7 @@ vueComponents['entity-type-editor'] = {
 					currentCount += 1;
 				}
 			});
-			this.currentEntityType.animations = newValues;
+			currentEntityType.animations = newValues;
 		},
 	}
 };
