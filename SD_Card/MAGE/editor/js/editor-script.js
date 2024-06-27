@@ -9,6 +9,26 @@ vueComponents['editor-script'] = {
 			]),
 		}
 	],*/
+	props: {
+		scriptName: {
+			type: String,
+			required: true
+		},
+		fileName: {
+			type: String,
+			required: true
+		},
+		index: {
+			type: Number,
+			required: true
+		},
+	},
+	emits: [
+		'updateScriptsFileItemMap',
+		'updateScriptName',
+		'input',
+		'deleteScript',
+	],
 	setup: function(props, context) {
 		var fileNameMap = Vue.inject('fileNameMap');
 		var scenarioData = Vue.inject('scenarioData');
@@ -104,26 +124,6 @@ vueComponents['editor-script'] = {
 			addAction,
 		};
 	},
-	props: {
-		scriptName: {
-			type: String,
-			required: true
-		},
-		fileName: {
-			type: String,
-			required: true
-		},
-		index: {
-			type: Number,
-			required: true
-		},
-	},
-	emits: [
-		'updateScriptsFileItemMap',
-		'updateScriptName',
-		'input',
-		'deleteScript',
-	],
 	template: /*html*/`
 <div
 	class="editor-script card border-primary mb-4"

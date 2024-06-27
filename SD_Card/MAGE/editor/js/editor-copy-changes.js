@@ -1,5 +1,11 @@
 vueComponents['copy-button'] = {
 	name: 'copy-button',
+	props: {
+		text: {
+			required: true,
+			type: String,
+		},
+	},
 	setup: function () {
 		var copyState = function () {
 			this.$refs.copyStateTextArea.select();
@@ -10,12 +16,6 @@ vueComponents['copy-button'] = {
 			// methods:
 			copyState,
 		};
-	},
-	props: {
-		text: {
-			required: true,
-			type: String,
-		},
 	},
 	template: /*html*/`
 <span class="copy-button">

@@ -1,5 +1,19 @@
 vueComponents['editor-dialog'] = {
 	name: 'editor-dialog',
+	props: {
+		dialogName: {
+			type: String,
+			required: true,
+		},
+		fileName: {
+			type: String,
+			required: true,
+		},
+		index: {
+			type: Number,
+			required: true,
+		},
+	},
 	setup: function(props) {
 		var currentData = Vue.inject('currentData');
 		var fileNameMap = Vue.inject('fileNameMap');
@@ -61,20 +75,6 @@ vueComponents['editor-dialog'] = {
 			updateDialogPhase,
 			deleteDialogPhase,
 		};
-	},
-	props: {
-		dialogName: {
-			type: String,
-			required: true,
-		},
-		fileName: {
-			type: String,
-			required: true,
-		},
-		index: {
-			type: Number,
-			required: true,
-		},
 	},
 	template: /*html*/`
 <div
