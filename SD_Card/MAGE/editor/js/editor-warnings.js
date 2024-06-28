@@ -52,7 +52,8 @@ vueComponents['editor-warning'] = {
 			type: Object,
 		},
 	},
-	setup: function() {
+	setup: function(props) {
+		var scriptsOptions = Vue.inject('scriptsOptions');
 		var warningsGeneratedScriptNames = Vue.inject('warningsGeneratedScriptNames');
 
 		var fixParameters = Vue.ref(props.entity.fixes ? jsonClone(props.entity.fixes.parameters) : {});
@@ -60,27 +61,27 @@ vueComponents['editor-warning'] = {
 		var scriptNameTaken = Vue.ref(false);
 
 		var reactToFixParameterChanged = function (parameterName, newParameter, oldParameter) {
-			console.group(`XXX param ${parameterName} changed from entity ${props.entity.name} from map ${props.entity.sourceFile}`);
+			// console.group(`XXX param ${parameterName} changed from entity ${props.entity.name} from map ${props.entity.sourceFile}`);
 
 			if (parameterName === 'scriptName') {
 				// of all possible keys for fixParameters, `scriptName` gets
 				// special treatment (involving $store.state.warningsGeneratedScriptNames)
 
-				console.log(`XXX trying script ${newParameter}`);
+				// console.log(`XXX trying script ${newParameter}`);
 
 				var takenByWarnings = warningsGeneratedScriptNames.value;
-				var takenByScenarioData = this.$store.getters.scriptsOptions;
-				var scriptNameTaken =
+				var takenByScenarioData = scriptsOptions.value;
+				var scriptNameCurrentlyTaken =
 					(!newParameter)
 					|| takenByScenarioData.includes(newParameter)
 					|| takenByWarnings.includes(newParameter);
 
-				if (scriptNameTaken) {
-					console.log(`XXX clashing script ${newParameter}`);
+				if (scriptNameCurrentlyTaken) {
+					// console.log(`XXX clashing script ${newParameter}`);
 
 					scriptNameTaken.value = true;
 				} else {
-					console.log(`XXX reserving script ${newParameter}`);
+					// console.log(`XXX reserving script ${newParameter}`);
 
 					scriptNameTaken.value = false;
 					/*
@@ -92,7 +93,7 @@ vueComponents['editor-warning'] = {
 				}
 
 				if (oldParameter) {
-					console.log(`XXX freeing script ${oldParameter}`);
+					// console.log(`XXX freeing script ${oldParameter}`);
 
 					/*
 					TODO store
@@ -101,26 +102,26 @@ vueComponents['editor-warning'] = {
 					});
 					*/
 				} else {
-					console.log('XXX old scriptName was null');
+					// console.log('XXX old scriptName was null');
 				}
 			}
 
 			if (! scriptNameTaken.value) { // save a bit of work if the fix text is going to be hidden
-				console.log('XXX update fixText');
+				// console.log('XXX update fixText');
 
 				fixText.value = props.entity.fixes.getFixes(fixParameters.value);
 			}
 
-			console.groupEnd();
+			// console.groupEnd();
 		};
 
 		// TODO major redesign for Vue 3. watchEffect, etc.?
 		Vue.onMounted(function() {
-			Object.keys(props.fixParameters).forEach(function(parameterName) {
+			Object.keys(fixParameters.value).forEach(function(parameterName) {
 				Vue.watch(
 					function() {
 						// use a function in case parameterName isn't ok to access with a dot
-						return props.fixParameters[parameterName];
+						return fixParameters.value[parameterName];
 					},
 					function(newParameter, oldParameter) {
 						reactToFixParameterChanged(

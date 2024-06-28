@@ -13,7 +13,7 @@ window.vueApp = Vue.createApp({
 		var scenarioData = Vue.ref(undefined);
 		var currentData = Vue.ref(undefined);
 		var initState = Vue.ref(undefined);
-		var warningsGeneratedScriptNames = Vue.ref(undefined);
+		var warningsGeneratedScriptNames = Vue.ref([]);
 		var scriptsOptions = Vue.computed(function() {
 			return Object.keys(
 				(currentData || {}).scripts || {}
