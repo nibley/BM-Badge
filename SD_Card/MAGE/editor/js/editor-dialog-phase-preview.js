@@ -103,8 +103,6 @@ vueComponents['editor-dialog-phase-preview'] = {
 			v-if="textValuesMap[key]"
 			:rect="rect"
 			:dialog-skin="phase.border_tileset"
-			:file-name-map="fileNameMap"
-			:scenario-data="scenarioData"
 		></editor-dialog-box>
 		<font-image
 			v-if="textValuesMap[key]"

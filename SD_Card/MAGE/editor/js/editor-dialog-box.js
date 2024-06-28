@@ -58,26 +58,21 @@ vueApp.component('editor-dialog-box', {
 			type: String,
 			default: 'default'
 		},
-		fileNameMap: {
-			type: Object,
-			required: true
-		},
-		scenarioData: {
-			type: Object,
-			required: true
-		},
 	},
-	computed: {
-		tileset: function () {
-			return this.scenarioData.dialogSkinsTilesetMap[this.dialogSkin];
-		},
-		subrects: function () {
+	setup: function(props) {
+		var scenarioData = Vue.inject('scenarioData');
+		var fileNameMap = Vue.inject('fileNameMap');
+
+		var tileset = Vue.computed(function() {
+			return scenarioData.value.dialogSkinsTilesetMap[props.dialogSkin];
+		});
+		var subrects = Vue.computed(function() {
 			var n = 16; // actually look this up later
 			var offset = n / 2;
-			var x = this.rect.x;
-			var y = this.rect.y;
-			var w = this.rect.w;
-			var h = this.rect.h;
+			var x = props.rect.x;
+			var y = props.rect.y;
+			var w = props.rect.w;
+			var h = props.rect.h;
 			var ty = offset + y * n;
 			var by = offset + (y + h - 1) * n;
 			var lx = offset + x * n;
@@ -106,11 +101,11 @@ vueApp.component('editor-dialog-box', {
 				// bottom right
 				{ x: rx, y: by, w: n, h: n },
 			];
-		},
-		tiles: function () {
+		});
+		var tiles = Vue.computed(function() {
 			var result = []
-			var box = this.rect;
-			var tileset = this.tileset;
+			var box = props.rect;
+			var tileset = tileset.value;
 			var tileSize = tileset.tilewidth;
 			var offset = tileSize / 2;
 			var offsetX = (box.x * tileSize) + offset;
@@ -125,12 +120,22 @@ vueApp.component('editor-dialog-box', {
 							position: 'absolute',
 							left: x + 'px',
 							top: y + 'px',
-						},
+						}
 					});
 				}
 			}
-			return result
-		},
+			return result;
+		});
+
+		return {
+			// injected state:
+			fileNameMap,
+			scenarioData,
+			// computeds:
+			tileset,
+			subrects,
+			tiles,
+		};
 	},
 	template: /*html*/`
 <div
