@@ -1,3 +1,5 @@
+// TODO find alternative to use of $options
+
 var comparisons = Object.keys(comparisonMap).slice(5);
 var operations = Object.keys(operationMap);
 var buttons = Object.keys(buttonMap);

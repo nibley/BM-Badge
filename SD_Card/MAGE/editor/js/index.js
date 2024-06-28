@@ -1,5 +1,7 @@
 window.vueComponents = {};
 
+// TODO make sure alternative to makeFileChangeTrackerMixinByResourceType is working
+
 window.vueApp = Vue.createApp({
 	setup: function() {
 		var uniqueEncodeAttempt = Vue.ref(Math.random());
