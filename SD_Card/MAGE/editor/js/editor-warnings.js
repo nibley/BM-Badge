@@ -52,44 +52,23 @@ vueComponents['editor-warning'] = {
 			type: Object,
 		},
 	},
-	data: function() {
-		return {
-			fixParameters: this.entity.fixes ? jsonClone(this.entity.fixes.parameters) : {},
-			fixText: [],
-			scriptNameTaken: false,
-		};
-	},
-	mounted: function() {
-		var vm = this;
-		Object.keys(this.fixParameters).forEach(function(parameterName) {
-			vm.$watch(
-				function() {
-					// use a function in case parameterName isn't ok to access with a dot
-					return vm.fixParameters[parameterName];
-				},
-				function(newParameter, oldParameter) {
-					vm.reactToFixParameterChanged(
-						parameterName,
-						newParameter,
-						oldParameter
-					);
-				},
-				{
-					immediate: true
-				});
-		});
-	},
-	methods: {
-		reactToFixParameterChanged: function (parameterName, newParameter, oldParameter) {
-			console.group(`XXX param ${parameterName} changed from entity ${this.entity.name} from map ${this.entity.sourceFile}`);
+	setup: function() {
+		var warningsGeneratedScriptNames = Vue.inject('warningsGeneratedScriptNames');
+
+		var fixParameters = Vue.ref(props.entity.fixes ? jsonClone(props.entity.fixes.parameters) : {});
+		var fixText = Vue.ref([]);
+		var scriptNameTaken = Vue.ref(false);
+
+		var reactToFixParameterChanged = function (parameterName, newParameter, oldParameter) {
+			console.group(`XXX param ${parameterName} changed from entity ${props.entity.name} from map ${props.entity.sourceFile}`);
 
 			if (parameterName === 'scriptName') {
-				// of all possible keys for this.fixParameters, `scriptName` gets
+				// of all possible keys for fixParameters, `scriptName` gets
 				// special treatment (involving $store.state.warningsGeneratedScriptNames)
 
 				console.log(`XXX trying script ${newParameter}`);
 
-				var takenByWarnings = this.$store.state.warningsGeneratedScriptNames;
+				var takenByWarnings = warningsGeneratedScriptNames.value;
 				var takenByScenarioData = this.$store.getters.scriptsOptions;
 				var scriptNameTaken =
 					(!newParameter)
@@ -99,11 +78,11 @@ vueComponents['editor-warning'] = {
 				if (scriptNameTaken) {
 					console.log(`XXX clashing script ${newParameter}`);
 
-					this.scriptNameTaken = true;
+					scriptNameTaken.value = true;
 				} else {
 					console.log(`XXX reserving script ${newParameter}`);
 
-					this.scriptNameTaken = false;
+					scriptNameTaken.value = false;
 					/*
 					TODO store
 					this.$store.commit('RESERVE_WARNING_SCRIPT_NAME', {
@@ -126,15 +105,47 @@ vueComponents['editor-warning'] = {
 				}
 			}
 
-			if (! this.scriptNameTaken) { // save a bit of work if the fix text is going to be hidden
+			if (! scriptNameTaken.value) { // save a bit of work if the fix text is going to be hidden
 				console.log('XXX update fixText');
 
-				this.fixText = this.entity.fixes.getFixes(this.fixParameters);
+				fixText.value = props.entity.fixes.getFixes(fixParameters.value);
 			}
 
 			console.groupEnd();
-		},
-	},	
+		};
+
+		// TODO major redesign for Vue 3. watchEffect, etc.?
+		Vue.onMounted(function() {
+			Object.keys(props.fixParameters).forEach(function(parameterName) {
+				Vue.watch(
+					function() {
+						// use a function in case parameterName isn't ok to access with a dot
+						return props.fixParameters[parameterName];
+					},
+					function(newParameter, oldParameter) {
+						reactToFixParameterChanged(
+							parameterName,
+							newParameter,
+							oldParameter
+						);
+					},
+					{
+						immediate: true
+					});
+			});
+		});
+
+		return {
+			// component state:
+			fixParameters,
+			fixText,
+			scriptNameTaken,
+			// injected state:
+			warningsGeneratedScriptNames,
+			// methods:
+			reactToFixParameterChanged,
+		};
+	},
 	template: /*html*/`
 <div class="editor-warning">
 	<div class="alert alert-primary" :class="{'mb-0': ! entity.fixes}" role="alert">{{ entity.warningMessage }}</div>
@@ -185,14 +196,10 @@ vueComponents['editor-warning'] = {
 
 vueComponents['editor-warnings'] = {
 	name: 'editor-warnings',
-	props: {
-		scenarioData: {
-			type: Object,
-			required: true
-		}
-	},
-	computed: {
-		warningsSorted: function() {
+	setup: function() {
+		var scenarioData = Vue.inject('scenarioData');
+
+		var warningsSorted = Vue.computed(function() {
 			// convert warnings data structure to its 2D array equivalent
 			// (sorted at each layer, lexically for check names and map names, and by `id` for entities)
 			// precomputing this is useful for ordered access and quicker length checks
@@ -200,7 +207,7 @@ vueComponents['editor-warnings'] = {
 				return a[0].localeCompare(b);
 			};
 			var checksSorted = [];
-			Object.entries(this.scenarioData.warnings).forEach(function ([checkName, maps]) {
+			Object.entries(scenarioData.value.warnings).forEach(function ([checkName, maps]) {
 				var mapsSorted = [];
 				Object.entries(maps).forEach(function ([mapName, entities]) {
 					entities.sort(function(a, b) {
@@ -213,7 +220,14 @@ vueComponents['editor-warnings'] = {
 			});
 			checksSorted.sort(sortByNameInIndexZero);
 			return checksSorted;
-		},
+		});
+
+		return {
+			// injected state:
+			scenarioData,
+			// computeds:
+			warningsSorted,
+		};
 	},
 	template: /*html*/`
 <div class="editor-warnings card text-white my-3">
