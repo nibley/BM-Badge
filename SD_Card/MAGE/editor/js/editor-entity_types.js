@@ -239,7 +239,7 @@ vueComponents['tiled-tile'] = {
 			var currentTile = (props.tileset.tiles || []).find(function(tile) {
 				return tile.id === tileid;
 			});
-			return currentTile.value && currentTile.value.animation;
+			return currentTile && currentTile.animation;
 		});
 		var currentTileId = Vue.computed(function() {
 			var currentAnimation = animation.value;
