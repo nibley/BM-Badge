@@ -76,38 +76,34 @@ vueComponents['entity-type-editor'] = {
 				.trim()
 				.toLocaleLowerCase()
 				.replace(/[^a-z0-9]/gm, '_');
-			Vue.set(
-				scenarioData.value.entityTypes,
-				name,
-				{
-					type: name,
-					tileset: '',
-					animations: {
-						idle: [
-							{
-								tileid: 0,
-								flip_x: false,
-								flip_y: false,
-							},
-							{
-								tileid: 0,
-								flip_x: false,
-								flip_y: false,
-							},
-							{
-								tileid: 0,
-								flip_x: false,
-								flip_y: false,
-							},
-							{
-								tileid: 0,
-								flip_x: false,
-								flip_y: false,
-							}
-						]
-					}
-				},
-			);
+			scenarioData.value.entityTypes[name] = {
+				type: name,
+				tileset: '',
+				animations: {
+					idle: [
+						{
+							tileid: 0,
+							flip_x: false,
+							flip_y: false,
+						},
+						{
+							tileid: 0,
+							flip_x: false,
+							flip_y: false,
+						},
+						{
+							tileid: 0,
+							flip_x: false,
+							flip_y: false,
+						},
+						{
+							tileid: 0,
+							flip_x: false,
+							flip_y: false,
+						}
+					]
+				}
+			};
 			currentEntityTypeId.value = name;
 		};
 		var clickDirection = function(animationName, directionIndex) {
@@ -123,39 +119,31 @@ vueComponents['entity-type-editor'] = {
 			currentAnimationName.value = animationName;
 			currentAnimationDirection.value = directionIndex;
 			if(currentDirection.value) {
-				Vue.set(
-					currentDirection.value,
-					propertyName,
-					!currentDirection.value[propertyName]
-				);
+				currentDirection.value[propertyName] = !currentDirection.value[propertyName];
 			}
 		};
 		var addAnimation = function() {
 			var propertyName = possibleNameList.value[
 				Object.keys(currentEntityType.value.animations).length
 			];
-			Vue.set(
-				currentEntityType.value.animations,
-				propertyName,
-				[
-					{
-						"tileid": 0,
-						"flip_x": false
-					},
-					{
-						"tileid": 0,
-						"flip_x": false
-					},
-					{
-						"tileid": 0,
-						"flip_x": false
-					},
-					{
-						"tileid": 0,
-						"flip_x": false
-					}
-				]
-			)
+			currentEntityType.value.animations[propertyName] = [
+				{
+					"tileid": 0,
+					"flip_x": false
+				},
+				{
+					"tileid": 0,
+					"flip_x": false
+				},
+				{
+					"tileid": 0,
+					"flip_x": false
+				},
+				{
+					"tileid": 0,
+					"flip_x": false
+				}
+			];
 		};
 		var deleteAnimation = function(animationName) {
 			var animations = currentEntityType.value.animations;

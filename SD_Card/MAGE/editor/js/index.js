@@ -1,7 +1,6 @@
 window.vueComponents = {};
 
 // TODO make sure alternative to makeFileChangeTrackerMixinByResourceType is working
-// TODO don't use Vue.set anywhere
 
 window.vueApp = Vue.createApp({
 	setup: function() {
