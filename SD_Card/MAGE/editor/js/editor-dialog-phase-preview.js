@@ -33,52 +33,62 @@ vueComponents['editor-dialog-phase-preview'] = {
 			required: true
 		},
 	},
-	computed: {
-		tileset: function () {
-			return this.scenarioData.dialogSkinsTilesetMap[
-				this.phase.border_tileset || 'default'
+	setup: function(props) {
+		var fileNameMap = Vue.inject('fileNameMap');
+		var scenarioData = Vue.inject('scenarioData');
+
+		var tileset = Vue.computed(function() {
+			return scenarioData.value.dialogSkinsTilesetMap[
+				props.phase.border_tileset || 'default'
 			];
-		},
-		alignmentData: function () {
-			var alignment = this.phase.alignment || 'BOTTOM_LEFT';
+		});
+		var alignmentData = Vue.computed(function() {
+			var alignment = props.phase.alignment || 'BOTTOM_LEFT';
 			return dialogAlignmentCoords[alignment];
-		},
-		label: function () {
-			var phase = this.phase;
+		});
+		var label = Vue.computed(function() {
+			var phase = props.phase;
 			var name = phase.name;
 			var entity = phase.entity;
 			return name || entity;
-		},
-		text: function () {
-			var phase = this.phase;
+		});
+		var text = Vue.computed(function() {
+			var phase = props.phase;
 			var messages = phase.messages;
-			var result = messages[this.messageIndex];
+			var result = messages[props.messageIndex];
 			if (
 				phase.response_type
-				&& (this.messageIndex === (messages.length - 1))
+				&& (props.messageIndex === (messages.length - 1))
 			) {
 				phase.options.forEach(function (option) {
 					result += '\n   ' + option.label;
 				});
 			}
 			return result;
-		},
-		fileNameMap: function () {
-			return this.$store.state.fileNameMap
-		},
-		scenarioData: function () {
-			return this.$store.state.scenarioData
-		},
-		portrait: function () {
-			return this.phase.portrait || this.phase.entity
-		},
-		textValuesMap: function () {
+		});
+		var portrait = Vue.computed(function() {
+			return props.phase.portrait || props.phase.entity
+		});
+		var textValuesMap = Vue.computed(function() {
 			return {
-				text: this.text,
-				label: this.label,
-				portrait: this.portrait,
+				text: text.value,
+				label: label.value,
+				portrait: portrait.value,
 			}
-		}
+		});
+
+		return {
+			// injected state:
+			fileNameMap,
+			scenarioData,
+			// computeds:
+			tileset,
+			alignmentData,
+			label,
+			text,
+			portrait,
+			textValuesMap,
+		};
 	},
 	template: /*html*/`
 <div
