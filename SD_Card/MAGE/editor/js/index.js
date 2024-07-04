@@ -1,4 +1,5 @@
 window.vueComponents = {};
+// now let components add themselves to this as their script tags load
 
 // TODO make sure alternative to makeFileChangeTrackerMixinByResourceType is working
 // TODO try throwing a fatal error. didn't show error text and still saw "loafing" when error was in mount hook of editor-warnings
@@ -144,6 +145,71 @@ window.vueApp = Vue.createApp({
 			'currentData',
 		]),
 	],*/
+});
+
+var loadModule = window['vue3-sfc-loader'].loadModule;
+var componentNames = [
+	/*
+	'inputty',
+	'copy-button',
+	'copy-changes',
+	'editor-accordion',
+	'font-image',
+	'entity-type-editor',
+	'tiled-tile',
+	'editor-scripts',
+	'editor-script',
+	'editor-dialogs',
+	'editor-dialog',
+	'editor-dialog-phase',
+	'editor-dialog-phase-preview',
+	'field-text',
+	'field-number',
+	'field-select',
+	'field-bool',
+	'action-input-operations',
+	'action-input-comparisons',
+	'action-input-buttons',
+	'action-input-directions',
+	'action-input-slots',
+	'action-input-scripts',
+	'action-input-dialogs',
+	'action-input-entity_types',
+	'action-input-entities',
+	'action-input-geometry',
+	'action-input-maps',
+	'action-input-action-type',
+	'editor-action',
+	'editor-warning',
+	'component-icon',
+	*/
+	'EditorWarnings',
+	'EditorWarningsSingle',
+];
+var vue3SfcLoaderOptions = {
+	moduleCache: {
+		vue: Vue
+	},
+	async getFile(url) {
+		const res = await fetch(url);
+		if ( !res.ok )
+			throw Object.assign(new Error(res.statusText + ' ' + url), { res });
+		return {
+			getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text(),
+		}
+	},
+	addStyle(textContent) {
+		const style = Object.assign(document.createElement('style'), { textContent });
+		const ref = document.head.getElementsByTagName('style')[0] || null;
+		document.head.insertBefore(style, ref);
+	},
+}
+
+componentNames.forEach(function(componentName) {
+	vueApp.component(
+		componentName,
+		Vue.defineAsyncComponent( () => loadModule(`./components/${componentName}.vue`, vue3SfcLoaderOptions) )
+	);
 });
 
 vueComponents['inputty'] = {

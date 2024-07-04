@@ -149,6 +149,7 @@
 				</div>
 			</div>
 
+			<!-- TODO pascal case, self-closing tags, etc. preferred if #app was converted to SFC -->
 			<editor-warnings
 				v-if="scenarioData"
 			></editor-warnings>
@@ -399,6 +400,10 @@
 		src="./dependencies/vue.global.js"
 	></script>
 	<script
+		data-original-src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader@0.9.5/dist/vue3-sfc-loader.min.js"
+		src="./dependencies/vue3-sfc-loader.min.js"
+	></script>
+	<script
 		data-original-src="https://wzrd.in/standalone/fast-png@5.0.4"
 		src="./dependencies/fast-png.js"
 	></script>
@@ -445,12 +450,12 @@
 	<script src="js/editor-dialog-phase-preview.js"></script>
 	<script src="js/editor-dialog-box.js"></script>
 	<script src="js/editor-action.js"></script>
-	<script src="js/editor-warnings.js"></script>
 	<script src="js/component-icon.js"></script>
 	<script>
 		Object.entries(vueComponents).forEach(function([componentName, componentDefinition]) {
 			vueApp.component(componentName, componentDefinition);
 		});
+
 		vueApp.mount('#app');
 	</script>
 </body>
