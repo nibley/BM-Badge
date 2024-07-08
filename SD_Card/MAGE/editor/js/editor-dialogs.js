@@ -2,15 +2,8 @@ vueComponents['editor-dialogs'] = {
 	name: 'editor-dialogs',
 	/*
 	TODO mixins
-	mixins: [
-		makeComputedStoreGetterSettersMixin([
-			'scenarioData',
-			'fileNameMap',
-			'currentData',
-			'initState',
-		]),
 		makeFileChangeTrackerMixinByResourceType('dialogs'),
-	],
+		created dialogsNeedSave
 	*/
 	setup: function () {
 		var currentDialogFileName = Vue.ref('');
@@ -26,9 +19,6 @@ vueComponents['editor-dialogs'] = {
 		var updateDialogsFileItemMap = function(map) {
 			currentData.value.dialogsFileItemMap = map;
 		};
-
-		// TODO dialogsNeedSave was never implemented
-		// TODO dialogs was from makeFileChangeTrackerMixinByResourceType
 
 		return {
 			// component state:

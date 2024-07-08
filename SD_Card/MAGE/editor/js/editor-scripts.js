@@ -24,20 +24,9 @@ vueComponents['editor-scripts'] = {
 	name: 'editor-scripts',
 	/*
 	TODO mixins
-	mixins: [
-		makeComputedStoreGetterSettersMixin([
-			'scenarioData',
-			'fileNameMap',
-			'currentData',
-			'initState',
-		]),
-		{
-			computed: window.Vuex.mapGetters([
-				'scriptsOptions',
-			]),
-		},
 		makeFileChangeTrackerMixinByResourceType('scripts'),
-	],*/
+		created scriptsChangedFileMap, scriptsNeedSave
+	*/
 	setup: function() {
 		var currentScriptFileName = Vue.ref('');
 		var newScriptFileName = Vue.ref(null);
@@ -146,8 +135,6 @@ vueComponents['editor-scripts'] = {
 			);
 			newScriptName.value = null;
 		};
-
-		// TODO scriptsNeedSave was never implemented
 
 		return {
 			// component state:

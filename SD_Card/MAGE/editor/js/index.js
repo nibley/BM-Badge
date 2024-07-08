@@ -164,15 +164,6 @@ window.vueApp = Vue.createApp({
 			handleChange,
 		};
 	},
-	/*
-	TODO mixins
-	mixins: [
-		makeComputedStoreGetterSettersMixin([
-			'scenarioData',
-			'fileNameMap',
-			'currentData',
-		]),
-	],*/
 });
 
 var useLastConsoleLog = function() {

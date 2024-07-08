@@ -151,39 +151,6 @@ var jsonClone = function (input) {
 
 /*
 TODO mixins
-var makeComputedStoreGetterSetter = function (propertyName) {
-	return {
-		get: function () {
-			// TODO store
-			// return this.$store.state[propertyName]
-		},
-		set: function (value) {
-			// TODO store
-			// return this.$store.commit('GENERIC_MUTATOR', {
-				//	propertyName: propertyName,
-				//	value: value,
-			// });
-		}
-	}
-};
-
-var makeComputedStoreGetterSettersMixin = function (config) {
-	var vuexPropertyNames = config;
-	var computedNames = config;
-	var computed = {};
-	if (!(config instanceof Array)) {
-		vuexPropertyNames = Object.values(config);
-		computedNames = Object.keys(config);
-	}
-	vuexPropertyNames.forEach(function (vuexPropertyName, index) {
-		computed[computedNames[index]] = makeComputedStoreGetterSetter(
-			vuexPropertyName
-		);
-	});
-	return {
-		computed: computed
-	};
-}
 
 var makeFileChangeTrackerMixinByResourceType = function (resourceName) {
 	var fileMapPropertyName = resourceName + 'FileItemMap';
