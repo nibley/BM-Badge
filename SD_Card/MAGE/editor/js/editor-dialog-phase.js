@@ -19,6 +19,10 @@ vueComponents['editor-dialog-phase'] = {
 		var showOptions = Vue.computed(function() {
 			return props.phase.response_type === 'SELECT_FROM_SHORT_LIST';
 		});
+		var newMessage = Vue.computed(function() {
+			// TODO newMessage was never implemented
+			return undefined;
+		});
 
 		var updateValueWithChanges = function(changes) {
 			var result = Object.assign(
@@ -49,8 +53,7 @@ vueComponents['editor-dialog-phase'] = {
 		};
 		var addMessage = function() {
 			var messages = (props.phase.messages || []).slice();
-			messages.push(this.newMessage);
-			// TODO newMessage was never implemented
+			messages.push(newMessage.value);
 			updateProperty(
 				'messages',
 				messages
@@ -88,6 +91,7 @@ vueComponents['editor-dialog-phase'] = {
 			// global refs:
 			borderTilesetOptions: window.borderTilesetOptions,
 			// computeds:
+			newMessage,
 			messageIndexOptions,
 			showOptions,
 			// methods:
