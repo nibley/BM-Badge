@@ -13,6 +13,8 @@ vueComponents['editor-dialog-phase'] = {
 	},
 	emits: ['input'],
 	setup: function(props, context) {
+		var borderTilesetOptions = Vue.inject('borderTilesetOptions');
+
 		var messageIndexOptions = Vue.computed(function() {
 			return Object.keys(props.phase.messages);
 		});
@@ -85,6 +87,8 @@ vueComponents['editor-dialog-phase'] = {
 		};
 
 		return {
+			// injected state:
+			borderTilesetOptions,
 			// computeds:
 			messageIndexOptions,
 			showOptions,
@@ -127,7 +131,7 @@ vueComponents['editor-dialog-phase'] = {
 			</div>
 			<field-select
 				property="border_tileset"
-				:options="$store.getters.borderTilesetOptions"
+				:options="borderTilesetOptions"
 				:value="phase.border_tileset"
 				@input="updateProperty('border_tileset', $event || null)"
 			></field-select>

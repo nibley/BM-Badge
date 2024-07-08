@@ -105,8 +105,7 @@ vueApp.component('editor-dialog-box', {
 		var tiles = Vue.computed(function() {
 			var result = []
 			var box = props.rect;
-			var tileset = tileset.value;
-			var tileSize = tileset.tilewidth;
+			var tileSize = tileset.value.tilewidth;
 			var offset = tileSize / 2;
 			var offsetX = (box.x * tileSize) + offset;
 			var offsetY = (box.y * tileSize) + offset;

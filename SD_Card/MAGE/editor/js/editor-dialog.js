@@ -39,6 +39,16 @@ vueComponents['editor-dialog'] = {
 		var collapse = function() {
 			collapsed.value = !(collapsed.value);
 		};
+		var addDialogPhase = function(dialogName) {
+			var dialog = currentData.value.dialogs[dialogName].slice();
+			dialog.push({
+				alignment: 'BOTTOM_LEFT',
+				messages: [
+					'TEXT_ABOUT_GOATS'
+				],
+			})
+			currentData.value.dialogs[dialogName] = dialog;
+		};
 		var updateDialogPhase = function(phaseIndex, phase) {
 			/*
 			TODO store
@@ -70,6 +80,7 @@ vueComponents['editor-dialog'] = {
 			// computeds:
 			dialogPhases,
 			// methods:
+			addDialogPhase,
 			moveDialog,
 			collapse,
 			updateDialogPhase,
@@ -121,8 +132,7 @@ vueComponents['editor-dialog'] = {
 			<button
 				class="btn btn-primary"
 				type="submit"
-				<!-- TODO store
-				@click="$store.commit('ADD_DIALOG_PHASE', dialogName)"-->
+				@click="addDialogPhase(dialogName)"
 			>Add Phase</button>
 		</div>
 	</div>
