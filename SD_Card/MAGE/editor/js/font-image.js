@@ -24,9 +24,9 @@ vueComponents['font-image'] = {
 			required: true,
 		},
 	},
-	computed: {
-		chars: function () {
-			var string = this.string;
+	setup: function(props) {
+		var chars = Vue.computed(function () {
+			var string = props.string;
 			var x = 0;
 			var y = 0;
 			var result = [];
@@ -52,7 +52,12 @@ vueComponents['font-image'] = {
 				}
 			});
 			return result;
-		}
+		});
+
+		return {
+			// computeds:
+			chars,
+		};
 	},
 	template: /*html*/`
 <div
