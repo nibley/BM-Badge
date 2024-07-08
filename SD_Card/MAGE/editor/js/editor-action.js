@@ -566,7 +566,6 @@ vueComponents['editor-action'] = {
 			if (Object.keys(actionOptionsMap).includes(actionCategory)) {
 				var options = actionOptionsMap[actionCategory];
 				if (!options || !options.includes) {
-					console.log('xxx', Boolean(options), Boolean(options.includes));
 					throw new Error('Missing ' + actionCategory);
 				}
 				result = options.includes(value);
