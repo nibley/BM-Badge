@@ -10,6 +10,12 @@ window.vueApp = Vue.createApp({
 		var error = Vue.ref(null);
 		var downloadData = Vue.ref(null);
 
+		var lastConsoleLogMessage = Vue.ref('');
+		var { onConsoleLog } = useLastConsoleLog();
+		onConsoleLog(function(consoleLoggedMessage) {
+			lastConsoleLogMessage.value = consoleLoggedMessage;
+		});
+
 		window.fileNameMap = Vue.ref(undefined);
 		window.scenarioData = Vue.ref(undefined);
 		window.currentData = Vue.ref(undefined);
@@ -90,7 +96,6 @@ window.vueApp = Vue.createApp({
 			try {
 				var filesArray = Array.prototype.slice.call(event.target.files);
 				isLoading.value = true;
-
 				filesArray.forEach(function (file) {
 					if (newFileNameMap[file.name] === undefined) {
 						newFileNameMap[file.name] = file;
@@ -149,6 +154,7 @@ window.vueApp = Vue.createApp({
 			scenarioData,
 			currentData,
 			downloadData,
+			lastConsoleLogMessage,
 			// methods:
 			closeError,
 			closeSuccess,
@@ -166,6 +172,32 @@ window.vueApp = Vue.createApp({
 		]),
 	],*/
 });
+
+var useLastConsoleLog = function() {
+	var originalConsoleLog = console.log;
+	var consoleLogCallback = undefined;
+	
+	console.log = function() {
+		var stringifiedMessage = '';
+		for(var i = 0; i < arguments.length; i++) {
+			var argument = arguments[i];
+			stringifiedMessage += (typeof argument === 'string' ?
+				argument : JSON.stringify(argument)) + ' ';
+		}
+		if (consoleLogCallback) {
+			consoleLogCallback(stringifiedMessage);
+		}
+		originalConsoleLog.apply(console, arguments);
+	};
+
+	var onConsoleLog = function(callback) {
+		consoleLogCallback = callback;
+	};
+
+	return {
+		onConsoleLog,
+	};
+};
 
 vueComponents['inputty'] = {
 	// TODO remove since unused?
