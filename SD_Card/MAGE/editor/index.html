@@ -271,6 +271,7 @@
 									<tbody>
 										<template
 											v-for="(animation, animationName) in currentEntityType.animations"
+											:key="animationName"
 										>
 											<tr>
 												<th colspan="4">{{ animationName }}</th>
@@ -281,9 +282,7 @@
 													>❌</button>
 												</td>
 											</tr>
-											<tr
-												:key="animationName"
-											>
+											<tr>
 												<td
 													v-for="(direction, directionIndex) in animation"
 													:key="directionIndex"
