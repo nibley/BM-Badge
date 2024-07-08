@@ -149,60 +149,57 @@ var jsonClone = function (input) {
 	return JSON.parse(JSON.stringify(input));
 };
 
-/*
-TODO mixins
+var getAllRecombinedFilesForResource = function(source, resourceName) {
+	var recombineFileForResource = function(fileName, source) {
+		var resourceNamesInFile = source[fileMapPropertyName][fileName];
+		var result = {};
+		resourceNamesInFile.forEach(function(scriptName) {
+			result[scriptName] = source[resourceName][scriptName];
+		});
+		return JSON.stringify(result, null, '\t') + '\n';
+	};
 
-var makeFileChangeTrackerMixinByResourceType = function (resourceName) {
 	var fileMapPropertyName = resourceName + 'FileItemMap';
-	var resourceJsonStatePropertyName = resourceName + 'JsonOutput'
-	var changedFileMapPropertyName = resourceName + 'ChangedFileMap'
+	var result = {};
+	Object.keys(source[fileMapPropertyName])
+		.forEach(function(fileName) {
+			result[fileName] = recombineFileForResource(
+				fileName,
+				source
+			);
+		});
+	return result;
+};
+
+var makeFileChangeTrackerUtilsByResourceType = function(resourceName) {
+	var fileMapPropertyName = resourceName + 'FileItemMap';
+	var resourceJsonStatePropertyName = resourceName + 'JsonOutput';
+	var changedFileMapPropertyName = resourceName + 'ChangedFileMap';
+	var needSavePropertyName = resourceName + 'NeedSave';
+
+	var startFileMap = Vue.computed(function() {
+		return getAllRecombinedFilesForResource(initState.value, resourceName);
+	});
+	var changedFileMap = Vue.computed(function() {
+		var result = {};
+		var currentFileMap = getAllRecombinedFilesForResource(currentData.value, resourceName);
+		Object.keys(currentFileMap).forEach(function(fileName) {
+			if (currentFileMap[fileName] !== startFileMap.value[fileName]) {
+				result[fileName] = currentFileMap[fileName];
+			}
+		});
+		return result;
+	});
+	var jsonOutput = Vue.computed(function() {
+		return JSON.stringify(currentData.value[fileMapPropertyName]);
+	});
+	var needSave = Vue.computed(function() {
+		return Object.keys(changedFileMap).length > 0;
+	});
+
 	return {
-		computed: {
-			startFileMap: function () {
-				return this.getAllRecombinedFilesForResource(this.initState, resourceName);
-			},
-			[changedFileMapPropertyName]: function () {
-				var result = {}
-				var currentFileMap = this.getAllRecombinedFilesForResource(this.currentData, resourceName)
-				var startFileMap = this.startFileMap
-				Object.keys(currentFileMap).forEach(function (fileName) {
-					if (currentFileMap[fileName] !== startFileMap[fileName]) {
-						result[fileName] = currentFileMap[fileName]
-					}
-				})
-				return result;
-			},
-			[resourceJsonStatePropertyName]: function () {
-				return JSON.stringify(this.currentData[fileMapPropertyName]);
-			},
-			[resourceName + 'NeedSave']: function () {
-				return Object.keys(this[changedFileMapPropertyName]).length > 0;
-			},
-		},
-		methods: {
-			getAllRecombinedFilesForResource (source, resourceName) {
-				var fileMapPropertyName = resourceName + 'FileItemMap';
-				var self = this;
-				var result = {};
-				Object.keys(
-					source[fileMapPropertyName]
-				).forEach(function (fileName) {
-					result[fileName] = self.recombineFileForResource(
-						fileName,
-						source
-					);
-				});
-				return result
-			},
-			recombineFileForResource (fileName, source) {
-				var resourceNamesInFile = source[fileMapPropertyName][fileName];
-				var result = {};
-				resourceNamesInFile.forEach(function (scriptName) {
-					result[scriptName] = source[resourceName][scriptName];
-				});
-				return JSON.stringify(result, null, '\t') + '\n';
-			},
-		}
-	}
-}
-*/
+		[changedFileMapPropertyName]: changedFileMap,
+		[resourceJsonStatePropertyName]: jsonOutput,
+		[needSavePropertyName]: needSave,
+	};
+};
