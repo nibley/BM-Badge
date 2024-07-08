@@ -266,7 +266,6 @@ vueComponents['editor-scripts'] = {
 					:index="index"
 					:file-name-map="fileNameMap"
 					:scenario-data="scenarioData"
-					:current-data="currentData"
 					@input="updateScript(scriptName,$event)"
 					@updateScriptName="updateScriptName(scriptName,$event,index)"
 					@deleteScript="deleteScript(scriptName)"
