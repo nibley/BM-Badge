@@ -22,11 +22,6 @@ var extractNames = function (arrayOfObjects) {
 
 vueComponents['editor-scripts'] = {
 	name: 'editor-scripts',
-	/*
-	TODO mixins
-		makeFileChangeTrackerMixinByResourceType('scripts'),
-		created scriptsChangedFileMap, scriptsNeedSave
-	*/
 	setup: function() {
 		var scenarioData = window.scenarioData;
 		var fileNameMap = window.fileNameMap;
@@ -37,6 +32,10 @@ vueComponents['editor-scripts'] = {
 		var currentScriptFileName = Vue.ref('');
 		var newScriptFileName = Vue.ref(null);
 		var newScriptName = Vue.ref(null);
+		var {
+			scriptsChangedFileMap,
+			scriptsNeedSave,
+		} = makeFileChangeTrackerUtilsByResourceType('scripts');
 
 		var isNewScriptNameUnique = Vue.computed(function () {
 			var existingNames = scriptsOptions.value;
@@ -147,6 +146,8 @@ vueComponents['editor-scripts'] = {
 			currentScriptFileName,
 			newScriptFileName,
 			newScriptName,
+			scriptsChangedFileMap,
+			scriptsNeedSave,
 			// global state:
 			scenarioData,
 			fileNameMap,
@@ -155,7 +156,7 @@ vueComponents['editor-scripts'] = {
 			scriptsOptions,
 			// computeds:
 			isNewScriptNameUnique,
-			// natLangScript,
+			// natLangScript, // TODO enable? was commented out in vue 2
 			// methods:
 			updateScript,
 			updateScriptName,
