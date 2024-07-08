@@ -60,6 +60,9 @@ vueApp.component('editor-dialog-box', {
 		},
 	},
 	setup: function(props) {
+		var fileNameMap = window.fileNameMap;
+		var scenarioData = window.scenarioData;
+		
 		var tileset = Vue.computed(function() {
 			return scenarioData.value.dialogSkinsTilesetMap[props.dialogSkin];
 		});
@@ -124,9 +127,9 @@ vueApp.component('editor-dialog-box', {
 		});
 
 		return {
-			// global refs:
-			fileNameMap: window.fileNameMap,
-			scenarioData: window.scenarioData,
+			// global state:
+			fileNameMap,
+			scenarioData,
 			// computeds:
 			tileset,
 			subrects,

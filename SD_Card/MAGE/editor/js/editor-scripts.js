@@ -28,6 +28,12 @@ vueComponents['editor-scripts'] = {
 		created scriptsChangedFileMap, scriptsNeedSave
 	*/
 	setup: function() {
+		var scenarioData = window.scenarioData;
+		var fileNameMap = window.fileNameMap;
+		var currentData = window.currentData;
+		var initState = window.initState;
+		var scriptsOptions = window.scriptsOptions;
+
 		var currentScriptFileName = Vue.ref('');
 		var newScriptFileName = Vue.ref(null);
 		var newScriptName = Vue.ref(null);
@@ -141,12 +147,12 @@ vueComponents['editor-scripts'] = {
 			currentScriptFileName,
 			newScriptFileName,
 			newScriptName,
-			// global refs:
-			scenarioData: window.scenarioData,
-			fileNameMap: window.fileNameMap,
-			currentData: window.currentData,
-			initState: window.initState,
-			scriptsOptions: window.scriptsOptions,
+			// global state:
+			scenarioData,
+			fileNameMap,
+			currentData,
+			initState,
+			scriptsOptions,
 			// computeds:
 			isNewScriptNameUnique,
 			// natLangScript,

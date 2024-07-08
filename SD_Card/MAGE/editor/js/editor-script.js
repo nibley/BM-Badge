@@ -21,6 +21,11 @@ vueComponents['editor-script'] = {
 		'deleteScript',
 	],
 	setup: function(props, context) {
+		var fileNameMap = window.fileNameMap;
+		var scenarioData = window.scenarioData;
+		var currentData = window.currentData;
+		var scriptsOptions = window.scriptsOptions;
+
 		var collapsed = Vue.ref(true);
 		var editingName = Vue.ref(props.scriptName);
 		var newActionName = Vue.ref(null);
@@ -92,11 +97,11 @@ vueComponents['editor-script'] = {
 			editingName,
 			newActionName,
 			editing,
-			// global refs:
-			fileNameMap: window.fileNameMap,
-			scenarioData: window.scenarioData,
-			currentData: window.currentData,
-			scriptsOptions: window.scriptsOptions,
+			// global state:
+			fileNameMap,
+			scenarioData,
+			currentData,
+			scriptsOptions,
 			// computeds:
 			script,
 			isNewScriptNameUnique,

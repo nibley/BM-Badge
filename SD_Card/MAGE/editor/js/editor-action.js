@@ -278,9 +278,10 @@ vueComponents['action-input-scripts'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var scriptsOptions = window.scriptsOptions;
 		return {
-			// global refs:
-			scriptsOptions: window.scriptsOptions,
+			// global state:
+			scriptsOptions,
 		};
 	},
 	template: /*html*/`
@@ -304,9 +305,10 @@ vueComponents['action-input-dialogs'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var dialogOptions = window.dialogOptions;
 		return {
-			// global refs:
-			dialogOptions: window.dialogOptions,
+			// global state:
+			dialogOptions,
 		};
 	},
 	template: /*html*/`
@@ -330,9 +332,10 @@ vueComponents['action-input-entity_types'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var entityTypesOptions = window.entityTypesOptions;
 		return {
-			// global refs:
-			entityTypesOptions: window.entityTypesOptions,
+			// global state:
+			entityTypesOptions,
 		};
 	},
 	template: /*html*/`
@@ -356,9 +359,10 @@ vueComponents['action-input-entities'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var entityNamesOptions = window.entityNamesOptions;
 		return {
-			// global refs:
-			entityNamesOptions: window.entityNamesOptions,
+			// global state:
+			entityNamesOptions,
 		};
 	},
 	template: /*html*/`
@@ -382,9 +386,10 @@ vueComponents['action-input-geometry'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var geometryOptions = window.geometryOptions;
 		return {
-			// global refs:
-			geometryOptions: window.geometryOptions,
+			// global state:
+			geometryOptions,
 		};
 	},
 	template: /*html*/`
@@ -408,9 +413,10 @@ vueComponents['action-input-maps'] = {
 	},
 	emits: ['input'],
 	setup: function() {
+		var mapsOptions = window.mapsOptions;
 		return {
-			// global refs:
-			mapsOptions: window.mapsOptions,
+			// global state:
+			mapsOptions,
 		};
 	},
 	template: /*html*/`
@@ -507,6 +513,14 @@ vueComponents['editor-action'] = {
 	},
 	emits: ['input', 'deleteAction', 'moveAction'],
 	setup: function(props, context) {
+		var currentData = window.currentData;
+		var dialogOptions = window.dialogOptions;
+		var entityTypesOptions = window.entityTypesOptions;
+		var entityNamesOptions = window.entityNamesOptions;
+		var geometryOptions = window.geometryOptions;
+		var mapsOptions = window.mapsOptions;
+		var scriptsOptions = window.scriptsOptions;
+
 		var collapsed = Vue.ref(false);
 
 		var actionName = Vue.computed(function () {
@@ -578,14 +592,14 @@ vueComponents['editor-action'] = {
 		return {
 			// component state:
 			collapsed,
-			// global refs:
-			currentData: window.currentData,
-			dialogOptions: window.dialogOptions,
-			entityTypesOptions: window.entityTypesOptions,
-			entityNamesOptions: window.entityNamesOptions,
-			geometryOptions: window.geometryOptions,
-			mapsOptions: window.mapsOptions,
-			scriptsOptions: window.scriptsOptions,
+			// global state:
+			currentData,
+			dialogOptions,
+			entityTypesOptions,
+			entityNamesOptions,
+			geometryOptions,
+			mapsOptions,
+			scriptsOptions,
 			// computeds:
 			actionName,
 			requiredProperties,

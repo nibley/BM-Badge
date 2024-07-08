@@ -9,6 +9,8 @@ vueApp.component('editor-options', {
 	},
 	emits: ['input'].
 	setup = function(props, context) {
+		var currentData = window.currentData;
+		
 		var scriptPresenceMap = Vue.computed(function () {
 			return (currentData.value || {}).scripts || {}
 		});
@@ -42,8 +44,8 @@ vueApp.component('editor-options', {
 		};
 
 		return {
-			// global refs:
-			currentData: window.currentData,
+			// global state:
+			currentData,
 			// computeds:
 			scriptPresenceMap,
 			// methods:

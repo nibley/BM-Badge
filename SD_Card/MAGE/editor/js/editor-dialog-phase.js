@@ -12,6 +12,8 @@ vueComponents['editor-dialog-phase'] = {
 	},
 	emits: ['input'],
 	setup: function(props, context) {
+		var borderTilesetOptions = window.borderTilesetOptions;
+
 		var alignmentOptions = Vue.ref(Object.keys(dialogAlignmentEnum));
 
 		var messageIndexOptions = Vue.computed(function() {
@@ -91,8 +93,8 @@ vueComponents['editor-dialog-phase'] = {
 		return {
 			// component state:
 			alignmentOptions,
-			// global refs:
-			borderTilesetOptions: window.borderTilesetOptions,
+			// global state:
+			borderTilesetOptions,
 			// computeds:
 			newMessage,
 			messageIndexOptions,

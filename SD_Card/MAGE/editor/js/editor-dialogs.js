@@ -6,6 +6,11 @@ vueComponents['editor-dialogs'] = {
 		created dialogsNeedSave
 	*/
 	setup: function () {
+		var scenarioData = window.scenarioData;
+		var fileNameMap = window.fileNameMap;
+		var currentData = window.currentData;
+		var initState = window.initState;
+
 		var currentDialogFileName = Vue.ref('');
 		var currentDialog = Vue.ref('');
 
@@ -24,11 +29,11 @@ vueComponents['editor-dialogs'] = {
 			// component state:
 			currentDialogFileName,
 			currentDialog,
-			// global refs:
-			scenarioData: window.scenarioData,
-			fileNameMap: window.fileNameMap,
-			currentData: window.currentData,
-			initState: window.initState,
+			// global state:
+			scenarioData,
+			fileNameMap,
+			currentData,
+			initState,
 			// computeds:
 			currentFileDialogs,
 			// methods:

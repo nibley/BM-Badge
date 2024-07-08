@@ -24,6 +24,9 @@ var directionalArrows = [
 vueComponents['entity-type-editor'] = {
 	name: 'entity-type-editor',
 	setup: function() {
+		var scenarioData = window.scenarioData;
+		var fileNameMap = window.fileNameMap;
+		
 		var jsonOutput = Vue.computed(function () {
 			return JSON.stringify(
 				scenarioData.value.entityTypes,
@@ -171,9 +174,9 @@ vueComponents['entity-type-editor'] = {
 			currentAnimationName,
 			currentAnimationDirection,
 			initJsonState,
-			// global refs:
-			scenarioData: window.scenarioData,
-			fileNameMap: window.fileNameMap,
+			// global state:
+			scenarioData,
+			fileNameMap,
 			// computeds:
 			entityTypes,
 			jsonOutput,
