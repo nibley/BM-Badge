@@ -132,7 +132,7 @@ vueComponents['editor-script'] = {
 				class="btn mr-1 btn-outline-danger"
 				@click="$emit('deleteScript')"
 			>X</button>
-			<strong class="me-auto">{{scriptName}}</strong>
+			<strong class="mr-auto">{{scriptName}}</strong>
 			<button
 				type="button"
 				class="btn btn-sm p-0"

@@ -88,7 +88,7 @@ vueComponents['editor-dialog'] = {
 	class="editor-dialog card bg-secondary border-primary mb-4"
 >
 	<div class="card-header bg-primary">
-		<strong class="me-auto">{{ dialogName }}</strong>
+		<strong class="mr-auto">{{ dialogName }}</strong>
 		<span
 			class="position-absolute"
 			style="top:6px; right:6px;"
