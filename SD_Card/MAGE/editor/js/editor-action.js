@@ -1,6 +1,6 @@
-// TODO find alternative to use of $options
-// TODO need to expose what were previously mixins into templates of small components
+// TODO find alternative to use of $options -- refactor entire :is pattern (most of this file)?
 // TODO state sticking around after selecting a different script at top of editor-scripts?
+// TODO component-icon use broken?
 
 var comparisons = Object.keys(comparisonMap).slice(5);
 var operations = Object.keys(operationMap);
@@ -63,35 +63,21 @@ var propertySanitizerMap = {
 	ble_flag: sanitizeAsString,
 };
 
-/*
-TODO mixins
-var actionInputMixin = {
-	props: {
-		property: {
-			type: String,
-		},
-		value: {
-			required: true,
-		},
-		currentData: {
-			type: Object,
-		},
-	},
-}
-*/
-
 vueComponents['field-text'] = {
 	name: 'field-text',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: null, // TODO can this be any type?
-			default: '',
+			type: null,
+			required: true,
+		},
+		type: {
+			type: String,
+			default: function () {
+				return 'text';
+			}
 		},
 	},
 	emits: ['input'],
@@ -108,22 +94,20 @@ vueComponents['field-text'] = {
 
 vueComponents['field-number'] = {
 	name: 'field-number',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: Number,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
 	template: /*html*/`
 <field-text
 	type="number"
+	:property="property"
 	:value="value"
 	@input="$emit('input', $event)"
 ></field-text>
@@ -158,16 +142,13 @@ vueComponents['field-select'] = {
 
 vueComponents['field-bool'] = {
 	name: 'field-bool',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: Boolean,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -182,16 +163,13 @@ vueComponents['field-bool'] = {
 
 vueComponents['action-input-operations'] = {
 	name: 'action-input-operations',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -206,16 +184,13 @@ vueComponents['action-input-operations'] = {
 
 vueComponents['action-input-comparisons'] = {
 	name: 'action-input-comparisons',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -230,16 +205,13 @@ vueComponents['action-input-comparisons'] = {
 
 vueComponents['action-input-buttons'] = {
 	name: 'action-input-buttons',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -254,16 +226,13 @@ vueComponents['action-input-buttons'] = {
 
 vueComponents['action-input-directions'] = {
 	name: 'action-input-directions',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -278,16 +247,13 @@ vueComponents['action-input-directions'] = {
 
 vueComponents['action-input-slots'] = {
 	name: 'action-input-slots',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -302,17 +268,13 @@ vueComponents['action-input-slots'] = {
 
 vueComponents['action-input-scripts'] = {
 	name: 'action-input-scripts',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -332,17 +294,13 @@ vueComponents['action-input-scripts'] = {
 
 vueComponents['action-input-dialogs'] = {
 	name: 'action-input-dialogs',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -362,17 +320,13 @@ vueComponents['action-input-dialogs'] = {
 
 vueComponents['action-input-entity_types'] = {
 	name: 'action-input-entity_types',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -392,17 +346,13 @@ vueComponents['action-input-entity_types'] = {
 
 vueComponents['action-input-entities'] = {
 	name: 'action-input-entities',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -422,17 +372,13 @@ vueComponents['action-input-entities'] = {
 
 vueComponents['action-input-geometry'] = {
 	name: 'action-input-geometry',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -452,17 +398,13 @@ vueComponents['action-input-geometry'] = {
 
 vueComponents['action-input-maps'] = {
 	name: 'action-input-maps',
-/*	TODO mixins
-	mixins: [actionInputMixin],
-*/
 	props: {
 		property: {
 			type: String,
-			required: true,
 		},
 		value: {
-			type: String,
-			default: '',
+			type: null,
+			required: true,
 		},
 	},
 	emits: ['input'],
@@ -482,8 +424,15 @@ vueComponents['action-input-maps'] = {
 
 vueComponents['action-input-action-type'] = {
 	name: 'action-input-action-type',
-/*	TODO mixins
-	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+		},
+		value: {
+			type: null,
+			required: true,
+		},
+	},
 	emits: ['input'],
 	setup: function() {
 		var actions = Vue.computed(function() {
@@ -594,16 +543,17 @@ vueComponents['editor-action'] = {
 				'action-input-directions': directions,
 				'action-input-slots': slots,
 				'field-bool': [true, false],
-				'action-input-scripts': scriptsOptions,
-				'action-input-dialogs': dialogOptions,
-				'action-input-entity_types': entityTypesOptions,
-				'action-input-entities': entityNamesOptions,
-				'action-input-geometry': geometryOptions,
-				'action-input-maps': mapsOptions,
+				'action-input-scripts': scriptsOptions.value,
+				'action-input-dialogs': dialogOptions.value,
+				'action-input-entity_types': entityTypesOptions.value,
+				'action-input-entities': entityNamesOptions.value,
+				'action-input-geometry': geometryOptions.value,
+				'action-input-maps': mapsOptions.value,
 			}
 			if (Object.keys(actionOptionsMap).includes(actionCategory)) {
 				var options = actionOptionsMap[actionCategory];
 				if (!options || !options.includes) {
+					console.log('xxx', Boolean(options), Boolean(options.includes));
 					throw new Error('Missing ' + actionCategory);
 				}
 				result = options.includes(value);
