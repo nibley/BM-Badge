@@ -463,7 +463,7 @@ vueComponents['tiled-tile'] = {
 				display: 'inline-block',
 				width: tileset.tilewidth + 'px',
 				height: tileset.tileheight + 'px',
-				backgroundImage: `url("${this.image}")`,
+				backgroundImage: `url("${image.value}")`,
 				backgroundPosition: `${
 					-x * tileset.tilewidth
 				}px ${
