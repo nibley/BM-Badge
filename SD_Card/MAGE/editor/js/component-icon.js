@@ -143,17 +143,24 @@ vueComponents['component-icon'] = {
 			required: true
 		}
 	},
-	computed: {
-		colorHex: function () {
+	setup: function(props) {
+		var colorHex = Vue.computed(function () {
 			// TODO: for real
 			return '#ffffff'; // white
-		},
-		whichIcon: function () {
-			return iconMap[this.subject] || 'brush';
-		},
-		iconData: function () {
-			return iconData[this.whichIcon];
-		}
+		});
+		var whichIcon = Vue.computed(function () {
+			return iconMap[props.subject] || 'brush';
+		});
+		var iconData = Vue.computed(function () {
+			return iconData[whichIcon.value];
+		});
+
+		return {
+			// computeds:
+			colorHex,
+			whichIcon,
+			iconData,
+		};
 	},
 	template: /*html*/`
 <span
