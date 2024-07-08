@@ -10,11 +10,7 @@ window.vueApp = Vue.createApp({
 		var error = Vue.ref(null);
 		var downloadData = Vue.ref(null);
 
-		var lastConsoleLogMessage = Vue.ref('');
-		var { onConsoleLog } = useLastConsoleLog();
-		onConsoleLog(function(consoleLoggedMessage) {
-			lastConsoleLogMessage.value = consoleLoggedMessage;
-		});
+		var lastConsoleLogMessage = useLastConsoleLog();
 
 		window.fileNameMap = Vue.ref(undefined);
 		window.scenarioData = Vue.ref(undefined);
@@ -181,28 +177,22 @@ window.vueApp = Vue.createApp({
 
 var useLastConsoleLog = function() {
 	var originalConsoleLog = console.log;
-	var consoleLogCallback = undefined;
+	var lastConsoleLogMessage = Vue.ref('');
 	
 	console.log = function() {
-		var stringifiedMessage = '';
-		for(var i = 0; i < arguments.length; i++) {
-			var argument = arguments[i];
-			stringifiedMessage += (typeof argument === 'string' ?
-				argument : JSON.stringify(argument)) + ' ';
-		}
-		if (consoleLogCallback) {
-			consoleLogCallback(stringifiedMessage);
-		}
+		try {
+			var stringifiedMessage = '';
+			for(var i = 0; i < arguments.length; i++) {
+				var argument = arguments[i];
+				stringifiedMessage += (typeof argument === 'string' ?
+					argument : JSON.stringify(argument)) + ' ';
+			}
+			lastConsoleLogMessage.value = stringifiedMessage;
+		} catch {}
 		originalConsoleLog.apply(console, arguments);
 	};
 
-	var onConsoleLog = function(callback) {
-		consoleLogCallback = callback;
-	};
-
-	return {
-		onConsoleLog,
-	};
+	return lastConsoleLogMessage;
 };
 
 vueComponents['inputty'] = {
