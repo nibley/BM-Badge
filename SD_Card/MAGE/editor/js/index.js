@@ -84,7 +84,13 @@ window.vueApp = Vue.createApp({
 
 		var handleChange = function (event) {
 			var newFileNameMap = {};
-			closeError();
+			
+			if (error.value) {
+				closeError();
+			}
+			else if (downloadData.value) {
+				closeSuccess();
+			}
 
 			var handleError = function(newError) {
 				closeSuccess();
