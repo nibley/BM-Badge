@@ -1,4 +1,5 @@
 // TODO find alternative to use of $options
+// TODO need to expose what were previously mixins into templates of small components
 
 var comparisons = Object.keys(comparisonMap).slice(5);
 var operations = Object.keys(operationMap);
