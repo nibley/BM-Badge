@@ -1,10 +1,5 @@
 vueComponents['editor-dialogs'] = {
 	name: 'editor-dialogs',
-	/*
-	TODO mixins
-		makeFileChangeTrackerMixinByResourceType('dialogs'),
-		created dialogsNeedSave
-	*/
 	setup: function () {
 		var scenarioData = window.scenarioData;
 		var fileNameMap = window.fileNameMap;
@@ -13,6 +8,10 @@ vueComponents['editor-dialogs'] = {
 
 		var currentDialogFileName = Vue.ref('');
 		var currentDialog = Vue.ref('');
+		var {
+			dialogsChangedFileMap,
+			dialogsNeedSave,
+		} = makeFileChangeTrackerUtilsByResourceType('dialogs');
 
 		var currentFileDialogs = Vue.computed(function() {
 			return currentData.value.dialogsFileItemMap[currentDialogFileName.value];
@@ -29,6 +28,8 @@ vueComponents['editor-dialogs'] = {
 			// component state:
 			currentDialogFileName,
 			currentDialog,
+			dialogsChangedFileMap,
+			dialogsNeedSave,
 			// global state:
 			scenarioData,
 			fileNameMap,
