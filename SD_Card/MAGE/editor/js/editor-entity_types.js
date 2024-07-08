@@ -418,6 +418,7 @@ vueComponents['tiled-tile'] = {
 		},
 		hideBorder: {
 			type: Boolean,
+			default: false,
 		}
 	},
 	setup: function(props) {
