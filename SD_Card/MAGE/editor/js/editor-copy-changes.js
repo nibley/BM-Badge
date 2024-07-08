@@ -7,12 +7,16 @@ vueComponents['copy-button'] = {
 		},
 	},
 	setup: function () {
+		var copyStateTextArea = Vue.ref(null); // receives template ref
+
 		var copyState = function () {
-			this.$refs.copyStateTextArea.select();
+			copyStateTextArea.value.select();
 			document.execCommand("copy");
 		}
 
 		return {
+			// component state:
+			copyStateTextArea,
 			// methods:
 			copyState,
 		};
