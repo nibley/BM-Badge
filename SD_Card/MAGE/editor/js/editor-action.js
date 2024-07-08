@@ -1,5 +1,6 @@
 // TODO find alternative to use of $options
 // TODO need to expose what were previously mixins into templates of small components
+// TODO state sticking around after selecting a different script at top of editor-scripts?
 
 var comparisons = Object.keys(comparisonMap).slice(5);
 var operations = Object.keys(operationMap);
@@ -303,9 +304,7 @@ vueComponents['action-input-scripts'] = {
 	name: 'action-input-scripts',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'scriptsOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -317,6 +316,12 @@ vueComponents['action-input-scripts'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			scriptsOptions: window.scriptsOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="scriptsOptions"
@@ -329,9 +334,7 @@ vueComponents['action-input-dialogs'] = {
 	name: 'action-input-dialogs',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'dialogOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -343,6 +346,12 @@ vueComponents['action-input-dialogs'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			dialogOptions: window.dialogOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="dialogOptions"
@@ -355,9 +364,7 @@ vueComponents['action-input-entity_types'] = {
 	name: 'action-input-entity_types',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'entityTypesOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -369,6 +376,12 @@ vueComponents['action-input-entity_types'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			entityTypesOptions: window.entityTypesOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="entityTypesOptions"
@@ -381,9 +394,7 @@ vueComponents['action-input-entities'] = {
 	name: 'action-input-entities',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'entityNamesOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -395,6 +406,12 @@ vueComponents['action-input-entities'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			entityNamesOptions: window.entityNamesOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="entityNamesOptions"
@@ -407,9 +424,7 @@ vueComponents['action-input-geometry'] = {
 	name: 'action-input-geometry',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'geometryOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -421,6 +436,12 @@ vueComponents['action-input-geometry'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			geometryOptions: window.geometryOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="geometryOptions"
@@ -433,9 +454,7 @@ vueComponents['action-input-maps'] = {
 	name: 'action-input-maps',
 /*	TODO mixins
 	mixins: [actionInputMixin],
-	computed: window.Vuex.mapGetters([
-		'mapsOptions'
-	]),*/
+*/
 	props: {
 		property: {
 			type: String,
@@ -447,6 +466,12 @@ vueComponents['action-input-maps'] = {
 		},
 	},
 	emits: ['input'],
+	setup: function() {
+		return {
+			// global refs:
+			mapsOptions: window.mapsOptions,
+		};
+	},
 	template: /*html*/`
 <field-select
 	:options="mapsOptions"
@@ -517,20 +542,6 @@ var propertyEditorComponentMap = {
 
 vueComponents['editor-action'] = {
 	name: 'editor-action',
-	/*
-	TODO mixins
-	mixins: [
-		{
-			computed: window.Vuex.mapGetters([
-				'dialogOptions',
-				'entityTypesOptions',
-				'entityNamesOptions',
-				'geometryOptions',
-				'mapsOptions',
-				'scriptsOptions',
-			])
-		}
-	],*/
 	propertyEditorComponentMap, // TODO don't use $options
 	props: {
 		script: {
@@ -593,7 +604,7 @@ vueComponents['editor-action'] = {
 			if (Object.keys(actionOptionsMap).includes(actionCategory)) {
 				var options = actionOptionsMap[actionCategory];
 				if (!options || !options.includes) {
-					throw new Error('Missing ' + actionCategory)
+					throw new Error('Missing ' + actionCategory);
 				}
 				result = options.includes(value);
 			}
@@ -620,6 +631,12 @@ vueComponents['editor-action'] = {
 			collapsed,
 			// global refs:
 			currentData: window.currentData,
+			dialogOptions: window.dialogOptions,
+			entityTypesOptions: window.entityTypesOptions,
+			entityNamesOptions: window.entityNamesOptions,
+			geometryOptions: window.geometryOptions,
+			mapsOptions: window.mapsOptions,
+			scriptsOptions: window.scriptsOptions,
 			// computeds:
 			actionName,
 			requiredProperties,
