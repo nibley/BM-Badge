@@ -15,17 +15,57 @@ window.vueApp = Vue.createApp({
 		var currentData = Vue.ref(undefined);
 		var initState = Vue.ref(undefined);
 		var warningsGeneratedScriptNames = Vue.ref([]);
-		var scriptsOptions = Vue.computed(function() {
+		var dialogOptions = Vue.computed(function() {
 			return Object.keys(
-				(currentData || {}).scripts || {}
+				(scenarioData.value || {}).dialogs || {}
 			);
 		});
+		var scriptsOptions = Vue.computed(function() {
+			return Object.keys(
+				(currentData.value || {}).scripts || {}
+			);
+		});
+		var mapsOptions = Vue.computed(function() {
+			return Object.keys(
+				(scenarioData.value || {}).maps || {}
+			);
+		});
+		var entityTypesOptions = Vue.computed(function() {
+			return Object.keys(
+				(scenarioData.value || {}).entityTypes || {}
+			)
+				.sort(sortCaseInsensitive);
+		});
+		var entityNamesOptions = Vue.computed(function() {
+			return [
+				'%SELF%',
+				'%PLAYER%',
+			]
+				.concat(extractNames(scenarioData.value.parsed.entities));
+		});
+		var geometryOptions = Vue.computed(function() {
+			return [
+				'%ENTITY_PATH%'
+			]
+				.concat(extractNames(scenarioData.value.parsed.geometry));
+		});
+		var borderTilesetOptions = Vue.computed(function() {
+			return Object.keys(scenarioData.value.dialogSkins);
+		});
+
 		Vue.provide('fileNameMap', fileNameMap);
 		Vue.provide('scenarioData', scenarioData);
 		Vue.provide('currentData', currentData);
 		Vue.provide('initState', initState);
 		Vue.provide('warningsGeneratedScriptNames', warningsGeneratedScriptNames);
+
+		Vue.provide('dialogOptions', dialogOptions);
 		Vue.provide('scriptsOptions', scriptsOptions);
+		Vue.provide('mapsOptions', mapsOptions);
+		Vue.provide('entityTypesOptions', entityTypesOptions);
+		Vue.provide('entityNamesOptions', entityNamesOptions);
+		Vue.provide('geometryOptions', geometryOptions);
+		Vue.provide('borderTilesetOptions', borderTilesetOptions);
 
 		var closeError = function () {
 			uniqueEncodeAttempt.value = Math.random();
