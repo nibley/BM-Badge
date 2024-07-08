@@ -133,7 +133,6 @@ vueComponents['component-icon'] = {
 	props: {
 		color: {
 			type: String,
-			required: false
 		},
 		size: {
 			type: Number,

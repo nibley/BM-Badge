@@ -89,7 +89,6 @@ vueComponents['field-text'] = {
 		},
 		value: {
 			type: String,
-			required: false,
 			default: '',
 		},
 	},

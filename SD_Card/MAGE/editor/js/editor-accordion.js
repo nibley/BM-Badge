@@ -3,18 +3,15 @@ vueComponents['editor-accordion'] = {
 	props: {
 		title: {
 			type: String,
-			required: false,
 			default: '',
 		},
 		collapsedInitial: {
 			type: Boolean,
-			required: false,
 			default: true,
 		},
 		useVShow: {
 			// if you want to always render the slots contents invisibly instead of using v-if
 			type: Boolean,
-			required: false,
 			default: false,
 		},
 	},
