@@ -1,6 +1,5 @@
 vueComponents['editor-dialog-phase'] = {
 	name: 'editor-dialog-phase',
-	alignmentOptions: Object.keys(dialogAlignmentEnum),
 	props: {
 		phaseIndex: {
 			type: Number,
@@ -13,6 +12,8 @@ vueComponents['editor-dialog-phase'] = {
 	},
 	emits: ['input'],
 	setup: function(props, context) {
+		var alignmentOptions = Vue.ref(Object.keys(dialogAlignmentEnum));
+
 		var messageIndexOptions = Vue.computed(function() {
 			return Object.keys(props.phase.messages);
 		});
@@ -88,6 +89,8 @@ vueComponents['editor-dialog-phase'] = {
 		};
 
 		return {
+			// component state:
+			alignmentOptions,
 			// global refs:
 			borderTilesetOptions: window.borderTilesetOptions,
 			// computeds:
@@ -146,7 +149,7 @@ vueComponents['editor-dialog-phase'] = {
 			</div>
 			<field-select
 				property="alignment"
-				:options="$options.alignmentOptions"
+				:options="alignmentOptions"
 				:value="phase.alignment"
 				@input="updateProperty('alignment', $event || null)"
 			></field-select>
