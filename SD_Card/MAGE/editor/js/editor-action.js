@@ -83,11 +83,13 @@ vueComponents['field-text'] = {
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
 	props: {
-		type: {
+		property: {
 			type: String,
-			default: function() {
-				return 'text'
-			}
+			required: true,
+		},
+		value: {
+			type: String,
+			required: true,
 		},
 	},
 	emits: ['input'],
