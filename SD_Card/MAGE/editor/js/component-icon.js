@@ -1,6 +1,6 @@
 // Icons are from "Open Iconic" (https://useiconic.com/open/)
 
-var iconMap = {
+var iconTypeMap = {
 	'NULL_ACTION': 'ban',
 	'CHECK_ENTITY_NAME': 'fork',
 	'CHECK_ENTITY_X': 'fork',
@@ -87,7 +87,7 @@ var iconMap = {
 	'edit': 'pencil',
 };
 
-var iconData = {
+var iconDataMap = {
 	ban:'<path d="M4 0c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm0 1c.66 0 1.26.21 1.75.56l-4.19 4.19c-.35-.49-.56-1.09-.56-1.75 0-1.66 1.34-3 3-3zm2.44 1.25c.35.49.56 1.09.56 1.75 0 1.66-1.34 3-3 3-.66 0-1.26-.21-1.75-.56l4.19-4.19z"/>',
 	bluetooth:'<path d="M1.5 0v2.5l-.75-.75-.75.75 1.5 1.5-1.5 1.5.75.75.75-.75v2.5h.5l3.5-2.5-2.25-1.53 2.25-1.47-3.5-2.5h-.5zm1 1.5l1.5 1-1.5 1v-2zm0 3l1.5 1-1.5 1v-2z" transform="translate(1)"/>',
 	brush:'<path d="M7.44.03c-.03 0-.04.02-.06.03l-3.75 2.66c-.04.03-.1.11-.13.16l-.13.25c.72.23 1.27.78 1.5 1.5l.25-.13c.05-.03.12-.08.16-.13l2.66-3.75c.03-.05.04-.09 0-.13l-.44-.44c-.02-.02-.04-.03-.06-.03zm-4.78 3.97c-.74 0-1.31.61-1.31 1.34 0 .99-.55 1.85-1.34 2.31.39.22.86.34 1.34.34 1.47 0 2.66-1.18 2.66-2.66 0-.74-.61-1.34-1.34-1.34z"/>',
@@ -149,10 +149,10 @@ vueComponents['component-icon'] = {
 			return '#ffffff'; // white
 		});
 		var whichIcon = Vue.computed(function () {
-			return iconMap[props.subject] || 'brush';
+			return iconTypeMap[props.subject] || 'brush';
 		});
 		var iconData = Vue.computed(function () {
-			return iconData[whichIcon.value];
+			return iconDataMap[whichIcon.value];
 		});
 
 		return {

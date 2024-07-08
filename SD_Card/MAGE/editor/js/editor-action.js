@@ -1,6 +1,5 @@
 // TODO find alternative to use of $options -- refactor entire :is pattern (most of this file)?
 // TODO state sticking around after selecting a different script at top of editor-scripts?
-// TODO component-icon use broken?
 
 var comparisons = Object.keys(comparisonMap).slice(5);
 var operations = Object.keys(operationMap);
