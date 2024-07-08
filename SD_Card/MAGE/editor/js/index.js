@@ -168,6 +168,7 @@ window.vueApp = Vue.createApp({
 });
 
 vueComponents['inputty'] = {
+	// TODO remove since unused?
 	name: 'inputty',
 	template: ``
 };
