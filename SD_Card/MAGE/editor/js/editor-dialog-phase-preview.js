@@ -1,3 +1,6 @@
+// TODO devtools saying could not get file ".../index.html/undefined" when
+// this component loads due to expanding an instance of editor-dialog-phase
+
 var dialogAlignmentCoords = {
 	BOTTOM_LEFT: {
 		text: { x: 0, y: 8, w: 19, h: 6 },
