@@ -89,7 +89,7 @@ vueComponents['field-text'] = {
 			required: true,
 		},
 		value: {
-			type: String,
+			type: null, // TODO can this be any type?
 			default: '',
 		},
 	},
@@ -109,6 +109,16 @@ vueComponents['field-number'] = {
 	name: 'field-number',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: Number,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-text
@@ -149,6 +159,16 @@ vueComponents['field-bool'] = {
 	name: 'field-bool',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: Boolean,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	operations: operations,
 	template: /*html*/`
@@ -163,6 +183,16 @@ vueComponents['action-input-operations'] = {
 	name: 'action-input-operations',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	operations: operations,
 	template: /*html*/`
@@ -177,6 +207,16 @@ vueComponents['action-input-comparisons'] = {
 	name: 'action-input-comparisons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	comparisons: comparisons,
 	template: /*html*/`
@@ -191,6 +231,16 @@ vueComponents['action-input-buttons'] = {
 	name: 'action-input-buttons',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	buttons: buttons,
 	template: /*html*/`
@@ -205,6 +255,16 @@ vueComponents['action-input-directions'] = {
 	name: 'action-input-directions',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	directions: directions,
 	template: /*html*/`
@@ -219,6 +279,16 @@ vueComponents['action-input-slots'] = {
 	name: 'action-input-slots',
 /*	TODO mixins
 	mixins: [actionInputMixin],*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	slots: slots,
 	template: /*html*/`
@@ -236,6 +306,16 @@ vueComponents['action-input-scripts'] = {
 	computed: window.Vuex.mapGetters([
 		'scriptsOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -252,6 +332,16 @@ vueComponents['action-input-dialogs'] = {
 	computed: window.Vuex.mapGetters([
 		'dialogOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -268,6 +358,16 @@ vueComponents['action-input-entity_types'] = {
 	computed: window.Vuex.mapGetters([
 		'entityTypesOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -284,6 +384,16 @@ vueComponents['action-input-entities'] = {
 	computed: window.Vuex.mapGetters([
 		'entityNamesOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -300,6 +410,16 @@ vueComponents['action-input-geometry'] = {
 	computed: window.Vuex.mapGetters([
 		'geometryOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -316,6 +436,16 @@ vueComponents['action-input-maps'] = {
 	computed: window.Vuex.mapGetters([
 		'mapsOptions'
 	]),*/
+	props: {
+		property: {
+			type: String,
+			required: true,
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+	},
 	emits: ['input'],
 	template: /*html*/`
 <field-select
@@ -401,7 +531,7 @@ vueComponents['editor-action'] = {
 			])
 		}
 	],*/
-	propertyEditorComponentMap,
+	propertyEditorComponentMap, // TODO don't use $options
 	props: {
 		script: {
 			type: Array,
@@ -414,10 +544,6 @@ vueComponents['editor-action'] = {
 		index: {
 			type: Number,
 			required: true
-		},
-		currentData: {
-			type: Object,
-			required: true,
 		},
 	},
 	emits: ['input', 'deleteAction', 'moveAction'],
@@ -492,6 +618,8 @@ vueComponents['editor-action'] = {
 		return {
 			// component state:
 			collapsed,
+			// global refs:
+			currentData: window.currentData,
 			// computeds:
 			actionName,
 			requiredProperties,
@@ -560,9 +688,9 @@ vueComponents['editor-action'] = {
 					:is="$options.propertyEditorComponentMap[property] || 'field-text'"
 					:property="property"
 					:value="action[property]"
-					:current-data="currentData"
 					@input="handleInput(property, $event)"
 				></component>
+				<!-- TODO don't use $options -->
 			</div>
 			<div
 				class="form-text text-danger"
