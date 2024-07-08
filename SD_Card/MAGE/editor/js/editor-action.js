@@ -456,12 +456,12 @@ vueComponents['editor-action'] = {
 				'action-input-directions': directions,
 				'action-input-slots': slots,
 				'field-bool': [true, false],
-				'action-input-scripts': this.scriptsOptions,
-				'action-input-dialogs': this.dialogOptions,
-				'action-input-entity_types': this.entityTypesOptions,
-				'action-input-entities': this.entityNamesOptions,
-				'action-input-geometry': this.geometryOptions,
-				'action-input-maps': this.mapsOptions,
+				'action-input-scripts': scriptsOptions,
+				'action-input-dialogs': dialogOptions,
+				'action-input-entity_types': entityTypesOptions,
+				'action-input-entities': entityNamesOptions,
+				'action-input-geometry': geometryOptions,
+				'action-input-maps': mapsOptions,
 			}
 			if (Object.keys(actionOptionsMap).includes(actionCategory)) {
 				var options = actionOptionsMap[actionCategory];
