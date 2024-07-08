@@ -14,6 +14,13 @@ var possibleNameList = [
 	'carry_on',
 ];
 
+var directionalArrows = [
+	'↑',
+	'→',
+	'↓',
+	'←',
+];
+
 vueComponents['entity-type-editor'] = {
 	name: 'entity-type-editor',
 	setup: function() {
@@ -158,6 +165,7 @@ vueComponents['entity-type-editor'] = {
 
 		return {
 			// component state:
+			directionalArrows,
 			currentEntityTypeId,
 			newEntityTypeId,
 			currentAnimationName,
@@ -185,14 +193,6 @@ vueComponents['entity-type-editor'] = {
 			deleteAnimation,
 		};
 	},
-	/*
-	directions: [
-		'↑',
-		'→',
-		'↓',
-		'←',
-	],
-	*/
 	template: /*html*/`
 	<div
 		class="
@@ -275,7 +275,7 @@ vueComponents['entity-type-editor'] = {
 								<thead>
 									<tr>
 										<th
-											v-for="direction in $options.directions"
+											v-for="direction in directionalArrows"
 										>{{ direction }}</th>
 										<th>❌</th>
 									</tr>
