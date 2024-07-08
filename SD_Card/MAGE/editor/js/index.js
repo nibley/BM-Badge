@@ -1,6 +1,5 @@
 window.vueComponents = {};
 
-// TODO make sure alternative to makeFileChangeTrackerMixinByResourceType is working
 // TODO try throwing a fatal error. didn't show error text and still saw "loafing" when error was in mount hook of editor-warnings
 
 window.vueApp = Vue.createApp({
@@ -126,7 +125,7 @@ window.vueApp = Vue.createApp({
 								scripts: jsonClone(newScenarioData.scripts),
 								scriptsFileItemMap: jsonClone(newScenarioData.scriptsFileItemMap),
 							};
-							initState.value = jsonClone(currentData);
+							initState.value = jsonClone(currentData.value);
 
 							return scenarioData.value;
 						})
