@@ -13,8 +13,6 @@ vueComponents['editor-dialog-phase'] = {
 	},
 	emits: ['input'],
 	setup: function(props, context) {
-		var borderTilesetOptions = Vue.inject('borderTilesetOptions');
-
 		var messageIndexOptions = Vue.computed(function() {
 			return Object.keys(props.phase.messages);
 		});
@@ -87,8 +85,8 @@ vueComponents['editor-dialog-phase'] = {
 		};
 
 		return {
-			// injected state:
-			borderTilesetOptions,
+			// global refs:
+			borderTilesetOptions: window.borderTilesetOptions,
 			// computeds:
 			messageIndexOptions,
 			showOptions,

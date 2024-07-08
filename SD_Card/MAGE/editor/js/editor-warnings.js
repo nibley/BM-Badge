@@ -53,9 +53,6 @@ vueComponents['editor-warning'] = {
 		},
 	},
 	setup: function(props) {
-		var scriptsOptions = Vue.inject('scriptsOptions');
-		var warningsGeneratedScriptNames = Vue.inject('warningsGeneratedScriptNames');
-
 		var fixParameters = Vue.ref(props.entity.fixes ? jsonClone(props.entity.fixes.parameters) : {});
 		var fixText = Vue.ref([]);
 		var scriptNameTaken = Vue.ref(false);
@@ -141,8 +138,8 @@ vueComponents['editor-warning'] = {
 			fixParameters,
 			fixText,
 			scriptNameTaken,
-			// injected state:
-			warningsGeneratedScriptNames,
+			// global refs:
+			warningsGeneratedScriptNames: window.warningsGeneratedScriptNames,
 			// methods:
 			reactToFixParameterChanged,
 		};
@@ -198,8 +195,6 @@ vueComponents['editor-warning'] = {
 vueComponents['editor-warnings'] = {
 	name: 'editor-warnings',
 	setup: function() {
-		var scenarioData = Vue.inject('scenarioData');
-
 		var warningsSorted = Vue.computed(function() {
 			// convert warnings data structure to its 2D array equivalent
 			// (sorted at each layer, lexically for check names and map names, and by `id` for entities)
@@ -224,7 +219,7 @@ vueComponents['editor-warnings'] = {
 		});
 
 		return {
-			// injected state:
+			// global refs:
 			scenarioData,
 			// computeds:
 			warningsSorted,

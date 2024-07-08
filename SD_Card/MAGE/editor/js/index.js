@@ -10,62 +10,48 @@ window.vueApp = Vue.createApp({
 		var error = Vue.ref(null);
 		var downloadData = Vue.ref(null);
 
-		var fileNameMap = Vue.ref(undefined);
-		var scenarioData = Vue.ref(undefined);
-		var currentData = Vue.ref(undefined);
-		var initState = Vue.ref(undefined);
-		var warningsGeneratedScriptNames = Vue.ref([]);
-		var dialogOptions = Vue.computed(function() {
+		window.fileNameMap = Vue.ref(undefined);
+		window.scenarioData = Vue.ref(undefined);
+		window.currentData = Vue.ref(undefined);
+		window.initState = Vue.ref(undefined);
+		window.warningsGeneratedScriptNames = Vue.ref([]);
+		window.dialogOptions = Vue.computed(function() {
 			return Object.keys(
 				(scenarioData.value || {}).dialogs || {}
 			);
 		});
-		var scriptsOptions = Vue.computed(function() {
+		window.scriptsOptions = Vue.computed(function() {
 			return Object.keys(
 				(currentData.value || {}).scripts || {}
 			);
 		});
-		var mapsOptions = Vue.computed(function() {
+		window.mapsOptions = Vue.computed(function() {
 			return Object.keys(
 				(scenarioData.value || {}).maps || {}
 			);
 		});
-		var entityTypesOptions = Vue.computed(function() {
+		window.entityTypesOptions = Vue.computed(function() {
 			return Object.keys(
 				(scenarioData.value || {}).entityTypes || {}
 			)
 				.sort(sortCaseInsensitive);
 		});
-		var entityNamesOptions = Vue.computed(function() {
+		window.entityNamesOptions = Vue.computed(function() {
 			return [
 				'%SELF%',
 				'%PLAYER%',
 			]
 				.concat(extractNames(scenarioData.value.parsed.entities));
 		});
-		var geometryOptions = Vue.computed(function() {
+		window.geometryOptions = Vue.computed(function() {
 			return [
 				'%ENTITY_PATH%'
 			]
 				.concat(extractNames(scenarioData.value.parsed.geometry));
 		});
-		var borderTilesetOptions = Vue.computed(function() {
+		window.borderTilesetOptions = Vue.computed(function() {
 			return Object.keys(scenarioData.value.dialogSkins);
 		});
-
-		Vue.provide('fileNameMap', fileNameMap);
-		Vue.provide('scenarioData', scenarioData);
-		Vue.provide('currentData', currentData);
-		Vue.provide('initState', initState);
-		Vue.provide('warningsGeneratedScriptNames', warningsGeneratedScriptNames);
-
-		Vue.provide('dialogOptions', dialogOptions);
-		Vue.provide('scriptsOptions', scriptsOptions);
-		Vue.provide('mapsOptions', mapsOptions);
-		Vue.provide('entityTypesOptions', entityTypesOptions);
-		Vue.provide('entityNamesOptions', entityNamesOptions);
-		Vue.provide('geometryOptions', geometryOptions);
-		Vue.provide('borderTilesetOptions', borderTilesetOptions);
 
 		var closeError = function () {
 			uniqueEncodeAttempt.value = Math.random();
@@ -160,14 +146,9 @@ window.vueApp = Vue.createApp({
 			uniqueEncodeAttempt,
 			isLoading,
 			error,
-			downloadData,
-			// provided state:
-			fileNameMap,
 			scenarioData,
 			currentData,
-			initState,
-			warningsGeneratedScriptNames,
-			scriptsOptions,
+			downloadData,
 			// methods:
 			closeError,
 			closeSuccess,

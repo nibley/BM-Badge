@@ -39,12 +39,6 @@ vueComponents['editor-scripts'] = {
 		makeFileChangeTrackerMixinByResourceType('scripts'),
 	],*/
 	setup: function() {
-		var scenarioData = Vue.inject('scenarioData');
-		var fileNameMap = Vue.inject('fileNameMap');
-		var currentData = Vue.inject('currentData');
-		var initState = Vue.inject('initState');
-		var scriptsOptions = Vue.inject('scriptsOptions');
-
 		var currentScriptFileName = Vue.ref('');
 		var newScriptFileName = Vue.ref(null);
 		var newScriptName = Vue.ref(null);
@@ -160,12 +154,12 @@ vueComponents['editor-scripts'] = {
 			currentScriptFileName,
 			newScriptFileName,
 			newScriptName,
-			// injected state:
-			scenarioData,
-			fileNameMap,
-			currentData,
-			initState,
-			scriptsOptions,
+			// global refs:
+			scenarioData: window.scenarioData,
+			fileNameMap: window.fileNameMap,
+			currentData: window.currentData,
+			initState: window.initState,
+			scriptsOptions: window.scriptsOptions,
 			// computeds:
 			isNewScriptNameUnique,
 			// natLangScript,

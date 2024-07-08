@@ -18,9 +18,6 @@ vueComponents['entity-type-editor'] = {
 	name: 'entity-type-editor',
 	template: '#template-entity-type-editor',
 	setup: function() {
-		var scenarioData = Vue.inject('scenarioData');
-		var fileNameMap = Vue.inject('fileNameMap');
-
 		var jsonOutput = Vue.computed(function () {
 			return JSON.stringify(
 				scenarioData.value.entityTypes,
@@ -167,9 +164,9 @@ vueComponents['entity-type-editor'] = {
 			currentAnimationName,
 			currentAnimationDirection,
 			initJsonState,
-			// injected state:
-			scenarioData,
-			fileNameMap,
+			// global refs:
+			scenarioData: window.scenarioData,
+			fileNameMap: window.fileNameMap,
 			// computeds:
 			entityTypes,
 			jsonOutput,

@@ -13,11 +13,6 @@ vueComponents['editor-dialogs'] = {
 	],
 	*/
 	setup: function () {
-		var scenarioData = Vue.inject('scenarioData');
-		var fileNameMap = Vue.inject('fileNameMap');
-		var currentData = Vue.inject('currentData');
-		var initState = Vue.inject('initState');
-
 		var currentDialogFileName = Vue.ref('');
 		var currentDialog = Vue.ref('');
 
@@ -39,11 +34,11 @@ vueComponents['editor-dialogs'] = {
 			// component state:
 			currentDialogFileName,
 			currentDialog,
-			// injected state:
-			scenarioData,
-			fileNameMap,
-			currentData,
-			initState,
+			// global refs:
+			scenarioData: window.scenarioData,
+			fileNameMap: window.fileNameMap,
+			currentData: window.currentData,
+			initState: window.initState,
 			// computeds:
 			currentFileDialogs,
 			// methods:

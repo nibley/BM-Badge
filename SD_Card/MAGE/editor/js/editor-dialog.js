@@ -15,10 +15,6 @@ vueComponents['editor-dialog'] = {
 		},
 	},
 	setup: function(props) {
-		var currentData = Vue.inject('currentData');
-		var fileNameMap = Vue.inject('fileNameMap');
-		var scenarioData = Vue.inject('scenarioData');
-
 		var collapsed = Vue.ref(true);
 		var newActionName = Vue.ref(null);
 
@@ -73,10 +69,10 @@ vueComponents['editor-dialog'] = {
 			// component state:
 			collapsed,
 			newActionName,
-			// injected state:
-			currentData,
-			fileNameMap,
-			scenarioData,
+			// global refs:
+			currentData: window.currentData,
+			fileNameMap: window.fileNameMap,
+			scenarioData: window.scenarioData,
 			// computeds:
 			dialogPhases,
 			// methods:

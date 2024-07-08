@@ -34,9 +34,6 @@ vueComponents['editor-dialog-phase-preview'] = {
 		},
 	},
 	setup: function(props) {
-		var fileNameMap = Vue.inject('fileNameMap');
-		var scenarioData = Vue.inject('scenarioData');
-
 		var tileset = Vue.computed(function() {
 			return scenarioData.value.dialogSkinsTilesetMap[
 				props.phase.border_tileset || 'default'
@@ -78,9 +75,9 @@ vueComponents['editor-dialog-phase-preview'] = {
 		});
 
 		return {
-			// injected state:
-			fileNameMap,
-			scenarioData,
+			// global refs:
+			fileNameMap: window.fileNameMap,
+			scenarioData: window.scenarioData,
 			// computeds:
 			tileset,
 			alignmentData,

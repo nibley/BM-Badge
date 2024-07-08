@@ -60,9 +60,6 @@ vueApp.component('editor-dialog-box', {
 		},
 	},
 	setup: function(props) {
-		var scenarioData = Vue.inject('scenarioData');
-		var fileNameMap = Vue.inject('fileNameMap');
-
 		var tileset = Vue.computed(function() {
 			return scenarioData.value.dialogSkinsTilesetMap[props.dialogSkin];
 		});
@@ -127,9 +124,9 @@ vueApp.component('editor-dialog-box', {
 		});
 
 		return {
-			// injected state:
-			fileNameMap,
-			scenarioData,
+			// global refs:
+			fileNameMap: window.fileNameMap,
+			scenarioData: window.scenarioData,
 			// computeds:
 			tileset,
 			subrects,
