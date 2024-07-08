@@ -16,7 +16,6 @@ var possibleNameList = [
 
 vueComponents['entity-type-editor'] = {
 	name: 'entity-type-editor',
-	template: '#template-entity-type-editor',
 	setup: function() {
 		var jsonOutput = Vue.computed(function () {
 			return JSON.stringify(
@@ -194,11 +193,220 @@ vueComponents['entity-type-editor'] = {
 		'←',
 	],
 	*/
-};
+	template: /*html*/`
+	<div
+		class="
+			entity-type-editor
+			card
+			text-white
+			mb-3
+		"
+	>
+		<div class="card-header">Entity Type Editor</div>
+		<div class="card-body">
+			<copy-changes
+				v-if="needsSave"
+				file-name="entity_types.json"
+				:changes="jsonOutput"
+				resource-name="entityTypes"
+			></copy-changes>
+			<div class="form-group">
+				<label for="currentEntityTypeId">Entity Types:</label>
+				<select
+					class="form-control"
+					id="currentEntityTypeId"
+					v-model="currentEntityTypeId"
+				>
+					<option
+						value=""
+					>Select an entityType</option>
+					<option
+						v-for="entityType in entityTypes"
+						:key="entityType.type"
+						:value="entityType.type"
+					>{{ entityType.type }}</option>
+				</select>
+			</div>
+			<div class="input-group mb-3">
+				<input
+					type="text"
+					class="form-control"
+					placeholder="Create new entityType"
+					aria-label="Create new entityType"
+					aria-describedby="add-entity-type"
+					v-model="newEntityTypeId"
+					name="newEntityTypeId"
+				>
+				<div class="input-group-append">
+					<button
+						class="btn btn-primary"
+						type="button"
+						id="add-entity-type"
+						@click="addEntityType"
+					>Create</button>
+				</div>
+			</div>
+			<div
+				v-if="currentEntityType"
+				:key="currentEntityTypeId"
+				class="
+					card
+					text-white
+					bg-secondary
+					mb-3
+				"
+			>
+				<div class="card-header">Current EntityType: {{ currentEntityType.type }}</div>
+				<div class="card-body">
+					<div class="row">
+						<div
+							v-if="tileset"
+							:key="tileset.filename"
+							class="animations col-12 col-lg-6"
+						>
+							<h5>Animations</h5>
+							<table
+								class="
+									text-center
+									table-bordered
+									table-dark
+								"
+							>
+								<thead>
+									<tr>
+										<th
+											v-for="direction in $options.directions"
+										>{{ direction }}</th>
+										<th>❌</th>
+									</tr>
+								</thead>
+								<tbody>
+									<template
+										v-for="(animation, animationName) in currentEntityType.animations"
+										:key="animationName"
+									>
+										<tr>
+											<th colspan="4">{{ animationName }}</th>
+											<td>
+												<button
+													class="badge btn btn-block btn-outline-danger"
+													@click="deleteAnimation(animationName)"
+												>❌</button>
+											</td>
+										</tr>
+										<tr>
+											<td
+												v-for="(direction, directionIndex) in animation"
+												:key="directionIndex"
+											>
+												<div>
+													<button
+														class="tile-link d-inline-flex"
+														:class="(
+															(currentAnimationName === animationName)
+															&& (currentAnimationDirection === directionIndex)
+														)
+															? 'border-success'
+															: 'border-secondary'
+														"
+														@click="clickDirection(animationName, directionIndex)"
+													>
+														<tiled-tile
+															:key="direction.tileid"
+															:tileset="tileset"
+															:tileid="direction.tileid"
+															:style="{
+																transform: 'scale(' + ( direction.flip_x ? '-' : '' ) + '1, ' + ( direction.flip_y ? '-' : '' ) + '1)'
+															}"
+														></tiled-tile>
+													</button>
+													<div>
+														<button
+															class="btn badge"
+															:class="direction.flip_x ? 'badge-success' : 'badge-secondary'"
+															@click="flip(animationName, directionIndex, 'flip_x')"
+															title="Flip X"
+														>⬌</button>
+														<button
+															class="btn badge"
+															:class="direction.flip_y ? 'badge-success' : 'badge-secondary'"
+															@click="flip(animationName, directionIndex, 'flip_y')"
+															title="Flip Y"
+														>⬍</button>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</template>
+								</tbody>
+							</table>
+							<div
+								v-if="Object.keys(currentEntityType.animations).length < 13"
+								class="pt-3"
+							>
+								<button
+									class="btn btn-block btn-outline-success"
+									@click="addAnimation"
+								>Add Animation</button>
+							</div>
+						</div>
+						<div class="tileset col-12 col-lg-6">
+							<h5>Tileset: {{ currentEntityType.tileset }}</h5>
+							<div class="form-group">
+								<label for="currentTileset">Tileset:</label>
+								<select
+									class="form-control"
+									id="currentTileset"
+									v-model="currentEntityType.tileset"
+								>
+									<option
+										value=""
+									>Select a tileset</option>
+									<option
+										v-for="tileset in allTilesets"
+										:key="tileset.filename"
+										:value="tileset.filename"
+									>{{ tileset.filename }}</option>
+								</select>
+							</div>
+							<table
+								v-if="tileset"
+								:key="tileset.filename"
+								class="table-dark table-bordered"
+								style="line-height: 0;"
+							>
+								<tbody>
+								<tr
+									v-for="(badY, y) in Math.floor(tileset.tilecount / tileset.columns)"
+								>
+									<td
+										v-for="(badX, x) in tileset.columns"
+									>
+										<button
+											class="tile-link d-inline-flex"
+											:class="(currentTileId === ((y * tileset.columns) + x))
+												? 'border-success'
+												: 'border-secondary'
+											"
+											@click="clickTile((y * tileset.columns) + x)"
+										><tiled-tile
+											:tileset="tileset"
+											:tileid="(y * tileset.columns) + x"
+										></tiled-tile></button>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+`};
 
 vueComponents['tiled-tile'] = {
 	name: 'tiled-tile',
-	template: '#template-tiled-tile',
 	props: {
 		tileset: {
 			type: Object,
@@ -297,4 +505,14 @@ vueComponents['tiled-tile'] = {
 			animate,
 		};
 	},
-};
+	template: /*html*/`
+		<span
+			class="tiled-tile"
+			:style="outerStyle"
+			:title="'tileid: ' + tileid"
+		>
+			<span
+				:style="innerStyle"
+			></span>
+		</span>
+`};
