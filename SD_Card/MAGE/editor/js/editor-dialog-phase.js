@@ -110,7 +110,7 @@ vueComponents['editor-dialog-phase'] = {
 	},
 	template: /*html*/`
 <div
-	class="editor-dialog-phase card mb-3"
+	class="editor-dialog-phase card border-secondary mb-2"
 >
 	<div
 		class="card-header"
