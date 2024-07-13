@@ -33,7 +33,7 @@ vueComponents['editor-accordion'] = {
 	},
 	template: /*html*/`
 <div class="editor-accordion card border-secondary text-white mb-2">
-	<div class="card-header bg-secondary pr-5">
+	<div class="card-header bg-primary pr-5">
 		<span v-html="title"></span>
 		<span
 			class="position-absolute"

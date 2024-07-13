@@ -233,7 +233,7 @@ vueComponents['editor-warnings'] = {
 	},
 	template: /*html*/`
 <div class="editor-warnings card text-white my-3">
-	<div class="card-header bg-primary">Additional reports about the build ({{warningsSorted.length}} checks)</div>
+	<div class="card-header bg-secondary">Additional reports about the build ({{warningsSorted.length}} checks)</div>
 	<div class="card-body p-3">
 		<!-- "invisible wrapper" use of <template> because of v-for inside (good practice) -->
 		<template v-if="warningsSorted.length">
