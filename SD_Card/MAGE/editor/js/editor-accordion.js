@@ -1,3 +1,5 @@
+// TODO better responsiveness when the card header is cramped
+
 vueComponents['editor-accordion'] = {
 	name: 'editor-accordion',
 	props: {
@@ -10,7 +12,7 @@ vueComponents['editor-accordion'] = {
 			default: true,
 		},
 		useVShow: {
-			// if you want to always render the slots contents invisibly instead of using v-if
+			// set to true to always render the main slot content invisibly
 			type: Boolean,
 			default: false,
 		},
@@ -42,6 +44,7 @@ vueComponents['editor-accordion'] = {
 				class="btn btn-outline-light"
 				@click="collapse"
 			>_</button>
+			<slot name="header"></slot>
 		</span>
 	</div>
 
