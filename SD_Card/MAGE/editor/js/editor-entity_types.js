@@ -129,7 +129,7 @@ vueComponents['entity-type-editor'] = {
 			}
 		};
 		var addAnimation = function() {
-			var propertyName = possibleNameList.value[
+			var propertyName = possibleNameList[
 				Object.keys(currentEntityType.value.animations).length
 			];
 			currentEntityType.value.animations[propertyName] = [
@@ -159,7 +159,7 @@ vueComponents['entity-type-editor'] = {
 				var name = pair[0];
 				var animation = pair[1];
 				if (name !== animationName) {
-					newValues[possibleNameList.value[currentCount]] = animation;
+					newValues[possibleNameList[currentCount]] = animation;
 					currentCount += 1;
 				}
 			});

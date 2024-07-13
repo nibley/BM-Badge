@@ -619,11 +619,10 @@ vueComponents['editor-action'] = {
 	</template>
 
 	<template #headerLeft>
-		<button
-			type="button"
-			class="btn btn-outline-danger"
-			@click="$emit('deleteAction')"
-		>X</button>
+	<component-button
+		type="delete"
+		title="Delete action"
+		@click="$emit('deleteAction')" />
 	</template>
 
 	<template #header>
