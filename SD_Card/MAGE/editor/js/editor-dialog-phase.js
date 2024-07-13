@@ -217,7 +217,7 @@ vueComponents['editor-dialog-phase'] = {
 					>
 						<button
 							type="button"
-							class="btn btn-outline-info btn-sm"
+							class="btn btn-outline-danger btn-sm"
 							@click="deleteMessage(index)"
 							title="Delete message"
 						>x</button>
