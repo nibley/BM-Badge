@@ -38,7 +38,7 @@ vueComponents['component-button'] = {
 	template: /*html*/`
 <button
 	type="button"
-	class="btn"
+	class="btn d-inline-block"
 	:class="outlineClass"
 >
 	<slot>{{ text }}</slot>
