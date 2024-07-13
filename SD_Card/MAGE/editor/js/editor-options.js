@@ -103,12 +103,11 @@ vueApp.component('editor-options', {
 				class="position-absolute"
 				style="top:0; right:0; height: 100%;"
 			>
-				<button
-					type="button"
-					class="btn btn-outline-danger"
-					style="height: 100%;"
+				<component-button
+					type="delete"
+					title="Delete option"
 					@click="removeOption(index)"
-				>x</button>
+					class="h-100" />
 			</span>
 		</div>
 		<div>

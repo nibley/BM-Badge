@@ -10,7 +10,7 @@ vueComponents['editor-dialog-phase'] = {
 			required: true
 		},
 	},
-	emits: ['input'],
+	emits: ['input', 'delete'],
 	setup: function(props, context) {
 		var borderTilesetOptions = window.borderTilesetOptions;
 
@@ -120,11 +120,10 @@ vueComponents['editor-dialog-phase'] = {
 			class="position-absolute"
 			style="top:6px; right:6px;"
 		>
-			<button
-				type="button"
-				class="btn btn-outline-danger"
-				@click="$emit('delete')"
-			>x</button>
+			<component-button
+				type="delete"
+				title="Delete phase"
+				@click="$emit('delete')" />
 		</span>
 	</div>
 	<div
@@ -215,12 +214,12 @@ vueComponents['editor-dialog-phase'] = {
 						class="position-absolute"
 						style="top: 0; right: 6px;"
 					>
-						<button
-							type="button"
-							class="btn btn-outline-danger btn-sm"
+						<!-- TODO doesn't seem to be working -->
+						<component-button
+							type="delete"
+							title="Delete Message"
 							@click="deleteMessage(index)"
-							title="Delete message"
-						>x</button>
+							class="btn-sm" />
 					</span>
 					<textarea
 						class="form-control"

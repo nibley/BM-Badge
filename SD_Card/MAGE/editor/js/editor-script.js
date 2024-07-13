@@ -180,11 +180,11 @@ vueComponents['editor-script'] = {
 		</template>
 		
 		<template v-else>
-			<button
-				type="button"
-				class="btn mr-1 btn-outline-danger"
+			<component-button
+				type="delete"
+				title="Delete script"
 				@click="$emit('deleteScript')"
-			>X</button>
+				class="mr-1" />
 			<span class="ml-2">
 				<span class="mr-auto">{{scriptName}}</span>
 				<button

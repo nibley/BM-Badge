@@ -291,10 +291,10 @@ vueComponents['entity-type-editor'] = {
 										<tr>
 											<th colspan="4">{{ animationName }}</th>
 											<td>
-												<button
-													class="badge btn btn-block btn-outline-danger"
-													@click="deleteAnimation(animationName)"
-												>❌</button>
+												<component-button
+													type="delete"
+													title="Delete animation"
+													@click="deleteAnimation(animationName)" />
 											</td>
 										</tr>
 										<tr>
