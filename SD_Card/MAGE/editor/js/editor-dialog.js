@@ -88,18 +88,16 @@ vueComponents['editor-dialog'] = {
 	:title="dialogName"
 >
 	<template #header>
-		<button
-			type="button"
-			class="btn btn-outline-light"
-			:disabled="index === 0"
+		<component-button
+			type="up"
+			title="Move dialog up"
 			@click="moveDialog(-1)"
-		>↑</button>
-		<button
-			type="button"
-			class="btn btn-outline-light"
-			:disabled="index === (currentData.dialogsFileItemMap[fileName].length - 1)"
+			:disabled="index === 0" />
+		<component-button
+			type="down"
+			title="Move dialog down"
 			@click="moveDialog(1)"
-		>↓</button>
+			:disabled="index === (currentData.dialogsFileItemMap[fileName].length - 1)" />
 	</template>
 
 	<editor-dialog-phase

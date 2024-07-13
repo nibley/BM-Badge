@@ -1,7 +1,9 @@
 var componentButtonTextMap = {
 	delete: 'X',
+	up: '↑',
+	down: '↓',
 };
-var componentButtonoutlineClassMap = {
+var componentButtonclassesObjectMap = {
 	delete: 'btn-outline-danger',
 };
 
@@ -10,19 +12,28 @@ vueComponents['component-button'] = {
 	props: {
 		type: {
 			type: String,
-			// default: 'light',
 		},
 		color: {
 			type: String,
-			// default: null,
 		},
 	},
 	setup: function(props) {
-		var outlineClass = Vue.computed(function() {
-			if(props.color) {
-				return '';
+		var classesObject = Vue.computed(function() {
+			var result = {};
+			if(!(props.color)) {
+				result[
+					componentButtonclassesObjectMap[props.type] || 'btn-outline-light'
+				] = true;
 			}
-			return componentButtonoutlineClassMap[props.type] || 'btn-outline-light';
+			return result;
+		});
+
+		var stylesObject = Vue.computed(function() {
+			var result = {};
+			if (props.color) {
+				result['color'] = result['border-color'] = props.color;
+			}
+			return result;
 		});
 
 		var text = Vue.computed(function() {
@@ -31,7 +42,8 @@ vueComponents['component-button'] = {
 
 		return {
 			// computeds:
-			outlineClass,
+			classesObject,
+			stylesObject,
 			text,
 		};
 	},
@@ -39,7 +51,8 @@ vueComponents['component-button'] = {
 <button
 	type="button"
 	class="btn d-inline-block"
-	:class="outlineClass"
+	:class="classesObject"
+	:style="stylesObject"
 >
 	<slot>{{ text }}</slot>
 </button>

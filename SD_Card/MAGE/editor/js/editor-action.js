@@ -619,25 +619,23 @@ vueComponents['editor-action'] = {
 	</template>
 
 	<template #headerLeft>
-	<component-button
-		type="delete"
-		title="Delete action"
-		@click="$emit('deleteAction')" />
+		<component-button
+			type="delete"
+			title="Delete action"
+			@click="$emit('deleteAction')" />
 	</template>
 
 	<template #header>
-		<button
-			type="button"
-			class="btn btn-outline-light"
+		<component-button
+			type="up"
+			title="Move action up"
 			:disabled="index === 0"
-			@click="$emit('moveAction', -1)"
-		>↑</button>
-		<button
-			type="button"
-			class="btn btn-outline-light"
+			@click="$emit('moveAction', -1)" />
+		<component-button
+			type="down"
+			title="Move action down"
 			:disabled="index === script.length - 1"
-			@click="$emit('moveAction', 1)"
-		>↓</button>
+			@click="$emit('moveAction', 1)" />
 	</template>
 
 	<div

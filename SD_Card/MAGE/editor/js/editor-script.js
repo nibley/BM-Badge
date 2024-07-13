@@ -135,18 +135,16 @@ vueComponents['editor-script'] = {
 		</template>
 
 		<template v-else>
-			<button
-				type="button"
-				class="btn btn-outline-light"
-				:disabled="index === 0"
+			<component-button
+				type="up"
+				title="Move script up"
 				@click="moveScript(-1)"
-			>↑</button>
-			<button
-				type="button"
-				class="btn btn-outline-light"
-				:disabled="index === (currentData.scriptsFileItemMap[fileName].length - 1)"
+				:disabled="index === 0" />
+			<component-button
+				type="down"
+				title="Move script down"
 				@click="moveScript(1)"
-			>↓</button>
+				:disabled="index === (currentData.scriptsFileItemMap[fileName].length - 1)" />
 		</template>
 	</template>
 
