@@ -9,7 +9,20 @@ window.vueApp = Vue.createApp({
 		var error = Vue.ref(null);
 		var downloadData = Vue.ref(null);
 
-		var lastConsoleLogMessage = useLastConsoleLog();
+		var lastConsoleLogMessage = Vue.ref('Working…');
+		var originalConsoleLog = console.log;
+		console.log = function() {
+			try {
+				var stringifiedMessage = '';
+				for(var i = 0; i < arguments.length; i++) {
+					var argument = arguments[i];
+					stringifiedMessage += (typeof argument === 'string' ?
+						argument : JSON.stringify(argument)) + ' ';
+				}
+				lastConsoleLogMessage.value = stringifiedMessage;
+			} catch {}
+			originalConsoleLog.apply(console, arguments);
+		};
 
 		window.fileNameMap = Vue.ref(undefined);
 		window.scenarioData = Vue.ref(undefined);
@@ -58,12 +71,10 @@ window.vueApp = Vue.createApp({
 			uniqueEncodeAttempt.value = Math.random();
 			error.value = false;
 		};
-
 		var closeSuccess = function () {
 			uniqueEncodeAttempt.value = Math.random();
 			downloadData.value = null;
 		};
-
 		var prepareDownload = function (data, name) {
 			var blob = new Blob(data, { type: 'octet/stream' });
 			var url = window.URL.createObjectURL(blob);
@@ -76,7 +87,6 @@ window.vueApp = Vue.createApp({
 				download: name
 			};
 		};
-
 		var handleChange = function (event) {
 			var newFileNameMap = {};
 			
@@ -164,26 +174,6 @@ window.vueApp = Vue.createApp({
 		};
 	},
 });
-
-var useLastConsoleLog = function() {
-	var originalConsoleLog = console.log;
-	var lastConsoleLogMessage = Vue.ref('');
-	
-	console.log = function() {
-		try {
-			var stringifiedMessage = '';
-			for(var i = 0; i < arguments.length; i++) {
-				var argument = arguments[i];
-				stringifiedMessage += (typeof argument === 'string' ?
-					argument : JSON.stringify(argument)) + ' ';
-			}
-			lastConsoleLogMessage.value = stringifiedMessage;
-		} catch {}
-		originalConsoleLog.apply(console, arguments);
-	};
-
-	return lastConsoleLogMessage;
-};
 
 vueComponents['inputty'] = {
 	// TODO remove since unused?
