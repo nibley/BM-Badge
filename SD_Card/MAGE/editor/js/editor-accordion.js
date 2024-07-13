@@ -55,7 +55,7 @@ vueComponents['editor-accordion'] = {
 			<span class="ml-2">
 				<slot name="title">
 					<!-- you often want to just pass a title string prop, but allow for more control too -->
-					<span v-html="title"></span>
+					<span>{{ title }}</span>
 				</slot>
 			</span>
 		</span>

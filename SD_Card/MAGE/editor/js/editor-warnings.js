@@ -240,17 +240,17 @@ vueComponents['editor-warnings'] = {
 			<editor-accordion
 				v-for="[checkName, maps] in warningsSorted"
 				:key="checkName"
-				:title="'Problems with &grave;' + checkName + '&grave; (' + maps.length  + ' maps)'"
+				:title="'Problems with \`' + checkName + '\` (' + maps.length  + ' maps)'"
 				:use-v-show="true"
 			>
 				<editor-accordion
 					v-for="[mapName, entities] in maps"
 					:key="mapName"
-					:title="'Problems in map &grave;' + mapName + '&grave; (' + entities.length  + ' entities)'"
+					:title="'Problems in map \`' + mapName + '\` (' + entities.length  + ' entities)'"
 					:use-v-show="true"
 				>
 					<editor-accordion
-						:title="'Entity &grave;' + (entity.name || 'NO NAME') + '&grave; (id ' + entity.id + ')'"
+						:title="'Entity \`' + (entity.name || 'NO NAME') + '\` (id ' + entity.id + ')'"
 						:use-v-show="true"
 						:collapsed-initial="false"
 						v-for="entity in entities"
