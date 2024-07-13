@@ -42,7 +42,7 @@ vueComponents['editor-accordion'] = {
 			bg-primary
 			d-flex
 			align-items-center
-			px-2
+			px-3
 		"
 		:class="headerClasses"
 		style="
