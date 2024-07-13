@@ -521,8 +521,6 @@ vueComponents['editor-action'] = {
 		var mapsOptions = window.mapsOptions;
 		var scriptsOptions = window.scriptsOptions;
 
-		var collapsed = Vue.ref(false);
-
 		var actionName = Vue.computed(function () {
 			return props.action.action;
 		});
@@ -543,9 +541,6 @@ vueComponents['editor-action'] = {
 			return foundProperties;
 		});
 
-		var collapseAction = function () {
-			collapsed.value = !(collapsed.value);
-		};
 		var validInput = function (property, value) {
 			var result = true;
 			var actionCategory = propertyEditorComponentMap[property];
@@ -589,8 +584,6 @@ vueComponents['editor-action'] = {
 		};
 
 		return {
-			// component state:
-			collapsed,
 			// global state:
 			currentData,
 			dialogOptions,
@@ -605,77 +598,69 @@ vueComponents['editor-action'] = {
 			requiredPropertyNames,
 			foundPropertyNames,
 			// methods:
-			collapseAction,
 			validInput,
 			handleInput,
 		};
 	},
 	template: /*html*/`
-<div
-	class="editor-action mb-3 mt-1 card border-secondary"
+<editor-accordion
+	class="editor-action"
+	:headerClasses="['bg-secondary']"
 >
-	<div class="card-header bg-secondary p-2">
-		<button
-			type="button"
-			class="btn btn-sm mr-1 btn-outline-danger"
-			@click="$emit('deleteAction')"
-		>X</button>
+	<!-- don't use the simpler option of passing a title prop -->
+	<template #title>
 		<component-icon
 			color="white"
 			:size="16"
 			:subject="actionName"
 		></component-icon>
 		<span>{{actionName}}</span>
-		<span
-			class="position-absolute"
-			style="top:3px; right:3px;"
-		>
-			<button
-				type="button"
-				class="btn btn-sm btn-outline-light"
-				@click="collapseAction"
-			>_</button>
-			<button
-				type="button"
-				class="btn btn-sm btn-outline-light"
-				:disabled="index === 0"
-				@click="$emit('moveAction', -1)"
-			>↑</button>
-			<button
-				type="button"
-				class="btn btn-sm btn-outline-light"
-				:disabled="index === script.length - 1"
-				@click="$emit('moveAction', 1)"
-			>↓</button>
-		</span>
-	</div>
+	</template>
+
+	<template #headerLeft>
+		<button
+			type="button"
+			class="btn btn-outline-danger"
+			@click="$emit('deleteAction')"
+		>X</button>
+	</template>
+
+	<template #header>
+		<button
+			type="button"
+			class="btn btn-outline-light"
+			:disabled="index === 0"
+			@click="$emit('moveAction', -1)"
+		>↑</button>
+		<button
+			type="button"
+			class="btn btn-outline-light"
+			:disabled="index === script.length - 1"
+			@click="$emit('moveAction', 1)"
+		>↓</button>
+	</template>
+
 	<div
-		class="card-body p-0"
-		v-show="!collapsed"
+		v-for="property in foundPropertyNames"
+		class="p-2"
 	>
 		<div
-			v-for="property in foundPropertyNames"
-			class="p-2"
+			class="input-group"
 		>
-			<div
-				class="input-group"
-			>
-				<div class="input-group-prepend">
-					<span class="input-group-text">{{property}}</span>
-				</div>
-				<component
-					:is="$options.propertyEditorComponentMap[property] || 'field-text'"
-					:property="property"
-					:value="action[property]"
-					@input="handleInput(property, $event)"
-				></component>
-				<!-- TODO don't use $options -->
+			<div class="input-group-prepend">
+				<span class="input-group-text">{{property}}</span>
 			</div>
-			<div
-				class="form-text text-danger"
-				v-if="!validInput(property, action[property])"
-			>Value not an option: "{{action[property]}}"</div>
+			<component
+				:is="$options.propertyEditorComponentMap[property] || 'field-text'"
+				:property="property"
+				:value="action[property]"
+				@input="handleInput(property, $event)"
+			></component>
+			<!-- TODO don't use $options -->
 		</div>
+		<div
+			class="form-text text-danger"
+			v-if="!validInput(property, action[property])"
+		>Value not an option: "{{action[property]}}"</div>
 	</div>
-</div>
-`};
+</editor-accordion>`};
