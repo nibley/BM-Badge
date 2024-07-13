@@ -157,6 +157,17 @@ window.vueApp = Vue.createApp({
 			}
 		};
 
+		Vue.onMounted(function() {
+			var handleKeyboardShortcut = function(event) {
+				if (event.key === 'b'
+					&& event.altKey
+				) {
+					document.querySelector('#drag_target').click();
+				}
+			};
+			window.addEventListener('keyup', handleKeyboardShortcut);
+		});
+
 		return {
 			// component state:
 			uniqueEncodeAttempt,
