@@ -316,5 +316,4 @@ vueComponents['editor-scripts'] = {
 			</form>
 		</div>
 	</div>
-</div>
-`};
+</div>`};
