@@ -1,3 +1,5 @@
+// TODO check why there aren't usually portraits: bug or need special case for %PLAYER%, %SELF%
+
 var dialogAlignmentCoords = {
 	BOTTOM_LEFT: {
 		text: { x: 0, y: 8, w: 19, h: 6 },

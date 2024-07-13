@@ -234,6 +234,9 @@ vueComponents['editor-script'] = {
 					for="newScriptFileName"
 				>New Action</label>
 				<div class="input-group">
+					<!-- TODO update use of v-model per https://v3-migration.vuejs.org/breaking-changes/v-model.html
+					value prop is no longer present through v-model
+					also consider the update event changes -->
 					<action-input-action-type
 						id="newActionName"
 						placeholder="New Action"
