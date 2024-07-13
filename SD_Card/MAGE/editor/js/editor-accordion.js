@@ -16,6 +16,9 @@ vueComponents['editor-accordion'] = {
 			type: Boolean,
 			default: false,
 		},
+		headerClasses: {
+			type: null
+		},
 	},
 	setup: function(props) {
 		var collapsed = Vue.ref(props.collapsedInitial);
@@ -33,12 +36,31 @@ vueComponents['editor-accordion'] = {
 	},
 	template: /*html*/`
 <div class="editor-accordion card border-secondary text-white mb-2">
-	<div class="card-header bg-primary pr-5">
-		<span v-html="title"></span>
-		<span
-			class="position-absolute"
-			style="top: 6px; right: 6px;"
-		>
+	<div
+		class="
+			card-header
+			bg-primary
+			d-flex
+			align-items-center
+			px-2
+		"
+		:class="headerClasses"
+		style="
+			padding-top: 0.4rem;
+			padding-bottom: 0.4rem;
+		"
+	>
+		<span class="mr-auto">
+			<slot name="headerLeft"></slot>
+			<span class="ml-2">
+				<slot name="title">
+					<!-- you often want to just pass a title string prop, but allow for more control too -->
+					<span v-html="title"></span>
+				</slot>
+			</span>
+		</span>
+
+		<span>
 			<button
 				type="button"
 				class="btn btn-outline-light"
