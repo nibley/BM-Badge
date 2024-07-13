@@ -19,7 +19,6 @@ vueComponents['editor-dialog'] = {
 		var fileNameMap = window.fileNameMap;
 		var scenarioData = window.scenarioData;
 
-		var collapsed = Vue.ref(true);
 		var newActionName = Vue.ref(null);
 
 		var dialogPhases = Vue.computed(function() {
@@ -28,6 +27,7 @@ vueComponents['editor-dialog'] = {
 
 		var moveDialog = function (direction) {
 			/*
+			TODO make sure this works after using accordion
 			TODO store
 			this.$store.commit('MOVE_DIALOG', {
 				fileName: props.fileName,
@@ -35,9 +35,6 @@ vueComponents['editor-dialog'] = {
 				direction: direction
 			});
 			*/
-		};
-		var collapse = function() {
-			collapsed.value = !(collapsed.value);
 		};
 		var addDialogPhase = function(dialogName) {
 			var dialog = currentData.value.dialogs[dialogName].slice();
@@ -71,7 +68,6 @@ vueComponents['editor-dialog'] = {
 
 		return {
 			// component state:
-			collapsed,
 			newActionName,
 			// global state:
 			currentData,
@@ -82,59 +78,43 @@ vueComponents['editor-dialog'] = {
 			// methods:
 			addDialogPhase,
 			moveDialog,
-			collapse,
 			updateDialogPhase,
 			deleteDialogPhase,
 		};
 	},
 	template: /*html*/`
-<div
-	class="editor-dialog card bg-secondary border-primary mb-4"
+<editor-accordion
+	class="editor-dialog"
+	:title="dialogName"
 >
-	<div class="card-header bg-primary">
-		<strong class="mr-auto">{{ dialogName }}</strong>
-		<span
-			class="position-absolute"
-			style="top:6px; right:6px;"
-		>
-			<button
-				type="button"
-				class="btn btn-outline-info"
-				@click="collapse"
-			>_</button>
-			<button
-				type="button"
-				class="btn btn-outline-info"
-				:disabled="index === 0"
-				@click="moveDialog(-1)"
-			>↑</button>
-			<button
-				type="button"
-				class="btn btn-outline-info"
-				:disabled="index === (currentData.dialogsFileItemMap[fileName].length - 1)"
-				@click="moveDialog(1)"
-			>↓</button>
-		</span>
+	<template #header>
+		<button
+			type="button"
+			class="btn btn-outline-light"
+			:disabled="index === 0"
+			@click="moveDialog(-1)"
+		>↑</button>
+		<button
+			type="button"
+			class="btn btn-outline-light"
+			:disabled="index === (currentData.dialogsFileItemMap[fileName].length - 1)"
+			@click="moveDialog(1)"
+		>↓</button>
+	</template>
+
+	<editor-dialog-phase
+		v-for="(phase, index) in dialogPhases"
+		:key="index"
+		:phase="phase"
+		:phase-index="index"
+		@input="updateDialogPhase(index, $event)"
+		@delete="deleteDialogPhase(index)"
+	></editor-dialog-phase>
+	<div>
+		<button
+			class="btn btn-primary"
+			type="submit"
+			@click="addDialogPhase(dialogName)"
+		>Add Phase</button>
 	</div>
-	<div
-		class="card-body p-3"
-		v-if="!collapsed"
-	>
-		<editor-dialog-phase
-			v-for="(phase, index) in dialogPhases"
-			:key="index"
-			:phase="phase"
-			:phase-index="index"
-			@input="updateDialogPhase(index, $event)"
-			@delete="deleteDialogPhase(index)"
-		></editor-dialog-phase>
-		<div>
-			<button
-				class="btn btn-primary"
-				type="submit"
-				@click="addDialogPhase(dialogName)"
-			>Add Phase</button>
-		</div>
-	</div>
-</div>
-`};
+</editor-accordion>`};
