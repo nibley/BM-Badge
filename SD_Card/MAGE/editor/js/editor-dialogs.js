@@ -22,6 +22,7 @@ vueComponents['editor-dialogs'] = {
 		};
 		var updateDialogsFileItemMap = function(map) {
 			currentData.value.dialogsFileItemMap = map;
+			// TODO maybe never called yet?
 		};
 
 		return {

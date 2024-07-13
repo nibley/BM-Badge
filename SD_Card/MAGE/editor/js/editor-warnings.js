@@ -44,6 +44,8 @@ how will look work for multiple entities of the same or similar names (eg bread,
 - detect many2one?
 */
 
+// TODO let editor-warning specify the accordion for consistency?
+
 vueComponents['editor-warning'] = {
 	name: 'editor-warning',
 	props: {
