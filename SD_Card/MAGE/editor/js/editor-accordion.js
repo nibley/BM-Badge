@@ -52,7 +52,7 @@ vueComponents['editor-accordion'] = {
 	>
 		<span class="mr-auto">
 			<slot name="headerLeft"></slot>
-			<span class="ml-2">
+			<span :class="{'ml-2': $slots.title}">
 				<slot name="title">
 					<!-- you often want to just pass a title string prop, but allow for more control too -->
 					<span>{{ title }}</span>
@@ -61,12 +61,12 @@ vueComponents['editor-accordion'] = {
 		</span>
 
 		<span>
+			<slot name="header"></slot>
 			<button
 				type="button"
-				class="btn btn-outline-light"
+				class="btn btn-outline-light ml-2"
 				@click="collapse"
 			>_</button>
-			<slot name="header"></slot>
 		</span>
 	</div>
 
