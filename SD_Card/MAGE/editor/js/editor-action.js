@@ -605,6 +605,7 @@ vueComponents['editor-action'] = {
 	template: /*html*/`
 <editor-accordion
 	class="editor-action"
+	:collapsed-initial="false"
 	:headerClasses="['bg-secondary']"
 >
 	<!-- don't use the simpler option of passing a title prop -->
