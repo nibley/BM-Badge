@@ -236,4 +236,7 @@ SDK_INCLUDES := \
 	-I$(SDK_ROOT)/modules/nrfx \
 	-I$(SDK_ROOT)/modules/nrfx/drivers/include \
 	-I$(SDK_ROOT)/modules/nrfx/hal \
-	-I$(SDK_ROOT)/modules/nrfx/mdk
+	-I$(SDK_ROOT)/modules/nrfx/mdk \
+	-I$(SDK_ROOT)/components/libraries/block_dev/ram \
+	-I$(SDK_ROOT)/components/libraries/block_dev/empty \
+	-I$(SDK_ROOT)/components/libraries/block_dev/qspi

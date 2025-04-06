@@ -22,6 +22,9 @@
 #include <string.h>
 #include <sys/time.h>
 
+// usb test
+// #include "nordic_sdk_fixes.h"
+
 #define PI 3.141592653589793
 #define TAU 6.283185307179586
 

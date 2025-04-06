@@ -40,6 +40,56 @@ void sig_handler(int signo)
 
 #endif
 
+
+
+
+
+
+
+// begin USB test
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <inttypes.h>
+#include <stdlib.h>
+
+#include "nrf.h"
+#include "nrf_block_dev.h"
+#include "nrf_block_dev_ram.h"
+#include "nrf_block_dev_empty.h"
+#include "nrf_block_dev_qspi.h"
+#include "nrf_block_dev_sdc.h"
+#include "nrf_drv_usbd.h"
+#include "nrf_drv_clock.h"
+#include "nrf_gpio.h"
+#include "nrf_atomic.h"
+#include "nrf_drv_power.h"
+
+#include "ff.h"
+#include "diskio_blkdev.h"
+
+#include "app_usbd.h"
+#include "app_usbd_core.h"
+#include "app_usbd_string_desc.h"
+#include "app_usbd_msc.h"
+#include "app_error.h"
+#include "app_timer.h"
+
+#include "bsp.h"
+
+#include "nrf_log.h"
+#include "nrf_log_ctrl.h"
+#include "nrf_log_default_backends.h"
+
+// end USB test
+
+
+
+
+
+
+
 #define XVAL(x) #x
 #define VAL(x)  XVAL(x)
 

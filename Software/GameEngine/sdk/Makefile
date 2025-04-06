@@ -39,6 +39,32 @@ INCLUDES := $(CONFIG_INCLUDE) \
 #  LINKER_SCRIPT:	Used in LD_FLAGS when linking embedded binaries
 include ../common.make
 
+# usb test: override compilation of c files from common.make
+# C files
+$(BUILD_DIR)/%.o: $(SRC_ROOT)/%.c
+	@echo "[ CC in sdk ${CC} ] $(notdir $<)"
+
+ifeq ($(OS),Windows_NT)
+	@if not exist $(subst /,\,$(@D)) $(MKDIR) $(subst /,\,$(@D))
+else
+	@$(MKDIR) $(@D)
+endif
+
+	@$(CC) -x c -c \
+		-std=c11 \
+		$(CFLAGS) \
+		$(WEB_SDL) \
+		$(INCLUDES) \
+		-MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -o "$@" "$<" \
+
+# 	@$(CC) -x c++ -c \
+# 		-std=c++17 \
+# 		$(CFLAGS) \
+# 		$(CXXFLAGS) \
+# 		$(INCLUDES) \
+# 		-MD -MP -MF \
+# 		"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -o "$@" "$<"
+
 .PHONY: clean
 
 $(SDK_TARGET): $(SDK_OBJS)
